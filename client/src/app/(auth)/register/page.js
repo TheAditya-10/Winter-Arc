@@ -29,13 +29,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import api from "@/utils/apiService"
+import { createUser } from "@/app/actions"
 
 
 const formSchema = z.object({
     name: z.string().min(4, "Name must be at least 4 characters"),
     username: z.string().min(10, "Name must be at least 10 characters"),
-    year: z.enum(["1st", "2nd", "3th", "4th"], "required"),
+    year: z.number("required"),
     branch: z.enum(["AI", "CSE", "CE", "ECE", "EE", "ME", "MT", "IP", "IT"], "required"),
 })
 
@@ -51,16 +51,7 @@ export default function Register() {
         }
     })
 
-    async function onSubmit(formData) {
-        const { avatarUrl, id } = await api.getCurrentUser()
-        
-        if(id) {
-            const user = {...formData, avatarUrl, id, points: 0}
-            console.log(user)
-            const response = api.createUser(user)
-            console.log(response.data)
-        }
-    }
+    
 
     return (
         <Card className="w-full max-w-md max-sm:max-w-sm">
@@ -73,7 +64,7 @@ export default function Register() {
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form onSubmit={form.handleSubmit(createUser)} className="space-y-6">
                         <FormField
                             control={form.control}
                             name="name"
@@ -124,7 +115,7 @@ export default function Register() {
                                                     <SelectItem value="ME">ME</SelectItem>
                                                     <SelectItem value="MT">MT</SelectItem>
                                                     <SelectItem value="IP">IP</SelectItem>
-                                                    <SelectItem value="II">II</SelectItem>
+                                                    <SelectItem value="IT">IT</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
@@ -140,17 +131,17 @@ export default function Register() {
                                         <FormLabel>Year</FormLabel>
                                         <FormControl>
                                             <Select
-                                                value={field.value}
-                                                onValueChange={field.onChange}
+                                                value={String(field.value)}
+                                                onValueChange={(val) => field.onChange(Number(val))}
                                             >
                                                 <SelectTrigger className="max-sm:w-full w-48">
                                                     <SelectValue placeholder="" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="1st">1st</SelectItem>
-                                                    <SelectItem value="2nd">2nd</SelectItem>
-                                                    <SelectItem value="3th">3th</SelectItem>
-                                                    <SelectItem value="4th">4th</SelectItem>
+                                                    <SelectItem value="1">1st</SelectItem>
+                                                    <SelectItem value="2">2nd</SelectItem>
+                                                    <SelectItem value="3">3rd</SelectItem>
+                                                    <SelectItem value="4">4th</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
