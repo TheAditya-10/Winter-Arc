@@ -1,6 +1,6 @@
 export default function AuthLayout({ children }) {
     return (
-        <div className="justify-center items-center flex h-dvh w-dvw">
+        <div className="w-full h-full flex items-center justify-center min-h-fit py-1">
             { children }
         </div>
     )

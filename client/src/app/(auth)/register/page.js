@@ -1,0 +1,168 @@
+"use client"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { Button } from "@/components/ui/button"
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import api from "@/utils/apiService"
+
+
+const formSchema = z.object({
+    name: z.string().min(4, "Name must be at least 4 characters"),
+    username: z.string().min(10, "Name must be at least 10 characters"),
+    year: z.enum(["1st", "2nd", "3th", "4th"], "required"),
+    branch: z.enum(["AI", "CSE", "CE", "ECE", "EE", "ME", "MT", "IP", "IT"], "required"),
+})
+
+export default function Register() {
+
+    const form = useForm({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: "",
+            username: "",
+            year: "",
+            branch: "",
+        }
+    })
+
+    async function onSubmit(formData) {
+        const { avatarUrl, id } = await api.getCurrentUser()
+        
+        if(id) {
+            const user = {...formData, avatarUrl, id, points: 0}
+            console.log(user)
+            const response = api.createUser(user)
+            console.log(response.data)
+        }
+    }
+
+    return (
+        <Card className="w-full max-w-md max-sm:max-w-sm">
+            <CardHeader>
+                <CardTitle>Winter Arc</CardTitle>
+                <CardDescription>Registration Open</CardDescription>
+                <CardAction>
+                    <Button variant="link">Back</Button>
+                </CardAction>
+            </CardHeader>
+            <CardContent>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Fullname</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="John Doe" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="username"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Username</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="johndoe47" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <div className="flex w-full justify-between max-sm:flex-col max-sm:gap-6">
+                            <FormField
+                                control={form.control}
+                                name="branch"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Branch</FormLabel>
+                                        <FormControl>
+                                            <Select
+                                                value={field.value}
+                                                onValueChange={field.onChange}
+                                            >
+                                                <SelectTrigger className="max-sm:w-full w-48">
+                                                    <SelectValue placeholder="" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="AI">AI</SelectItem>
+                                                    <SelectItem value="CSE">CSE</SelectItem>
+                                                    <SelectItem value="CE">CE</SelectItem>
+                                                    <SelectItem value="ECE">ECE</SelectItem>
+                                                    <SelectItem value="EE">EE</SelectItem>
+                                                    <SelectItem value="ME">ME</SelectItem>
+                                                    <SelectItem value="MT">MT</SelectItem>
+                                                    <SelectItem value="IP">IP</SelectItem>
+                                                    <SelectItem value="II">II</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="year"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Year</FormLabel>
+                                        <FormControl>
+                                            <Select
+                                                value={field.value}
+                                                onValueChange={field.onChange}
+                                            >
+                                                <SelectTrigger className="max-sm:w-full w-48">
+                                                    <SelectValue placeholder="" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="1st">1st</SelectItem>
+                                                    <SelectItem value="2nd">2nd</SelectItem>
+                                                    <SelectItem value="3th">3th</SelectItem>
+                                                    <SelectItem value="4th">4th</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <Button type="submit" className="w-full">Send</Button>
+                    </form>
+                </Form>
+            </CardContent>
+        </Card>
+    )
+}
