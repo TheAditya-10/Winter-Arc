@@ -17,11 +17,12 @@ export async function createUser(formData) {
             if (error) {
                 throw new Error(error.message)
             }
-
-            const res = await clerk.users.updateUserMetadata(userId, {
+            const updateUsernameRes = await clerk.users.updateUser(userId, {
+                username: formData?.username,
+            })
+            const updateMetadataRes = await clerk.users.updateUserMetadata(userId, {
                 publicMetadata: { status: "registered" },
             })
-            console.log(res.publicMetadata)
             return "User is registered successfully!!"
         }
     } catch (error) {

@@ -35,7 +35,7 @@ import { createUser } from "@/app/actions"
 const formSchema = z.object({
     name: z.string().min(4, "Name must be at least 4 characters"),
     username: z.string().min(10, "Name must be at least 10 characters"),
-    year: z.number("required"),
+    year: z.number("required").int().lt(5).gt(0),
     branch: z.enum(["AI", "CSE", "CE", "ECE", "EE", "ME", "MT", "IP", "IT"], "required"),
 })
 
