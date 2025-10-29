@@ -2,7 +2,7 @@ import axios from "axios"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
-const fetcher = async (url, method = "get", body = null, options = {}) => {
+export const fetcher = async (url, method = "get", body = null, options = {}) => {
     try {
         const config = {
             url,
@@ -19,6 +19,7 @@ const fetcher = async (url, method = "get", body = null, options = {}) => {
         
         return await response.data
     } catch (error) {
+        console.error(error)
         throw new Error(error.message || "An unexpected error occurred")   
     }
 }

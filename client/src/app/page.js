@@ -10,6 +10,7 @@ import {
 } from "@clerk/nextjs"
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
+import { ConnectWithLinkedin } from "@/components/connect-with-linkedin";
 
 export default async function Home() {
 
@@ -42,9 +43,11 @@ export default async function Home() {
           </div>
           <div className="w-fit m-auto">
             {(sessionClaims?.publicMetadata?.status !== 'registered')
-              ? <Button><Link href={'/register'}>Register Now</Link></Button>
+              ? <Button><Link href={'/auth/register'}>Register Now</Link></Button>
               : <Button><Link href={'/dashboard'}>Dashboard</Link></Button>}
           </div>
+          {(sessionClaims?.publicMetadata?.status === 'registered') && <ConnectWithLinkedin />}
+          
         </SignedIn>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">

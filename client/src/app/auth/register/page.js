@@ -30,6 +30,9 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { createUser } from "@/app/actions"
+import { useState } from "react"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 
 const formSchema = z.object({
@@ -41,6 +44,10 @@ const formSchema = z.object({
 
 export default function Register() {
 
+    const [isLoading, setIsLoading] = useState(false)
+
+    const router = useRouter()
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -51,7 +58,21 @@ export default function Register() {
         }
     })
 
-    
+    const handleSubmit = async(formData) => {
+        setIsLoading(true)
+        const loadToast = toast.loading("Submiting form...")
+        const {error, message} = await createUser(formData)
+        if(error){
+            toast.error(error)
+        } else {
+            toast.success(message)
+            router.push('/')
+        }
+        toast.dismiss(loadToast)
+        setIsLoading(false)
+    }
+
+
 
     return (
         <Card className="w-full max-w-md max-sm:max-w-sm">
@@ -64,7 +85,7 @@ export default function Register() {
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(createUser)} className="space-y-6">
+                    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
                         <FormField
                             control={form.control}
                             name="name"
@@ -150,7 +171,7 @@ export default function Register() {
                                 )}
                             />
                         </div>
-                        <Button type="submit" className="w-full">Send</Button>
+                        <Button type="submit" className="w-full" disabled={isLoading}>Send</Button>
                     </form>
                 </Form>
             </CardContent>
