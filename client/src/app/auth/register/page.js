@@ -1,7 +1,6 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -33,18 +32,13 @@ import { createUser } from "@/app/actions"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { registerFormSchema as formSchema } from "@/app/schema"
 
-
-const formSchema = z.object({
-    name: z.string().min(4, "Name must be at least 4 characters"),
-    username: z.string().min(10, "Name must be at least 10 characters"),
-    year: z.number("required").int().lt(5).gt(0),
-    branch: z.enum(["AI", "CSE", "CE", "ECE", "EE", "ME", "MT", "IP", "IT"], "required"),
-})
 
 export default function Register() {
 
     const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState(false)
 
     const router = useRouter()
 
@@ -58,12 +52,16 @@ export default function Register() {
         }
     })
 
-    const handleSubmit = async(formData) => {
+    const handleSubmit = async (formData) => {
         setIsLoading(true)
         const loadToast = toast.loading("Submiting form...")
-        const {error, message} = await createUser(formData)
-        if(error){
-            toast.error(error)
+        const { error, message } = await createUser(formData)
+        if (error) {
+            setError(error)
+            Object.entries(error).map(([field, message]) => {
+                form.setError(field, { message })
+            })
+            toast.error(message)
         } else {
             toast.success(message)
             router.push('/')

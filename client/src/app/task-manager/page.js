@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -28,12 +27,8 @@ import { submitTask } from "../actions"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { submitFormSchema as formSchema } from "../schema"
 
-
-const formSchema = z.object({
-    discription: z.string().min(20, "minimum 20 characters are required."),
-    imageFile: z.file().max(1024 * 1024).mime(['image/jpeg', 'image/png'], "Only .png and .jpeg files are accepted."),
-})
 
 export default function Dashboard() {
 
