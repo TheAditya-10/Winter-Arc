@@ -38,7 +38,6 @@ import { registerFormSchema as formSchema } from "@/app/schema"
 export default function Register() {
 
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(false)
 
     const router = useRouter()
 
@@ -55,19 +54,23 @@ export default function Register() {
     const handleSubmit = async (formData) => {
         setIsLoading(true)
         const loadToast = toast.loading("Submiting form...")
-        const { error, message } = await createUser(formData)
-        if (error) {
-            setError(error)
-            Object.entries(error).map(([field, message]) => {
-                form.setError(field, { message })
-            })
-            toast.error(message)
-        } else {
-            toast.success(message)
-            router.push('/')
+        try {
+            const { error, message } = await createUser(formData)
+            if (error) {
+                Object.entries(error).map(([field, message]) => {
+                    form.setError(field, { message })
+                })
+                toast.error(message)
+            } else {
+                toast.success(message)
+                router.push('/')
+            }
+        } catch (error) {
+            toast.error("Some think went wrong. Please try again later!!")
+        } finally {
+            toast.dismiss(loadToast)
+            setIsLoading(false)
         }
-        toast.dismiss(loadToast)
-        setIsLoading(false)
     }
 
 

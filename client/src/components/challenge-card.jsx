@@ -1,11 +1,12 @@
 import {
     Card,
     CardHeader,
-    CardContent
+    CardContent,
 } from "./ui/card"
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
 import { UserRoundPen } from "lucide-react"
+import Link from "next/link"
 
 
 const ChallengeCard = ({ challenge }) => {
@@ -17,8 +18,8 @@ const ChallengeCard = ({ challenge }) => {
             <CardContent className="pt-0 pb-5 px-5">
                 <Badge variant="secondary">Technology</Badge>
 
-                <h3 className="mt-4 text-[1.3rem] font-semibold tracking-tight">
-                    { challenge?.title }
+                <h3 className="mt-4 text-[1.3rem] font-semibold tracking-tight h-16 overflow-ellipsis line-clamp-2">
+                    {challenge?.title}
                 </h3>
                 <div className="mt-6 flex items-center justify-between">
                     <Button variant="outline" size="sm">
@@ -26,9 +27,11 @@ const ChallengeCard = ({ challenge }) => {
                         <span>24</span>
                     </Button>
 
-                    <Button>
-                        View Details
-                    </Button>
+                    <Link href={`/dashboard/challenges/${challenge?.id}`}>
+                        <Button>
+                            View Details
+                        </Button>
+                    </Link>
                 </div>
             </CardContent>
         </Card>

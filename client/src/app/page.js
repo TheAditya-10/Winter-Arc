@@ -38,7 +38,7 @@ export default async function Home() {
           <div className="flex justify-between gap-10 items-center">
             {!!(userId && sessionClaims) && <p>Hello, {sessionClaims.firstName}</p>}
             <div className="size-7">
-              <UserButton />
+              <UserButton/>
             </div>
           </div>
           <div className="w-fit m-auto">

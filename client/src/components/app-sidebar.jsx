@@ -151,6 +151,7 @@ const data = {
 }
 
 export function AppSidebar({
+  user,
   ...props
 }) {
   return (
@@ -173,7 +174,7 @@ export function AppSidebar({
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

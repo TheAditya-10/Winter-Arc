@@ -36,11 +36,11 @@ export async function createUser(formData) {
             const { error } = await supabase.from('users').insert([user])
             if (error) {
                 return {
-                error: {
-                    username: "Username must be unique!!",
-                },
-                message: "Username already exist!!"
-            }
+                    error: {
+                        username: "Username must be unique!!",
+                    },
+                    message: "Username already exist!!"
+                }
             }
             const updateUsernameRes = await clerk.users.updateUser(userId, {
                 username: formData?.username,
@@ -85,5 +85,24 @@ export async function submitTask(formData) {
     } catch (error) {
         console.error("Error:\n", error)
         return { message: "Please try again later!!", error: true }
+    }
+}
+
+export async function registerForChallenge(challenge_id) {
+    try {
+        const { userId: user_id } = await auth()
+        const { error } = await supabase.from("challenge_registrations").insert({ challenge_id, user_id })
+        if(error){
+            throw new Error(error.message)
+        }
+        return {
+            message: "Your challenge is started now!!"
+        }
+    } catch (error) {
+        console.error(error)
+        return { 
+            error: true,
+            message: "Please try again later!!"
+        }
     }
 }

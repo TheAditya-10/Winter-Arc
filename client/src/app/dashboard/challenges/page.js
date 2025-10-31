@@ -1,10 +1,12 @@
+"use server"
+
 import { ChallengeCard } from "@/components/challenge-card";
 import { createClient } from "@/utils/supabase/server"
 
 const Challages = async () => {
 
     const supabase = await createClient()
-    const {data, error} = await supabase.from("challenges").select("title, id")
+    const {data: challenges, error} = await supabase.from("challenges").select("title, id")
 
     if(error) {
         return (
@@ -14,7 +16,7 @@ const Challages = async () => {
 
     return (
         <div className="grid @xl/main:grid-cols-2 @4xl/main:grid-cols-3 gap-6 px-6 py-6">
-            {data.map((challenge) => (
+            {challenges.map((challenge) => (
                 <ChallengeCard key={challenge.id} challenge={challenge} />
             ))}
         </div>

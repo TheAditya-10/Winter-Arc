@@ -48,7 +48,10 @@ export default function Dashboard() {
         const loadToast = toast.loading("Submiting form...")
         const { error, message } = await submitTask(formData)
         if (error) {
-            toast.error(error)
+            Object.entries(error).map(([field, message]) => {
+                form.setError(field, { message })
+            })
+            toast.error(message)
         } else {
             toast.success(message)
             router.push('/dashboard/challenges')
