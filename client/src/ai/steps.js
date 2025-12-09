@@ -20,7 +20,7 @@ const evaluateSubmissions = async (state) => {
                 },
                 {
                     type: 'text',
-                    text: `task: ${state.task}\n\nchallenge: ${state.challenge}`
+                    text: `task: \ntitle:${state.taskTitle}\nDescription:${state.taskDescription}\n\n\n\nchallenge: \ntitle:${state.challengeTitle}\nDescription:${state.challengeDescription}`
                 }
             ]
         },

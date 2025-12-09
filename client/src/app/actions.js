@@ -89,10 +89,11 @@ export async function submitTask(formData, task) {
             description: description,
         }
 
+        console.log(currentState);
         const finalState = await evaluateTaskSubmissionsByAI(currentState);
         const taskSubmission = {
             // task_id: task.id,
-            challenge_id: task.challenge_id,
+            challenge_id: task.challenge.id,
             user_id: userId,
             image_url: url,
             text: description,
@@ -105,7 +106,7 @@ export async function submitTask(formData, task) {
 
         if (supabaseError) throw new Error(supabaseError.message);
 
-        return { message: "Submit successfully!!" }
+        return { message: "Submit successfully!!", score: finalState.score }
     } catch (error) {
         console.error("Error:\n", error)
         return { message: "Please try again later!!", error: true }

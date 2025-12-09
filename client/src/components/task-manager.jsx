@@ -28,10 +28,13 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { submitFormSchema as formSchema } from "@/app/schema"
+import { TaskSubmissionDialog } from "./task-submission"
 
 
 function TaskManager({ task }) {
     const [isLoading, setIsLoading] = useState(false)
+    const [showDialog, setShowDialog] = useState(false)
+    const [score, setScore] = useState(0)
     const router = useRouter()
 
     const form = useForm({
@@ -44,9 +47,10 @@ function TaskManager({ task }) {
 
     const handleSubmit = async (formData) => {
         setIsLoading(true)
+        setShowDialog(false)
         const loadToast = toast.loading("You submission is under process...")
         try {
-            const { error, message } = await submitTask(formData, task)
+            const { error, message, score: xpScore } = await submitTask(formData, task)
             if (error) {
                 Object.entries(error).map(([field, message]) => {
                     form.setError(field, { message })
@@ -54,7 +58,8 @@ function TaskManager({ task }) {
                 toast.error(message)
             } else {
                 toast.success(message)
-                router.push('/dashboard/challenges')
+                setScore(xpScore)
+                setShowDialog(true)
             }
         } catch (error) {
             toast.error("Some think went wrong. Please try again later!!")
@@ -66,6 +71,7 @@ function TaskManager({ task }) {
 
     return (
         <div className="w-full h-full min-h-fit flex items-center justify-center">
+            <TaskSubmissionDialog showDialog={showDialog} setShowDialog={setShowDialog} score={score} onContinue={() => router.push(`/dashboard/challenges/${task.challenge.id}`)} />
             <Card className="w-full max-w-md max-sm:max-w-sm max-sm:py-4">
                 <CardHeader className={"max-sm:px-4"}>
                     <CardTitle className={"line-clamp-1"}>{task?.title}</CardTitle>
