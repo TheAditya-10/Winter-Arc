@@ -1,10 +1,13 @@
 import z from "zod";
 
 const EvaluationStateSchema = z.object({
-    task: z.string(),
-    imageUrl: z.url(),
+    taskTitle: z.string(),
+    taskDescription: z.string(),
+    challengeTitle: z.string(),
+    challengeDescription: z.string(),
+    imageUrl: z.string(),
     imageB64: z.base64().optional(),
-    discription: z.string(),
+    description: z.string(),
     score: z.int().min(0).max(50).optional(),
     feedback: z.string().optional(),
 });
@@ -12,8 +15,8 @@ const EvaluationStateSchema = z.object({
 const LinkedinPostStateSchema = z.object({
     task: z.string(),
     imageFile: z.file().max(1024 * 1024).mime(['image/jpeg', 'image/png']),
-    imageDiscription: z.string(),
-    discription: z.string(),
+    imageDescription: z.string(),
+    description: z.string(),
     post: z.string()
 });
 

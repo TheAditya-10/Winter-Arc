@@ -12,23 +12,24 @@ import {
 import { registerForChallenge } from "@/app/actions"
 import { useState } from "react"
 import { toast } from "sonner"
+import Link from "next/link"
 
 
-const ChallengeDetail = ({ tasks, challenge }) => {
+const ChallengeDetail = ({ tasks, challenge, isRegistred }) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleClick = async () => {
     setIsLoading(true)
     const loadToast = toast.loading("loading ...")
     try {
-      const {message, error} = await registerForChallenge(challenge.id)
-      if(error) {
+      const { message, error } = await registerForChallenge(challenge.id)
+      if (error) {
         toast.error(message)
       } else {
         toast.success(message)
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
       toast.error("Some thing went wrong. Please try again later!!")
     } finally {
       toast.dismiss(loadToast)
@@ -49,9 +50,12 @@ const ChallengeDetail = ({ tasks, challenge }) => {
               <p className="prose dark:prose-invert text-foreground">
                 {challenge.description}
               </p>
-              <div className="@xl/main:mt-6 mt-3 flex justify-center">
-                <Button onClick={handleClick} disabled={isLoading}>Start Now</Button>
-              </div>
+              {
+                !isRegistred &&
+                <div className="@xl/main:mt-6 mt-3 flex justify-center">
+                  <Button onClick={handleClick} disabled={isLoading}>Start Now</Button>
+                </div>
+              }
             </CardContent>
           </Card>
         </div>
@@ -85,11 +89,12 @@ const ChallengeDetail = ({ tasks, challenge }) => {
                           {task.description}
                         </div>
                       </CardContent>
-                      <CardFooter>
-                        <div className="flex w-full justify-end">
-                          <Button>Submit</Button>
-                        </div>
-                      </CardFooter>
+                      {isRegistred &&
+                        <CardFooter>
+                          <div className="flex w-full justify-end">
+                            <Link href={`/${task.id}/submit`}><Button>Submit</Button></Link>
+                          </div>
+                        </CardFooter>}
                     </Card>
                   </AccordionContent>
                 </AccordionItem>
@@ -102,4 +107,4 @@ const ChallengeDetail = ({ tasks, challenge }) => {
   );
 };
 
-export { Tasks };
+export { ChallengeDetail };

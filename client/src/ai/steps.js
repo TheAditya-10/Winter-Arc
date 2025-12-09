@@ -20,7 +20,7 @@ const evaluateSubmissions = async (state) => {
                 },
                 {
                     type: 'text',
-                    text: `task: ${state.task}`
+                    text: `task: ${state.task}\n\nchallenge: ${state.challenge}`
                 }
             ]
         },
@@ -29,7 +29,7 @@ const evaluateSubmissions = async (state) => {
             content: [
                 {
                     type: 'text',
-                    text: `discription: ${state.discription}`
+                    text: `description: ${state.description}`
                 },
                 {
                     type: 'image_url',
@@ -51,7 +51,7 @@ const initialState = {
     task: "build a portfolio website using html, css and javascript make it responsive and simple",
     imageUrl: "C:\\Users\\learn\\LocalFiles\\Documents\\web_devlopment\\Winter-Arc\\client\\public\\test.png",
     imageB64: z.base64(),
-    discription: "I first build structure of my portfolio website using html and then style it using css make website responsive using media query and write logic of contect form using javascript",
+    description: "I first build structure of my portfolio website using html and then style it using css make website responsive using media query and write logic of contect form using javascript",
     score: z.int().gte(0).lte(50),
     feedback: z.string(),
 }

@@ -23,59 +23,63 @@ import {
 } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { FileInputField } from "@/components/upload-file"
-import { submitTask } from "../actions"
+import { submitTask } from "@/app/actions"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { submitFormSchema as formSchema } from "../schema"
+import { submitFormSchema as formSchema } from "@/app/schema"
 
 
-export default function Dashboard() {
-
+function TaskManager({ task }) {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            discription: "",
+            description: "",
             imageFile: "",
         }
     })
 
     const handleSubmit = async (formData) => {
         setIsLoading(true)
-        const loadToast = toast.loading("Submiting form...")
-        const { error, message } = await submitTask(formData)
-        if (error) {
-            Object.entries(error).map(([field, message]) => {
-                form.setError(field, { message })
-            })
-            toast.error(message)
-        } else {
-            toast.success(message)
-            router.push('/dashboard/challenges')
+        const loadToast = toast.loading("You submission is under process...")
+        try {
+            const { error, message } = await submitTask(formData, task)
+            if (error) {
+                Object.entries(error).map(([field, message]) => {
+                    form.setError(field, { message })
+                })
+                toast.error(message)
+            } else {
+                toast.success(message)
+                router.push('/dashboard/challenges')
+            }
+        } catch (error) {
+            toast.error("Some think went wrong. Please try again later!!")
+        } finally {
+            toast.dismiss(loadToast)
+            setIsLoading(false)
         }
-        toast.dismiss(loadToast)
-        setIsLoading(false)
     }
 
     return (
-        <div className="w-full h-full flex items-center justify-center">
-            <Card className="w-full max-w-md max-sm:max-w-sm">
-                <CardHeader>
-                    <CardTitle>Task Title</CardTitle>
-                    <CardDescription>Discription of task .....</CardDescription>
+        <div className="w-full h-full min-h-fit flex items-center justify-center">
+            <Card className="w-full max-w-md max-sm:max-w-sm max-sm:py-4">
+                <CardHeader className={"max-sm:px-4"}>
+                    <CardTitle className={"line-clamp-1"}>{task?.title}</CardTitle>
+                    <CardDescription className="line-clamp-2">{task?.description}</CardDescription>
                     <CardAction>
                         <Button variant="link">Back</Button>
                     </CardAction>
                 </CardHeader>
-                <CardContent>
+                <CardContent className={"max-sm:px-4"}>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+                        <form onSubmit={form.handleSubmit(handleSubmit)} className="sm:space-y-6 space-y-4">
                             <FormField
                                 control={form.control}
-                                name="discription"
+                                name="description"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Description</FormLabel>
@@ -116,3 +120,5 @@ export default function Dashboard() {
         </div>
     )
 }
+
+export { TaskManager }

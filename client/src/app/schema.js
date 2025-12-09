@@ -8,7 +8,7 @@ const registerFormSchema = z.object({
 })
 
 const submitFormSchema = z.object({
-    discription: z.string().min(20, "minimum 20 characters are required."),
+    description: z.string().min(20, "minimum 20 characters are required."),
     imageFile: z.file().max(1024 * 1024).mime(['image/jpeg', 'image/png'], "Only .png and .jpeg files are accepted."),
 })
 
