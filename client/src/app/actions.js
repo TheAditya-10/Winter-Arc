@@ -6,11 +6,12 @@ import { writeFile } from "fs/promises"
 import { registerFormSchema, submitFormSchema } from "./schema"
 import { z } from "zod"
 import { evaluateTaskSubmissionsByAI } from "@/ai/controllers"
+import { updateStreak } from "@/utils/streaks"
 
 const supabase = await createClient()
 const clerk = await clerkClient()
 
-export async function createUser(formData) {
+export async function createUser(formData, userLocalTimeZone) {
 
     try {
         const { success, error } = registerFormSchema.safeParse(formData)
@@ -47,7 +48,7 @@ export async function createUser(formData) {
                 username: formData?.username,
             })
             const updateMetadataRes = await clerk.users.updateUserMetadata(userId, {
-                publicMetadata: { status: "registered" },
+                publicMetadata: { status: "registered", localTZ: userLocalTimeZone },
             })
             return { message: "User is registered successfully!!" }
         }
@@ -60,6 +61,8 @@ export async function createUser(formData) {
 export async function submitTask(formData, task) {
     try {
         const { userId } = await auth()
+
+        // verify form data
         const { success, error: formError } = submitFormSchema.safeParse(formData)
 
         if (!success) {
@@ -74,12 +77,14 @@ export async function submitTask(formData, task) {
             }
         }
 
+        // upload image
         const { imageFile, description } = formData;
         const arrayBuffer = await imageFile.arrayBuffer();
         const buffer = new Uint8Array(arrayBuffer);
         const url = `./public/uploads/${userId + '-' + task.id + '.' + imageFile.name.split('.').pop()}`
         await writeFile(url, buffer);
 
+        // evaluate submission using ai
         const currentState = {
             taskTitle: task.title,
             taskDescription: task.description,
@@ -89,22 +94,52 @@ export async function submitTask(formData, task) {
             description: description,
         }
 
-        console.log(currentState);
         const finalState = await evaluateTaskSubmissionsByAI(currentState);
+
+        console.log(finalState.feedback)
+
+        // get user informations
+        const { data: userInfo, error: getUserInfoError } = await supabase
+            .from('users')
+            .select('points, streak_count, longest_streak, last_streak_update_date, streak_status')
+            .eq('id', userId)
+            .limit(1)
+            .single();
+
+        if (getUserInfoError) throw new Error(getUserInfoError.message);
+
+        // calculate users streaks and points
+        let newUserInfo = updateStreak(userInfo);
+        newUserInfo.points = userInfo.points ? userInfo.points + finalState.score : finalState.score;
+
+        
+        // insert submission in posts table
         const taskSubmission = {
-            // task_id: task.id,
+            task_id: task.id,
             challenge_id: task.challenge.id,
             user_id: userId,
             image_url: url,
             text: description,
             ai_score: finalState.score,
         }
-        console.log(finalState)
-        const { error: supabaseError } = await supabase
-            .from('posts')
-            .insert(taskSubmission);
+        
+        const { data: post, error: insertPostsError } = await supabase
+        .from('posts')
+        .insert(taskSubmission)
+        .select('id')
+        .limit(1)
+        .single();
+        
+        if (insertPostsError) throw new Error(insertPostsError.message);
+        
+        
+        // update users streaks and points
+        const { error: updateUserPointsError } = await supabase
+            .from('users')
+            .update(newUserInfo)
+            .eq('id', userId)
 
-        if (supabaseError) throw new Error(supabaseError.message);
+        if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
         return { message: "Submit successfully!!", score: finalState.score }
     } catch (error) {

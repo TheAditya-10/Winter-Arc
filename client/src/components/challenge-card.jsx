@@ -12,13 +12,10 @@ import Link from "next/link"
 const ChallengeCard = ({ challenge, count, isRegistred }) => {
 
     return (
-        <Card className="shadow-none py-0 gap-3">
-            <CardHeader className="p-2 pb-0">
-                {isRegistred && <Badge variant="outline" className={"absolute"}>Active</Badge>}
-                <div className="aspect-video bg-muted rounded-lg w-full" />
-            </CardHeader>
-            <CardContent className="pt-0 pb-5 px-5">
+        <Card className="@container/card shadow-none py-0 gap-3">
+            <CardContent className="py-4 px-4">
                 <Badge variant="secondary">Technology</Badge>
+                {isRegistred && <Badge variant="secondary" className={"ml-2"}>Active</Badge>}
 
                 <h3 className="mt-4 text-[1.3rem] font-semibold tracking-tight h-16 overflow-ellipsis line-clamp-2">
                     {challenge?.title}

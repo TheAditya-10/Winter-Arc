@@ -10,9 +10,7 @@ const Challages = async () => {
     const supabase = await createClient()
     const { data: challenges, error } = await supabase
         .from("challenges")
-        .select("title, id, totalRegistrations:challenge_registrations(count), userRegistred:challenge_registrations(id)")
-        .filter('challenge_registrations.user_id', 'eq', userId)
-
+        .select("title, id, totalRegistrations:challenge_registrations(count)")
 
     if (error) {
         console.error(error)
@@ -21,12 +19,24 @@ const Challages = async () => {
         )
     }
 
-    console.log(challenges[0].userRegistred[0])
+    const { data: userRegistred, error: userRegistredError } = await supabase
+        .from("challenge_registrations")
+        .select("challenge_id")
+        .eq("user_id", userId)
+
+    if (userRegistredError) {
+        console.error(userRegistred)
+        return (
+            <h1>Some thing went wrong. Please try again later!!</h1>
+        )
+    }
+
+    const userRegSet = new Set(userRegistred.map(e => e.challenge_id))
 
     return (
         <div className="grid @xl/main:grid-cols-2 @4xl/main:grid-cols-3 gap-6 px-6 py-6">
-            {challenges.map(({userRegistred, totalRegistrations, ...challenge}) => (
-                <ChallengeCard key={challenge.id} challenge={challenge} count={totalRegistrations[0].count} isRegistred={userRegistred.length > 0}/>
+            {challenges.map(({ totalRegistrations, ...challenge }) => (
+                <ChallengeCard key={challenge.id} challenge={challenge} count={totalRegistrations[0].count} isRegistred={userRegSet.has(challenge.id)} />
             ))}
         </div>
     );

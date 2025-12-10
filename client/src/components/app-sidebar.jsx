@@ -32,6 +32,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { Separator } from "./ui/separator"
 
 const data = {
   user: {
@@ -51,8 +52,8 @@ const data = {
       icon: IconListDetails,
     },
     {
-      title: "Analytics",
-      url: "#",
+      title: "Leaderboard",
+      url: "/dashboard/leaderboard",
       icon: IconChartBar,
     },
     {
@@ -168,10 +169,11 @@ export function AppSidebar({
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+      <Separator/>
       <SidebarContent>
         <NavMain items={data.navMain} />
         {/* <NavDocuments items={data.documents} /> */}
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

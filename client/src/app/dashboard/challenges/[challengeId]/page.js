@@ -11,8 +11,9 @@ export default async function ChallengePage({ params }) {
     const supabase = await createClient()
     const { data, error } = await supabase
         .from("challenges")
-        .select("*, challenge_tasks(*), challenge_registrations(id)")
+        .select("*, challenge_tasks(*), challenge_registrations(id), posts(task_id, ai_score)")
         .eq("id", challengeId)
+        .eq("posts.user_id", userId)
         .filter('challenge_registrations.user_id', 'eq', userId)
         .limit(1)
         .single()
@@ -24,11 +25,11 @@ export default async function ChallengePage({ params }) {
             <h1>Some thing went wrong. Please try again later!!</h1>
         )
     }
-    const { challenge_tasks: tasks, challenge_registrations: registred, ...challenge } = data
-    
-  const isRegistred = (registred.length > 0)
+    const { challenge_tasks: tasks, challenge_registrations: registred, posts: taskCompleted, ...challenge } = data
 
+    const isRegistred = (registred.length > 0)
+    console.log(process.memoryUsage());
     return (
-        <ChallengeDetail tasks={tasks} challenge={challenge} isRegistred={isRegistred}/>
+        <ChallengeDetail tasks={tasks} challenge={challenge} isRegistred={isRegistred} taskCompleted={taskCompleted} />
     )
 }

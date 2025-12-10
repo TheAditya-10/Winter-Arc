@@ -55,7 +55,8 @@ export default function Register() {
         setIsLoading(true)
         const loadToast = toast.loading("Submiting form...")
         try {
-            const { error, message } = await createUser(formData)
+            const userLocalTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+            const { error, message } = await createUser(formData, userLocalTimeZone)
             if (error) {
                 Object.entries(error).map(([field, message]) => {
                     form.setError(field, { message })

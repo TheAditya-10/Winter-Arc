@@ -13,9 +13,11 @@ import { registerForChallenge } from "@/app/actions"
 import { useState } from "react"
 import { toast } from "sonner"
 import Link from "next/link"
+import { Badge } from "./ui/badge"
+import { CircleCheckBig } from "lucide-react"
 
 
-const ChallengeDetail = ({ tasks, challenge, isRegistred }) => {
+const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleClick = async () => {
@@ -65,42 +67,47 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred }) => {
             orientation="vertical"
             className="bg-muted absolute left-4 top-16"
           />
-          {tasks.map((task, index) => (
-            <div key={index} className="relative mb-10 pl-8">
-              <div className="border-foreground border-2 bg-primary-foreground absolute left-0 top-6 flex size-4 items-center justify-center rounded-full" />
+          {tasks.map((task) => {
+            const taskScore = taskCompleted.find(t => t.task_id == task.id)?.ai_score
+            return (
+              <div key={task.id} className="relative mb-10 pl-8">
+                <div className="border-foreground border-2 bg-primary-foreground absolute left-0 top-6 flex size-4 items-center justify-center rounded-full" />
 
-              {/* <h5 className="text-md -left-34 @xl/main:px-3 text-muted-foreground top-3 rounded-xl tracking-tight @5xl/main:absolute flex justify-between">
-                Day {task.day_number}
-              </h5> */}
-
-              <Accordion type="single" collapsible>
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>
-                    <h4 className="rounded-xl text-xl font-bold tracking-tight @5xl/main:mb-2 @xl/main:px-3">
-                      {task.title}
-                    </h4>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <Card className="my-5 border-none shadow-none">
-                      <CardContent className="px-2">
-                        <div
-                          className="prose dark:prose-invert text-foreground"
-                        >
-                          {task.description}
-                        </div>
-                      </CardContent>
-                      {isRegistred &&
-                        <CardFooter>
-                          <div className="flex w-full justify-end">
-                            <Link href={`/${task.id}/submit`}><Button>Submit</Button></Link>
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>
+                      <h4 className={`rounded-xl text-xl font-bold tracking-tight @5xl/main:mb-2 @xl/main:px-3 w-full ${!!taskScore? "text-muted-foreground": ""}`}>
+                        {task.title}
+                      </h4>
+                      {!!taskScore && <Badge variant={"secondary"}><CircleCheckBig/> Completed</Badge>}
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <Card className="my-5 border-none shadow-none">
+                        <CardContent className="px-2">
+                          <div
+                            className="prose dark:prose-invert text-foreground"
+                          >
+                            {task.description}
                           </div>
-                        </CardFooter>}
-                    </Card>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
-          ))}
+                        </CardContent>
+                        {(isRegistred) &&
+                          <CardFooter>
+                            <div className="flex w-full justify-end">
+                              {
+                                (!!taskScore)
+                                  ? (<Button variant={"outline"}>{taskScore} XP earned!</Button>)
+                                  : (
+                                    <Link href={`/${task.id}/submit`}><Button>Submit</Button></Link>
+                                  )}
+                            </div>
+                          </CardFooter>}
+                      </Card>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>

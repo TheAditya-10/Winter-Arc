@@ -6,7 +6,7 @@ const isAuthRoute = createRouteMatcher(['/auth/register'])
 
 export default clerkMiddleware(async (auth, req) => {
   const { isAuthenticated, redirectToSignIn, sessionClaims } = await auth()
-
+  
   if (!isPublicRoute(req) && !isAuthenticated) {
     return redirectToSignIn()
   }
