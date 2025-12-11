@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera, Calendar, Mail, MapPin, UserRound , AtSign, Share2 } from "lucide-react";
 
 export default function ProfileHeader({ user }) {
+
     return (
         <Card className={"w-fit mx-auto"}>
             <CardContent>

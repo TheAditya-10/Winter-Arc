@@ -7,6 +7,7 @@ import { registerFormSchema, submitFormSchema } from "./schema"
 import { z } from "zod"
 import { evaluateTaskSubmissionsByAI } from "@/ai/controllers"
 import { updateStreak } from "@/utils/streaks"
+import { submissionLimit } from "@/utils/rate-limiter"
 
 const supabase = await createClient()
 const clerk = await clerkClient()
@@ -62,10 +63,16 @@ export async function submitTask(formData, task) {
     try {
         const { userId } = await auth()
 
-        // verify form data
-        const { success, error: formError } = submitFormSchema.safeParse(formData)
+        const {success} = await submissionLimit.limit(userId)
 
-        if (!success) {
+        if(!success){
+            return { message: "You can't submit more than 3 time in a day!!", error: true }
+        }
+
+        // verify form data
+        const { success: formVerified, error: formError } = submitFormSchema.safeParse(formData)
+
+        if (!formVerified) {
             const formFieldErrors = z.flattenError(formError).fieldErrors
 
             return {
@@ -141,7 +148,12 @@ export async function submitTask(formData, task) {
 
         if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
-        return { message: "Submit successfully!!", score: finalState.score }
+        const streakUpdateInfo = {
+            message: newUserInfo.streak_count === 1? "Your new streak is started, Complete tasks daily to maintain your streak!!" : "Your streak is updated successfully.",
+            count: newUserInfo.streak_count
+        }
+
+        return { message: "Submit successfully!!", score: finalState.score, streak: newUserInfo.streak_count && streakUpdateInfo  }
     } catch (error) {
         console.error("Error:\n", error)
         return { message: "Please try again later!!", error: true }

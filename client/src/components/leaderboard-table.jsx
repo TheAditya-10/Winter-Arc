@@ -100,6 +100,7 @@ export function LeaderboardTable(
         columns,
     }
 ) {
+
     const [data, setData] = React.useState(() => initialData)
     const [columnFilters, setColumnFilters] = React.useState([])
     const [pagination, setPagination] = React.useState({

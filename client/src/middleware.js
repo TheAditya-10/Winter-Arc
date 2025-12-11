@@ -1,12 +1,24 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
+import { globalLimit } from './utils/rate-limiter'
 
-const isPublicRoute = createRouteMatcher(['/auth/login(.*)', '/auth/signup(.*)', '/', ])
+const isPublicRoute = createRouteMatcher(['/auth/login(.*)', '/auth/signup(.*)', '/',])
 const isAuthRoute = createRouteMatcher(['/auth/register'])
 
-export default clerkMiddleware(async (auth, req) => {
+export default clerkMiddleware(async (auth, req, event) => {
+
+  // const ip = req.ip ?? "127.0.0.1"
+  // const { success, pending, limit, remaining } = await globalLimit.limit(ip);
+
+  // event.waitUntil(pending)
+
+  // if (!success) {
+  //   return NextResponse.json({ message: 'Rate limit exceeded, try again later.' }, { status: 429 });
+  // }
+
+
   const { isAuthenticated, redirectToSignIn, sessionClaims } = await auth()
-  
+
   if (!isPublicRoute(req) && !isAuthenticated) {
     return redirectToSignIn()
   }

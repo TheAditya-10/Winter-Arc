@@ -9,6 +9,9 @@ import { ChallengeCard } from "@/components/challenge-card"
 
 export default async function Dashboard() {
     const supabase = await createClient();
+
+
+
     const { userId, sessionClaims } = await auth();
     const { data: userInfo, error: userInfoError } = await supabase
         .from("users")

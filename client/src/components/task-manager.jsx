@@ -29,6 +29,7 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { submitFormSchema as formSchema } from "@/app/schema"
 import { TaskSubmissionDialog } from "./task-submission"
+import { Flame } from "lucide-react"
 
 
 function TaskManager({ task }) {
@@ -50,14 +51,18 @@ function TaskManager({ task }) {
         setShowDialog(false)
         const loadToast = toast.loading("You submission is under process...")
         try {
-            const { error, message, score: xpScore } = await submitTask(formData, task)
+            const { error, message, score: xpScore, streak } = await submitTask(formData, task)
             if (error) {
                 Object.entries(error).map(([field, message]) => {
                     form.setError(field, { message })
                 })
                 toast.error(message)
             } else {
-                toast.success(message)
+                if (streak) {
+                    toast(`${streak.count} `+streak.message, {
+                        icon: <Flame className="size-4" />
+                    })
+                }
                 setScore(xpScore)
                 setShowDialog(true)
             }
