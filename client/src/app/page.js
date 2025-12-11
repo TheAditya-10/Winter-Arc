@@ -44,7 +44,7 @@ export default async function Home() {
           <div className="w-fit m-auto">
             {(sessionClaims?.publicMetadata?.status !== 'registered')
               ? <Button><Link href={'/auth/register'}>Register Now</Link></Button>
-              : <Button><Link href={'/dashboard'}>Dashboard</Link></Button>}
+              : <Button><Link href={'/dashboard/me'}>Dashboard</Link></Button>}
           </div>
           {(sessionClaims?.publicMetadata?.status === 'registered') && <ConnectWithLinkedin />}
           

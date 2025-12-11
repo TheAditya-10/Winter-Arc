@@ -14,6 +14,6 @@ export default async function Leaderboard() {
     const rankedUsers = data.map((item, index) => {
         return { ...item, rank: index + 1 }
     })
-
+    
     return (<LeaderboardTable columns={leadearboardColumns} data={rankedUsers} />)
 }

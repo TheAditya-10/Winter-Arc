@@ -7,15 +7,20 @@ const isAuthRoute = createRouteMatcher(['/auth/register'])
 
 export default clerkMiddleware(async (auth, req, event) => {
 
-  // const ip = req.ip ?? "127.0.0.1"
-  // const { success, pending, limit, remaining } = await globalLimit.limit(ip);
 
-  // event.waitUntil(pending)
+  try {
+    const ip = req.ip ?? "127.0.0.1"
+    const { success, pending } = await globalLimit.limit(ip);
 
-  // if (!success) {
-  //   return NextResponse.json({ message: 'Rate limit exceeded, try again later.' }, { status: 429 });
-  // }
+    event.waitUntil(pending)
 
+    if (!success) {
+      return NextResponse.json({ message: 'Rate limit exceeded, try again later.' }, { status: 429 });
+    }
+
+  } catch (error) {
+    console.warn("Rate Limit Skipped:\n", error)
+  }
 
   const { isAuthenticated, redirectToSignIn, sessionClaims } = await auth()
 

@@ -40,6 +40,9 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import { useRouter } from "next/navigation";
+
+
 
 
 export const leadearboardColumns = [
@@ -52,7 +55,6 @@ export const leadearboardColumns = [
         accessorKey: "name",
         header: "User",
         cell: ({ row }) => {
-            console.log(row.original)
             return (<Button variant="link" className="text-foreground h-12 w-fit px-0 text-left flex items-center">
                 <div className="relative m-auto">
                     <Avatar className="h-8 w-8">
@@ -100,6 +102,8 @@ export function LeaderboardTable(
         columns,
     }
 ) {
+
+    const router = useRouter()
 
     const [data, setData] = React.useState(() => initialData)
     const [columnFilters, setColumnFilters] = React.useState([])
@@ -170,12 +174,14 @@ export function LeaderboardTable(
                                     <TableRow
                                         key={row.id}
                                         className="relative z-0 even:bg-muted/20"
+                                        onClick={()=>router.push(`/dashboard/${row.id}`)}
                                     >
                                         {row.getVisibleCells().map((cell) => (
                                             <TableCell key={cell.id}>
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </TableCell>
                                         ))}
+
                                     </TableRow>
                                 ))}
                             </>

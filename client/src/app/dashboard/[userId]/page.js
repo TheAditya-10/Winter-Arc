@@ -7,12 +7,15 @@ import { auth } from "@clerk/nextjs/server"
 import { ChallengeCard } from "@/components/challenge-card"
 
 
-export default async function Dashboard() {
+export default async function Dashboard({ params }) {
     const supabase = await createClient();
 
-
-
-    const { userId, sessionClaims } = await auth();
+    let { userId } = await params;
+    if (userId == "me") {
+        const { userId: uId } = await auth();
+        userId = uId;
+    }
+    
     const { data: userInfo, error: userInfoError } = await supabase
         .from("users")
         .select("*,totalTaskCompleted:posts(count)")
@@ -28,18 +31,18 @@ export default async function Dashboard() {
     }
 
 
-    const { data: recentSubmissions, error: recentSubmissionsError } = await supabase
-        .from("posts")
-        .select("ai_score, created_at, challenge_title:challenges(title)")
-        .eq('user_id', userId)
-        .limit(10);
+    // const { data: recentSubmissions, error: recentSubmissionsError } = await supabase
+    //     .from("posts")
+    //     .select("ai_score, created_at, challenge_title:challenges(title)")
+    //     .eq('user_id', userId)
+    //     .limit(10);
 
-    if (recentSubmissionsError) {
-        console.error(recentSubmissionsError)
-        return (
-            <h1>Some thing went wrong. Please try again later!!</h1>
-        )
-    }
+    // if (recentSubmissionsError) {
+    //     console.error(recentSubmissionsError)
+    //     return (
+    //         <h1>Some thing went wrong. Please try again later!!</h1>
+    //     )
+    // }
 
     const { data: activeChallenges, error: activeChallengesError } = await supabase
         .from("challenge_registrations")

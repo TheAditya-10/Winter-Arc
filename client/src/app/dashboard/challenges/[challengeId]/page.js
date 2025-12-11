@@ -28,7 +28,7 @@ export default async function ChallengePage({ params }) {
     const { challenge_tasks: tasks, challenge_registrations: registred, posts: taskCompleted, ...challenge } = data
 
     const isRegistred = (registred.length > 0)
-    console.log(process.memoryUsage());
+    
     return (
         <ChallengeDetail tasks={tasks} challenge={challenge} isRegistred={isRegistred} taskCompleted={taskCompleted} />
     )

@@ -63,10 +63,14 @@ export async function submitTask(formData, task) {
     try {
         const { userId } = await auth()
 
-        const {success} = await submissionLimit.limit(userId)
-
-        if(!success){
-            return { message: "You can't submit more than 3 time in a day!!", error: true }
+        try {
+            const {success} = await submissionLimit.limit(userId)
+    
+            if(!success){
+                return { message: "You can't submit more than 3 time in a day!!", error: true }
+            }
+        } catch (error) {
+            console.warn("Rate Limit Skipped:\n", error)
         }
 
         // verify form data
