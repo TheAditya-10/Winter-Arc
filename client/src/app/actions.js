@@ -38,11 +38,15 @@ export async function createUser(formData, userLocalTimeZone) {
             const user = { ...formData, avatar_url, id, points: 0 }
             const { error } = await supabase.from('users').insert([user])
             if (error) {
-                return {
-                    error: {
-                        username: "Username must be unique!!",
-                    },
-                    message: "Username already exist!!"
+                if(error.code == "23505"){
+                    return {
+                        error: {
+                            username: "Username must be unique!!",
+                        },
+                        message: "Username already exist!!"
+                    }
+                } else {
+                    throw new Error(error)
                 }
             }
             const updateUsernameRes = await clerk.users.updateUser(userId, {
@@ -64,9 +68,9 @@ export async function submitTask(formData, task) {
         const { userId } = await auth()
 
         try {
-            const {success} = await submissionLimit.limit(userId)
-    
-            if(!success){
+            const { success } = await submissionLimit.limit(userId)
+
+            if (!success) {
                 return { message: "You can't submit more than 3 time in a day!!", error: true }
             }
         } catch (error) {
@@ -107,7 +111,9 @@ export async function submitTask(formData, task) {
 
         const finalState = await evaluateTaskSubmissionsByAI(currentState);
 
-        console.log(finalState.feedback)
+        if (finalState.score < 10) {
+            return { message: "Your submission is rejected!!", feedback: finalState.feedback, rejected: "content-quality" }
+        }
 
         // get user informations
         const { data: userInfo, error: getUserInfoError } = await supabase
@@ -123,7 +129,7 @@ export async function submitTask(formData, task) {
         let newUserInfo = updateStreak(userInfo);
         newUserInfo.points = userInfo.points ? userInfo.points + finalState.score : finalState.score;
 
-        
+
         // insert submission in posts table
         const taskSubmission = {
             task_id: task.id,
@@ -133,17 +139,17 @@ export async function submitTask(formData, task) {
             text: description,
             ai_score: finalState.score,
         }
-        
+
         const { data: post, error: insertPostsError } = await supabase
-        .from('posts')
-        .insert(taskSubmission)
-        .select('id')
-        .limit(1)
-        .single();
-        
+            .from('posts')
+            .insert(taskSubmission)
+            .select('id')
+            .limit(1)
+            .single();
+
         if (insertPostsError) throw new Error(insertPostsError.message);
-        
-        
+
+
         // update users streaks and points
         const { error: updateUserPointsError } = await supabase
             .from('users')
@@ -153,11 +159,11 @@ export async function submitTask(formData, task) {
         if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
         const streakUpdateInfo = {
-            message: newUserInfo.streak_count === 1? "Your new streak is started, Complete tasks daily to maintain your streak!!" : "Your streak is updated successfully.",
+            message: newUserInfo.streak_count === 1 ? "Your new streak is started, Complete tasks daily to maintain your streak!!" : "Your streak is updated successfully.",
             count: newUserInfo.streak_count
         }
 
-        return { message: "Submit successfully!!", score: finalState.score, streak: newUserInfo.streak_count && streakUpdateInfo  }
+        return { message: "Submit successfully!!", score: finalState.score, streak: newUserInfo.streak_count && streakUpdateInfo, feedback: finalState.feedback }
     } catch (error) {
         console.error("Error:\n", error)
         return { message: "Please try again later!!", error: true }

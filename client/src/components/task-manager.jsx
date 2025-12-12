@@ -36,6 +36,8 @@ function TaskManager({ task }) {
     const [isLoading, setIsLoading] = useState(false)
     const [showDialog, setShowDialog] = useState(false)
     const [score, setScore] = useState(0)
+    const [feedback, setFeedback] = useState("")
+    const [rejected, setRejected] = useState("")
     const router = useRouter()
 
     const form = useForm({
@@ -51,19 +53,26 @@ function TaskManager({ task }) {
         setShowDialog(false)
         const loadToast = toast.loading("You submission is under process...")
         try {
-            const { error, message, score: xpScore, streak } = await submitTask(formData, task)
+            const { error, message, score: xpScore, streak, feedback: aiFeedback, rejected: rejectedInfo } = await submitTask(formData, task)
             if (error) {
                 Object.entries(error).map(([field, message]) => {
                     form.setError(field, { message })
                 })
                 toast.error(message)
             } else {
-                if (streak) {
-                    toast(`${streak.count} `+streak.message, {
-                        icon: <Flame className="size-4" />
-                    })
+                if(!rejectedInfo){
+                    if (streak) {
+                        toast(`${streak.count} `+streak.message, {
+                            icon: <Flame className="size-4" />
+                        })
+                    }
+                    setScore(xpScore)
+                    toast.success(message)
+                } else {
+                    setRejected(rejectedInfo)
+                    toast.error(message)
                 }
-                setScore(xpScore)
+                setFeedback(aiFeedback)
                 setShowDialog(true)
             }
         } catch (error) {
@@ -76,13 +85,13 @@ function TaskManager({ task }) {
 
     return (
         <div className="w-full h-full min-h-fit flex items-center justify-center">
-            <TaskSubmissionDialog showDialog={showDialog} setShowDialog={setShowDialog} score={score} onContinue={() => router.push(`/dashboard/challenges/${task.challenge.id}`)} />
+            <TaskSubmissionDialog showDialog={showDialog} setShowDialog={setShowDialog} score={score} feedback={feedback} rejected={rejected} onContinue={() => router.push(`/dashboard/challenges/${task.challenge.id}`)} />
             <Card className="w-full max-w-md max-sm:max-w-sm max-sm:py-4">
                 <CardHeader className={"max-sm:px-4"}>
                     <CardTitle className={"line-clamp-1"}>{task?.title}</CardTitle>
                     <CardDescription className="line-clamp-2">{task?.description}</CardDescription>
                     <CardAction>
-                        <Button variant="link">Back</Button>
+                        <Button variant="link" onClick={()=> router.back()}>Back</Button>
                     </CardAction>
                 </CardHeader>
                 <CardContent className={"max-sm:px-4"}>

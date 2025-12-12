@@ -126,3 +126,31 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+/* my css */
+@layer utilities {
+  .scrollbar-hidden::-webkit-scrollbar {
+    width: 0px;
+    padding: 0px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 5px;
+    padding: 0px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #8b8b8b;
+    border-radius: 100vh;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+  }
+
+}
