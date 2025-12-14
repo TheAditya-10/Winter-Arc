@@ -7,10 +7,12 @@ import { auth } from "@clerk/nextjs/server"
 import { ChallengeCard } from "@/components/challenge-card"
 
 
-export default async function Dashboard({ params }) {
+export default async function Page({ params, searchParams }) {
     const supabase = await createClient();
 
     let { userId } = await params;
+    const {message, type} = await searchParams;
+
     if (userId == "me") {
         const { userId: uId } = await auth();
         userId = uId;

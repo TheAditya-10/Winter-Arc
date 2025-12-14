@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { CircleStar, TrophyIcon, X } from "lucide-react"
 
-export function TaskSubmissionDialog({ showDialog, setShowDialog, score, onContinue, feedback, rejected }) {
+export function TaskSubmissionDialog({ showDialog, setShowDialog, score, onContinue, feedback, rejected, onShareLinkedin }) {
     return (
         <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
             <AlertDialogContent>
@@ -45,7 +45,10 @@ export function TaskSubmissionDialog({ showDialog, setShowDialog, score, onConti
                 <AlertDialogFooter className={"sm:justify-center justify-center"}>
                     {rejected
                         ? <AlertDialogAction>Try Again</AlertDialogAction>
-                        : <AlertDialogAction onClick={onContinue}>Continue</AlertDialogAction>}
+                        : (<>
+                            <AlertDialogAction onClick={onContinue}>Continue</AlertDialogAction>
+                            <AlertDialogAction onClick={onShareLinkedin}>Share on LinkedIn</AlertDialogAction>
+                        </>)}
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
