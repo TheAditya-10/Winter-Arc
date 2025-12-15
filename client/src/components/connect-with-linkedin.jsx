@@ -3,11 +3,14 @@ import { Button } from "./ui/button"
 import Link from "next/link"
 import { createVerifcationState } from "@/utils/share-on-linkedin"
 import { auth } from "@clerk/nextjs/server"
+import { isRegistered } from "@/utils/auth"
 
 
 const ConnectWithLinkedin = async () => {
 
-    const { userId } = await auth()
+    const {status, redirectToRegister, userId} = await isRegistered()
+    if(!status) return redirectToRegister()
+
     const state = await createVerifcationState(userId)
 
     return (

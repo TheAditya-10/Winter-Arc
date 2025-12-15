@@ -68,7 +68,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
             className="bg-muted absolute left-4 top-16"
           />
           {tasks.map((task) => {
-            const taskScore = taskCompleted.find(t => t.task_id == task.id)?.ai_score
+            const taskScore = taskCompleted.get(task.id)
             return (
               <div key={task.id} className="relative mb-10 pl-8">
                 <div className="border-foreground border-2 bg-primary-foreground absolute left-0 top-6 flex size-4 items-center justify-center rounded-full" />

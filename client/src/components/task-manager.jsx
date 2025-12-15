@@ -118,7 +118,7 @@ function TaskManager({ task }) {
                 score={submissionInfo.score}
                 feedback={submissionInfo.feedback}
                 rejected={rejected}
-                onContinue={() => router.push(`/dashboard/challenges/${task.challenge.id}`)}
+                onContinue={() => router.push(`/dashboard/challenges/${task.challengeId}`)}
                 onShareLinkedin={onShareLinkedin} />
             <Card className="w-full max-w-md max-sm:max-w-sm max-sm:py-4">
                 <CardHeader className={"max-sm:px-4"}>

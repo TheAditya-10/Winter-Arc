@@ -1,35 +1,47 @@
 "use server"
 
-import { createClient } from "@/utils/supabase/server"
 import { ChallengeDetail } from "@/components/challenge-detail"
-import { auth } from "@clerk/nextjs/server"
+import { getChallengesInfoById, getAllTasks } from "@/lib/dal/challenge"
+import { getCompletedTaskInfo, isUserRegistredInChallenge } from "@/lib/dal/user"
 
 export default async function ChallengePage({ params }) {
+
     const { challengeId } = await params
-    const { userId } = await auth()
 
-    const supabase = await createClient()
-    const { data, error } = await supabase
-        .from("challenges")
-        .select("*, challenge_tasks(*), challenge_registrations(id), posts(task_id, ai_score)")
-        .eq("id", challengeId)
-        .eq("posts.user_id", userId)
-        .filter('challenge_registrations.user_id', 'eq', userId)
-        .limit(1)
-        .single()
-        .order("day_number", { referencedTable: 'challenge_tasks' })
-
-    if (error) {
-        console.error(error)
+    const {data: challengeInfo, error: challengeInfoError} = await getChallengesInfoById(challengeId)
+    if (challengeInfoError) {
+        console.error(challengeInfoError)
         return (
             <h1>Some thing went wrong. Please try again later!!</h1>
         )
     }
-    const { challenge_tasks: tasks, challenge_registrations: registred, posts: taskCompleted, ...challenge } = data
-
-    const isRegistred = (registred.length > 0)
     
+    const {data: challengeTasks, error: challengeTasksError} = await getAllTasks(challengeId)
+    if (challengeTasksError) {
+        console.error(challengeTasksError)
+        return (
+            <h1>Some thing went wrong. Please try again later!!</h1>
+        )
+    }
+
+    const {data: completedTaskInfoMap, error: completedTaskInfoMapError} = await getCompletedTaskInfo(challengeId)
+    if (completedTaskInfoMapError) {
+        console.error(completedTaskInfoMapError)
+        return (
+            <h1>Some thing went wrong. Please try again later!!</h1>
+        )
+    }
+    
+    const {data:isRegistred, error: isRegistredError} = await isUserRegistredInChallenge(challengeId)
+    if (isRegistredError) {
+        console.error(isRegistredError)
+        return (
+            <h1>Some thing went wrong. Please try again later!!</h1>
+        )
+    }
+
+
     return (
-        <ChallengeDetail tasks={tasks} challenge={challenge} isRegistred={isRegistred} taskCompleted={taskCompleted} />
+        <ChallengeDetail tasks={challengeTasks} challenge={challengeInfo} isRegistred={isRegistred} taskCompleted={completedTaskInfoMap} />
     )
 }

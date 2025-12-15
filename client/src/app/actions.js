@@ -1,6 +1,5 @@
 'use server'
-import { auth, currentUser } from "@clerk/nextjs/server"
-import { createClient } from "@/utils/supabase/server"
+import { auth } from "@clerk/nextjs/server"
 import { clerkClient } from "@clerk/nextjs/server"
 import { writeFile } from "fs/promises"
 import { registerFormSchema, submitFormSchema } from "./schema"
@@ -9,17 +8,25 @@ import { evaluateTaskSubmissionsByAI } from "@/ai/controllers"
 import { updateStreak } from "@/utils/streaks"
 import { submissionLimit } from "@/utils/rate-limiter"
 import { uploadBinaryFile, registerUploadInLinkedin, publishLinkedinPostWithImage } from "@/utils/share-on-linkedin"
+import { getChallengesInfoById, insertChallengeRegistration } from "@/lib/dal/challenge"
+import { getUserCred, getUserStatsById, insertUser, updateUserById } from "@/lib/dal/user"
+import { getSubmissionInfoById, insertSubmission } from "@/lib/dal/submission"
+import { redirect } from "next/navigation"
+import { isRegistered } from "@/utils/auth"
 
-const supabase = await createClient()
 const clerk = await clerkClient()
 
 export async function createUser(formData, userLocalTimeZone) {
 
+    const { sessionClaims, userId } = await auth()
+    if(!userId) return redirect("/auth/login")
+
     try {
-        const { success, error } = registerFormSchema.safeParse(formData)
+
+        const { success, error: inputError } = registerFormSchema.safeParse(formData)
 
         if (!success) {
-            const formFieldErrors = z.flattenError(error).fieldErrors
+            const formFieldErrors = z.flattenError(inputError).fieldErrors
 
             return {
                 error: {
@@ -32,32 +39,29 @@ export async function createUser(formData, userLocalTimeZone) {
             }
         }
 
-        const { sessionClaims, userId } = await auth()
 
-        if (userId && sessionClaims) {
-            const { avatar_url, id } = sessionClaims
-            const user = { ...formData, avatar_url, id, points: 0 }
-            const { error } = await supabase.from('users').insert([user])
-            if (error) {
-                if (error.code == "23505") {
-                    return {
-                        error: {
-                            username: "Username must be unique!!",
-                        },
-                        message: "Username already exist!!"
-                    }
-                } else {
-                    throw new Error(error.message)
+        const { avatar_url, id } = sessionClaims
+        const user = { ...formData, avatar_url, id, points: 0 }
+        const { error } = await insertUser(user)
+        if (error) {
+            if (error.code == "23505") {
+                return {
+                    error: {
+                        username: "Username must be unique!!",
+                    },
+                    message: "Username already exist!!"
                 }
+            } else {
+                throw new Error(error.message)
             }
-            const updateUsernameRes = await clerk.users.updateUser(userId, {
-                username: formData?.username,
-            })
-            const updateMetadataRes = await clerk.users.updateUserMetadata(userId, {
-                publicMetadata: { status: "registered", localTZ: userLocalTimeZone },
-            })
-            return { message: "User is registered successfully!!" }
         }
+        const updateUsernameRes = await clerk.users.updateUser(userId, {
+            username: formData?.username,
+        })
+        const updateMetadataRes = await clerk.users.updateUserMetadata(userId, {
+            publicMetadata: { status: "registered", localTZ: userLocalTimeZone },
+        })
+        return { message: "User is registered successfully!!" }
     } catch (error) {
         console.error("Error:\n", error)
         return { error: true, message: "Registration failed!!" }
@@ -65,8 +69,11 @@ export async function createUser(formData, userLocalTimeZone) {
 }
 
 export async function submitTask(formData, task) {
+
+    const { userId, status, redirectToRegister } = await isRegistered()
+    if(!status) return redirectToRegister()
+
     try {
-        const { userId } = await auth()
 
         try {
             const { success } = await submissionLimit.limit(userId)
@@ -93,6 +100,10 @@ export async function submitTask(formData, task) {
             }
         }
 
+        const { data: challenge, error: challengeError } = await getChallengesInfoById(task.challengeId)
+
+        if (challengeError) throw new Error(challengeError.message)
+
         // upload image
         const { imageFile, description } = formData;
         const arrayBuffer = await imageFile.arrayBuffer();
@@ -104,8 +115,8 @@ export async function submitTask(formData, task) {
         const currentState = {
             taskTitle: task.title,
             taskDescription: task.description,
-            challengeTitle: task.challenge.title,
-            challengeDescription: task.challenge.description,
+            challengeTitle: challenge.title,
+            challengeDescription: challenge.description,
             imageUrl: url,
             description: description,
         }
@@ -117,12 +128,7 @@ export async function submitTask(formData, task) {
         }
 
         // get user informations
-        const { data: userInfo, error: getUserInfoError } = await supabase
-            .from('users')
-            .select('points, streak_count, longest_streak, last_streak_update_date, streak_status')
-            .eq('id', userId)
-            .limit(1)
-            .single();
+        const { data: userInfo, error: getUserInfoError } = await getUserStatsById(userId, true)
 
         if (getUserInfoError) throw new Error(getUserInfoError.message);
 
@@ -134,28 +140,20 @@ export async function submitTask(formData, task) {
         // insert submission in posts table
         const taskSubmission = {
             task_id: task.id,
-            challenge_id: task.challenge.id,
+            challenge_id: challenge.id,
             user_id: userId,
             image_url: url,
             text: description,
             ai_score: finalState.score,
         }
 
-        const { data: submissionInfo, error: insertPostsError } = await supabase
-            .from('posts')
-            .insert(taskSubmission)
-            .select('id')
-            .limit(1)
-            .single();
+        const { data: submissionId, error: insertSubmissionError } = await insertSubmission(taskSubmission)
 
-        if (insertPostsError) throw new Error(insertPostsError.message);
+        if (insertSubmissionError) throw new Error(insertSubmissionError.message);
 
 
         // update users streaks and points
-        const { error: updateUserPointsError } = await supabase
-            .from('users')
-            .update(newUserInfo)
-            .eq('id', userId)
+        const { error: updateUserPointsError } = await updateUserById(userId, newUserInfo)
 
         if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
@@ -164,17 +162,20 @@ export async function submitTask(formData, task) {
             count: newUserInfo.streak_count
         }
 
-        return { message: "Submit successfully!!", score: finalState.score, streak: newUserInfo.streak_count && streakUpdateInfo, feedback: finalState.feedback, submissionId: submissionInfo.id }
+        return { message: "Submit successfully!!", score: finalState.score, streak: newUserInfo.streak_count && streakUpdateInfo, feedback: finalState.feedback, submissionId }
     } catch (error) {
         console.error("Error:\n", error)
         return { message: "Please try again later!!", error: true }
     }
 }
 
-export async function registerForChallenge(challenge_id) {
+export async function registerForChallenge(challengeId) {
+
+    const { userId, status, redirectToRegister } = await isRegistered()
+    if(!status) return redirectToRegister()
+
     try {
-        const { userId: user_id } = await auth()
-        const { error: insertFailError } = await supabase.from("challenge_registrations").insert({ challenge_id, user_id })
+        const { error: insertFailError } = await insertChallengeRegistration(userId, challengeId)
         if (insertFailError) {
             throw new Error(insertFailError.message)
         }
@@ -192,36 +193,26 @@ export async function registerForChallenge(challenge_id) {
 
 
 export async function shareOnLinkedIn(submissionId) {
+
+    const { status, redirectToRegister } = await isRegistered()
+    if(!status) return redirectToRegister()
+
     try {
 
-        const { userId } = await auth()
-
-        const { data: userCreds, error: userCredsError } = await supabase
-            .from("linked_creds")
-            .select('*')
-            .eq("user_id", userId)
-            .limit(1)
-            .single()
+        const { data: userCreds, error: userCredsError } = await getUserCred()
 
         if (userCredsError) {
             throw new Error(userCredsError.message);
         }
 
         // TODO: Check if access_token is expired
-        const createdDate = new Date(userCreds.created_at);
-        const expireDate = new Date(createdDate.getTime()+userCreds.expire_in*1000)
-        if(expireDate.getTime() < Date.now()){
+        const createdDate = new Date(userCreds.createdAt);
+        const expireDate = new Date(createdDate.getTime() + userCreds.expiresIn * 1000)
+        if (expireDate.getTime() < Date.now()) {
             throw new Error("Credential get expired!!")
         }
 
-        const { data: taskSubmission, error: taskSubmissionError } = await supabase
-            .from('posts')
-            .select('taskId:task_id, challengeId:challenge_id, imageUrl:image_url')
-            .eq('id', submissionId)
-            .limit(1)
-            .single()
-
-        const linkedinId = "sYPTYOFq8u"; // TODO: retrive linkedinId from database
+        const { data: taskSubmission, error: taskSubmissionError } = await getSubmissionInfoById(submissionId)
 
         if (taskSubmissionError) {
             throw new Error(taskSubmissionError.message);
@@ -229,14 +220,14 @@ export async function shareOnLinkedIn(submissionId) {
 
         const textContent = "📅 Day {{DAY_NUMBER}} / 30 – {{CHALLENGE_NAME}}\n\nToday’s focus was on **{{TODAY_TASK}}**.\n\n✅ What I completed today:\n- {{TASK_POINT_1}}\n- {{TASK_POINT_2}}\n- {{TASK_POINT_3}}\n\n📚 Key learnings:\n- {{LEARNING_1}}\n- {{LEARNING_2}}\n\nThis challenge is helping me build consistency, improve problem-solving, and stay accountable through daily progress.\n\nLooking forward to continuing the journey tomorrow 🚀\n\n#30DayChallenge #DailyProgress #LearningInPublic #Consistency #ProfessionalGrowth #BuildInPublic #CareerGrowth"
 
-        const { uploadUrl, asset: imageAsset } = await registerUploadInLinkedin(linkedinId, userCreds.access_token)
-        await uploadBinaryFile(taskSubmission.imageUrl, uploadUrl, userCreds.access_token);
-        await publishLinkedinPostWithImage(userCreds.access_token, linkedinId, imageAsset, textContent, "imageDescription", "imageTitle")
+        const { uploadUrl, asset: imageAsset } = await registerUploadInLinkedin(userCreds.linkedinId, userCreds.accessToken)
+        await uploadBinaryFile(taskSubmission.imageUrl, uploadUrl, userCreds.accessToken);
+        await publishLinkedinPostWithImage(userCreds.accessToken, userCreds.linkedinId, imageAsset, textContent, "imageDescription", "imageTitle")
 
-        return {message: "Draft of Linkedin Post is created!!"}
+        return { message: "Draft of Linkedin Post is created!!" }
     } catch (error) {
         console.error(error);
         // TODO: return error response.
-        return { error: true, message: "failed to share on LinkedIn!!"}
+        return { error: true, message: "failed to share on LinkedIn!!" }
     }
 }

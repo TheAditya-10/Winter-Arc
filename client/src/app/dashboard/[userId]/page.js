@@ -2,54 +2,41 @@
 
 import ProfileHeader from "@/components/profile-header"
 import StatsCards from "@/components/stats-card"
-import { createClient } from "@/utils/supabase/server"
-import { auth } from "@clerk/nextjs/server"
 import { ChallengeCard } from "@/components/challenge-card"
+import { getUserProfileById, getUserStatsById, getActiveChallengeInfoByUserId } from "@/lib/dal/user"
+import { auth } from "@clerk/nextjs/server"
 
 
 export default async function Page({ params, searchParams }) {
-    const supabase = await createClient();
 
     let { userId } = await params;
     const {message, type} = await searchParams;
 
     if (userId == "me") {
-        const { userId: uId } = await auth();
+        const {userId: uId} = await auth()
         userId = uId;
     }
     
-    const { data: userInfo, error: userInfoError } = await supabase
-        .from("users")
-        .select("*,totalTaskCompleted:posts(count)")
-        .eq("id", userId)
-        .limit(1)
-        .single();
+    const { data: userProfile, error: userProfileError } = await getUserProfileById(userId)
 
-    if (userInfoError) {
-        console.error(userInfoError)
+    if (userProfileError) {
+        console.error(userProfileError)
         return (
             <h1>Some thing went wrong. Please try again later!!</h1>
         )
     }
+    
+    const { data: userStats, error: userStatsError } = await getUserStatsById(userId)
+    
+    if (userStatsError) {
+        console.error(userStatsError)
+        return (
+            <h1>Some thing went wrong. Please try again later!!</h1>
+        )
+    }
+    
 
-
-    // const { data: recentSubmissions, error: recentSubmissionsError } = await supabase
-    //     .from("posts")
-    //     .select("ai_score, created_at, challenge_title:challenges(title)")
-    //     .eq('user_id', userId)
-    //     .limit(10);
-
-    // if (recentSubmissionsError) {
-    //     console.error(recentSubmissionsError)
-    //     return (
-    //         <h1>Some thing went wrong. Please try again later!!</h1>
-    //     )
-    // }
-
-    const { data: activeChallenges, error: activeChallengesError } = await supabase
-        .from("challenge_registrations")
-        .select("challenges(id, title, totalRegistrations:challenge_registrations(count))")
-        .eq('user_id', userId);
+    const { data: activeChallenges, error: activeChallengesError } = await getActiveChallengeInfoByUserId(userId)
 
     if (activeChallengesError) {
         console.error(activeChallengesError)
@@ -60,24 +47,23 @@ export default async function Page({ params, searchParams }) {
 
     return (<>
         <div className="flex flex-col gap-8 py-4 px-2 @md/main:gap-6 @md/main:py-6">
-            <ProfileHeader user={userInfo} />
+            <ProfileHeader user={userProfile} />
             <section id="performance-overview">
                 <h3 className="mb-4 mt-2 text-center text-xl font-semibold">Performance Overview</h3>
                 <StatsCards stats={{
-                    totalXp: userInfo.points,
-                    currentStreak: userInfo.streak_count,
-                    highestStreak: userInfo.longest_streak,
-                    totalTasks: userInfo.totalTaskCompleted[0].count,
+                    totalXp: userStats.points,
+                    currentStreak: userStats.streakCount,
+                    highestStreak: userStats.longestStreak,
+                    totalTasks: userStats.taskCompleted,
                 }} />
             </section>
             <section>
                 <h3 className="mb-4 mt-2 text-center text-xl font-semibold">Active Challenges</h3>
                 <div className="flex @md/main:flex-col w-full items-center justify-center">
                     {activeChallenges.map((challengeInfo) => {
-                        const { totalRegistrations, ...challenge } = challengeInfo.challenges;
                         return (
-                            <div key={challenge.id} className="min-w-72 w-96">
-                                <ChallengeCard key={challenge.id} challenge={challenge} count={totalRegistrations[0].count} isRegistred={true} />
+                            <div key={challengeInfo.id} className="min-w-72 w-96">
+                                <ChallengeCard key={challengeInfo.id} challenge={challengeInfo} count={-1} isRegistred={true} />
                             </div>
                         )
                     })}

@@ -7,7 +7,6 @@ const isAuthRoute = createRouteMatcher(['/auth/register'])
 
 export default clerkMiddleware(async (auth, req, event) => {
 
-
   // try {
   //   const ip = req.ip ?? "127.0.0.1"
   //   const { success, pending } = await globalLimit.limit(ip);

@@ -58,7 +58,7 @@ export const leadearboardColumns = [
             return (<Button variant="link" className="text-foreground h-12 w-fit px-0 text-left flex items-center">
                 <div className="relative m-auto">
                     <Avatar className="h-8 w-8">
-                        <AvatarImage src={row.original.avatar_url} alt="Profile" />
+                        <AvatarImage src={row.original.avatarUrl} alt="Profile" />
                         <AvatarFallback className="text-2xl"><UserRound size={60} /></AvatarFallback>
                     </Avatar>
                 </div>

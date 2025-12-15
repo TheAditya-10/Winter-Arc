@@ -12,7 +12,7 @@ export default function ProfileHeader({ user }) {
                 <div className="flex flex-col items-start gap-6 sm:flex-row md:items-center">
                     <div className="relative m-auto">
                         <Avatar className="h-24 w-24">
-                            <AvatarImage src={user.avatar_url} alt="Profile" />
+                            <AvatarImage src={user.avatarUrl} alt="Profile" />
                             <AvatarFallback className="text-2xl"><UserRound size={60} /></AvatarFallback>
                         </Avatar>
                     </div>
