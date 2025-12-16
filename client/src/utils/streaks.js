@@ -31,7 +31,7 @@ function canUpdateStreakToday({
 
 function isStreakBroken({ lastStreakDate }) {
     // New users haven't broken their streak
-    if (lastStreakDate < 0) return false;
+    if (!lastStreakDate) return false;
 
     const { todayStart, timezone } = getStreakDates();
     const lastUpdate = new TZDate(lastStreakDate, timezone);
@@ -41,32 +41,44 @@ function isStreakBroken({ lastStreakDate }) {
     return differenceInDays(todayStart, lastUpdateStart) > 1;
 }
 
-function updateStreak(userInfo) {
+function updateStreak(userInfo, increment = true) {
 
     const canUpdateStreak = canUpdateStreakToday({
-        lastStreakDate: userInfo.last_streak_update_date,
+        lastStreakDate: userInfo.lastStreakUpdate
     });
-    
-    const hasStreakStarted = userInfo.streak_status === "started";
+
+    const hasStreakStarted = userInfo.streakStatus === "started";
 
     if (hasStreakStarted && !canUpdateStreak) {
         return {};
     }
 
     // They missed a day?
-    const isBroken = isStreakBroken({
-        lastStreakDate: userInfo.last_streak_update_date,
+    const isBroken = hasStreakStarted && isStreakBroken({
+        lastStreakDate: userInfo.lastStreakUpdate,
     });
 
     const { now } = getStreakDates();
-    const currentStreak = userInfo.streak_count;
+
+    if (!increment) {
+        if(!isBroken) return {}
+
+        const updatedUserInfo = {
+            streak_count: 0,
+            last_streak_update_date: now.getTime(),
+            streak_status: "reset",
+        };
+        return updatedUserInfo
+    }
+
+    const currentStreak = userInfo.streakCount;
 
     // Calculate new streak count
     // If broken, start over at 1
     const newCount = isBroken ? 1 : currentStreak + 1;
 
     // Update longest streak if needed
-    const newLongest = Math.max(newCount, userInfo.longest_streak);
+    const newLongest = Math.max(newCount, userInfo.longestStreak);
 
     // Update user data
     const updatedUserInfo = {

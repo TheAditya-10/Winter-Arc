@@ -232,3 +232,28 @@ export async function shareOnLinkedIn(submissionId) {
         return { error: true, message: "failed to share on LinkedIn!!" }
     }
 }
+
+export async function checkStreak() {
+
+    const { userId, status, redirectToRegister } = await isRegistered()
+    if (!status) return redirectToRegister()
+
+    try {
+
+        const { data: userInfo, error: userInfoError } = await getUserStatsById(userId, true);
+        if (userInfoError) throw new Error(userInfoError.message)
+
+        const newUserInfo = updateStreak(userInfo, false)
+
+        if (newUserInfo.streak_status == "reset") {
+            newUserInfo.points = userInfo.points - 20;
+            const { error } = await updateUserById(userId, newUserInfo)
+            if (error) throw new Error(error.message)
+            return { error: false, message: "You have lost your streak and 20 XP point", reset: true }
+    }
+    return { error: false, message: "Continue Your streak to be in the top of the leaderboard." }
+} catch (error) {
+    console.log(error)
+    return { error: true, message: "Fail to update your streak!!" }
+    }
+}

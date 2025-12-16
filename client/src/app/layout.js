@@ -5,6 +5,7 @@ import {
 } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Toaster } from "@/components/ui/sonner";
+import CheckStreak from "@/components/check-streak";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +24,7 @@ export const metadata = {
 
 
 export default function RootLayout({ children }) {
-  
+
   return (
     <ClerkProvider
       appearance={{ theme: dark, }}
@@ -32,8 +33,9 @@ export default function RootLayout({ children }) {
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          <CheckStreak />
           {children}
-          <Toaster position="top-center"/>
+          <Toaster position="top-center" />
         </body>
       </html>
     </ClerkProvider>
