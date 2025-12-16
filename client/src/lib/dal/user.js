@@ -1,3 +1,5 @@
+import "server-only"
+
 import { createClient } from "@/utils/supabase/server";
 import { auth } from "@clerk/nextjs/server";
 
@@ -110,31 +112,6 @@ export const insertUser = async (user) => {
 
     return { error }
 }
-
-
-export const getUserCred = async () => {
-
-    const { userId } = await auth()
-    const { data, error } = await supabase
-        .from("linked_creds")
-        .select("accessToken:access_token, expiresIn:expires_in, createdAt:created_at, linkedinId:linkedin_id")
-        .eq("user_id", userId)
-        .limit(1)
-        .single()
-
-    return { data: data, error }
-}
-
-export const setUserCred = async (access_token, linkedin_id, expires_in) => {
-    const { userId } = await auth()
-
-    const { error } = await supabase
-        .from("linked_creds")
-        .insert({ expires_in, linkedin_id, access_token, user_id: userId })
-
-    return { error }
-}
-
 
 
 

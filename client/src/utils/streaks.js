@@ -1,4 +1,4 @@
-"use server"
+import "server-only"
 
 import { TZDate } from "@date-fns/tz";
 import { startOfDay, differenceInDays } from "date-fns";

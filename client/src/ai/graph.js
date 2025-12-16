@@ -1,3 +1,5 @@
+import "server-only"
+
 import { StateGraph, START, END } from "@langchain/langgraph";
 import { EvaluationStateSchema } from "./schemas.js";
 import { loadImage, evaluateSubmissions } from "./steps.js";

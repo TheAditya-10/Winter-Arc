@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { fetcher } from "@/utils/apiService"
 import { auth } from "@clerk/nextjs/server"
 import { isValidateState } from "@/utils/share-on-linkedin"
-import { setUserCred } from "@/lib/dal/user"
+import { setUserCred } from "@/lib/dal/creds"
 
 
 export async function GET(request) {

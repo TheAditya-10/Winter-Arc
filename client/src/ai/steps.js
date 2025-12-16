@@ -1,3 +1,5 @@
+import "server-only"
+
 import fs from "fs/promises";
 import { evaluationModel } from "./model";
 import z from "zod";

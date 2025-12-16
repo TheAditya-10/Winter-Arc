@@ -1,3 +1,5 @@
+import "server-only"
+
 import { fetcher } from "./apiService";
 import fs from "fs/promises";
 import { redis } from "./redis";

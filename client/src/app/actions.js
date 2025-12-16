@@ -9,7 +9,8 @@ import { updateStreak } from "@/utils/streaks"
 import { submissionLimit } from "@/utils/rate-limiter"
 import { uploadBinaryFile, registerUploadInLinkedin, publishLinkedinPostWithImage } from "@/utils/share-on-linkedin"
 import { getChallengesInfoById, insertChallengeRegistration } from "@/lib/dal/challenge"
-import { getUserCred, getUserStatsById, insertUser, updateUserById } from "@/lib/dal/user"
+import { getUserStatsById, insertUser, updateUserById } from "@/lib/dal/user"
+import { getUserCred } from "@/lib/dal/creds"
 import { getSubmissionInfoById, insertSubmission } from "@/lib/dal/submission"
 import { redirect } from "next/navigation"
 import { isRegistered } from "@/utils/auth"
@@ -19,7 +20,7 @@ const clerk = await clerkClient()
 export async function createUser(formData, userLocalTimeZone) {
 
     const { sessionClaims, userId } = await auth()
-    if(!userId) return redirect("/auth/login")
+    if (!userId) return redirect("/auth/login")
 
     try {
 
@@ -71,7 +72,7 @@ export async function createUser(formData, userLocalTimeZone) {
 export async function submitTask(formData, task) {
 
     const { userId, status, redirectToRegister } = await isRegistered()
-    if(!status) return redirectToRegister()
+    if (!status) return redirectToRegister()
 
     try {
 
@@ -172,7 +173,7 @@ export async function submitTask(formData, task) {
 export async function registerForChallenge(challengeId) {
 
     const { userId, status, redirectToRegister } = await isRegistered()
-    if(!status) return redirectToRegister()
+    if (!status) return redirectToRegister()
 
     try {
         const { error: insertFailError } = await insertChallengeRegistration(userId, challengeId)
@@ -195,7 +196,7 @@ export async function registerForChallenge(challengeId) {
 export async function shareOnLinkedIn(submissionId) {
 
     const { status, redirectToRegister } = await isRegistered()
-    if(!status) return redirectToRegister()
+    if (!status) return redirectToRegister()
 
     try {
 
