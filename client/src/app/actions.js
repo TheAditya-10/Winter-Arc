@@ -14,6 +14,7 @@ import { getUserCred } from "@/lib/dal/creds"
 import { getSubmissionInfoById, insertSubmission } from "@/lib/dal/submission"
 import { redirect } from "next/navigation"
 import { isRegistered } from "@/utils/auth"
+import { uploadFile } from "@/utils/cloud-storage"
 
 const clerk = await clerkClient()
 
@@ -107,10 +108,7 @@ export async function submitTask(formData, task) {
 
         // upload image
         const { imageFile, description } = formData;
-        const arrayBuffer = await imageFile.arrayBuffer();
-        const buffer = new Uint8Array(arrayBuffer);
-        const url = `./public/uploads/${userId + '-' + task.id + '.' + imageFile.name.split('.').pop()}`
-        await writeFile(url, buffer);
+        const { secure_url: url } = await uploadFile(imageFile);
 
         // evaluate submission using ai
         const currentState = {
@@ -250,10 +248,10 @@ export async function checkStreak() {
             const { error } = await updateUserById(userId, newUserInfo)
             if (error) throw new Error(error.message)
             return { error: false, message: "You have lost your streak and 20 XP point", reset: true }
-    }
-    return { error: false, message: "Continue Your streak to be in the top of the leaderboard." }
-} catch (error) {
-    console.log(error)
-    return { error: true, message: "Fail to update your streak!!" }
+        }
+        return { error: false, message: "Continue Your streak to be in the top of the leaderboard." }
+    } catch (error) {
+        console.log(error)
+        return { error: true, message: "Fail to update your streak!!" }
     }
 }

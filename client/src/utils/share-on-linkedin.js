@@ -1,9 +1,8 @@
 import "server-only"
 
 import { fetcher } from "./apiService";
-import fs from "fs/promises";
 import { redis } from "./redis";
-import {randomBytes} from "node:crypto"
+import { randomBytes } from "node:crypto"
 
 async function registerUploadInLinkedin(linkedinId, accessToken) {
     const url = "https://api.linkedin.com/v2/assets?action=registerUpload";
@@ -30,11 +29,14 @@ async function registerUploadInLinkedin(linkedinId, accessToken) {
     return { uploadUrl, asset };
 }
 
-async function uploadBinaryFile(sourcePath, destinationUrl, accessToken) {
-    const buffer = await fs.readFile(sourcePath);
+async function uploadBinaryFile(sourceUrl, destinationUrl, accessToken) {
+    const image = await fetch(sourceUrl)
+    const contentType = image.headers.get("content-type");
+    const blob = await image.arrayBuffer();
+    const buffer = Buffer.from(blob);
     const headers = {
         "Authorization": `Bearer ${accessToken}`,
-        "Content-Type": "image/png",
+        "Content-Type": contentType,
         "Content-Length": buffer.length.toString()
     }
     const response = await fetcher(destinationUrl, 'post', buffer, { headers, transformRequest: data => data, maxBodyLength: Infinity });
@@ -88,17 +90,17 @@ async function createVerifcationState(userId) {
 async function isValidateState(state, userId) {
     const key = `li:oauth:state:${userId}`;
     const storedState = await redis.get(key)
-    if(!storedState || storedState != state){
+    if (!storedState || storedState != state) {
         return false
     }
     await redis.del(key);
     return true;
 }
 
-export { 
-    publishLinkedinPostWithImage, 
-    registerUploadInLinkedin, 
+export {
+    publishLinkedinPostWithImage,
+    registerUploadInLinkedin,
     uploadBinaryFile,
     createVerifcationState,
-    isValidateState 
+    isValidateState
 }
