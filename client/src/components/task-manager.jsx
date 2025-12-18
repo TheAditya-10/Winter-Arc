@@ -51,6 +51,7 @@ function TaskManager({ task }) {
     const handleSubmit = async (formData) => {
         setIsLoading(true)
         setShowDialog(false)
+        setRejected("")
         const loadToast = toast.loading("You submission is under process...")
         try {
             const { error, message, score, streak, feedback, rejected: rejectedInfo, submissionId } = await submitTask(formData, task)

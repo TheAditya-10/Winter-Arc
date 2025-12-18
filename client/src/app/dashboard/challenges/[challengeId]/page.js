@@ -25,6 +25,7 @@ export default async function ChallengePage({ params }) {
     }
 
     const {data: completedTaskInfoMap, error: completedTaskInfoMapError} = await getCompletedTaskInfo(challengeId)
+    
     if (completedTaskInfoMapError) {
         console.error(completedTaskInfoMapError)
         return (

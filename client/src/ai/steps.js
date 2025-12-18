@@ -36,13 +36,13 @@ const evaluateSubmissions = async (state) => {
                 {
                     type: 'image_url',
                     image_url: { url: `data:image/png;base64,${state.imageB64}` },
-                }
+                },
             ]
         },
     ];
 
 
-    const {feedback, score} = await evaluationModel.invoke(messages);
+    const { feedback, score } = await evaluationModel.invoke(messages);
 
     return { feedback, score };
 }

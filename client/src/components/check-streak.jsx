@@ -10,9 +10,10 @@ export default function CheckStreak() {
             const { error, message, reset } = await checkStreak()
             if (error || reset) {
                 return toast.error(message)
-            } else {
-                toast.success(message)
-            }
+            } 
+            // else {
+            //     toast.success(message)
+            // }
         }
         run()
     }, [])
