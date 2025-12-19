@@ -4,7 +4,6 @@ import { NextResponse } from "next/server"
 
 export async function GET(request) {
     const { userId } = await auth()
-
     return NextResponse.json({ userId })
 
 }

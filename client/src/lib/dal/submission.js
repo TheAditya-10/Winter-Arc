@@ -15,6 +15,15 @@ export const insertSubmission = async (taskSubmission) => {
     return { data: data.id, error }
 }
 
+export const updateSubmissionById = async (submissionId, taskSubmission) => {
+    const { error } = await supabase
+        .from('posts')
+        .update(taskSubmission)
+        .eq('id', submissionId)
+
+    return { error }
+}
+
 export const getSubmissionInfoById = async (submissionId) => {
     const { data, error } = await supabase
         .from('posts')

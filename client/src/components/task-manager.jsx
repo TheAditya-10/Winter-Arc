@@ -23,14 +23,13 @@ import {
 } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { FileInputField } from "@/components/upload-file"
-import { submitTask } from "@/app/actions"
 import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { submitFormSchema as formSchema } from "@/app/schema"
 import { TaskSubmissionDialog } from "./task-submission"
 import { Flame } from "lucide-react"
-import { shareOnLinkedIn } from "@/app/actions"
+import { shareOnLinkedIn, createSubmission, evaluateSubmission } from "@/app/actions"
 
 
 function TaskManager({ task }) {
@@ -48,40 +47,57 @@ function TaskManager({ task }) {
         }
     })
 
+    const uploadFile = async (file, uploadConfig) => {
+        const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`
+
+        const formData = new FormData()
+        formData.append("file", file)
+        Object.keys(uploadConfig).map(key => formData.append(key, uploadConfig[key]))
+
+        const response = await fetch(url, {
+            method: "POST",
+            body: formData
+        });
+        return await response.json();
+    }
     const handleSubmit = async (formData) => {
         setIsLoading(true)
         setShowDialog(false)
         setRejected("")
         const loadToast = toast.loading("You submission is under process...")
         try {
-            const { error, message, score, streak, feedback, rejected: rejectedInfo, submissionId } = await submitTask(formData, task)
-            if (error) {
+            const { error: formError, message: formMessage, uploadConfig, submissionId } = await createSubmission(formData, task)
+            if (formError) {
                 Object.entries(error).map(([field, message]) => {
                     form.setError(field, { message })
                 })
-                toast.error(message)
-            } else {
-                if (!rejectedInfo) {
-                    if (streak) {
-                        toast(`${streak.count} ` + streak.message, {
-                            icon: <Flame className="size-4" />
-                        })
-                    }
-                    setSubmissionInfo({
-                        score,
-                        feedback,
-                        id: submissionId,
-                    })
-                    toast.success(message)
-                } else {
-                    setRejected(rejectedInfo)
-                    setSubmissionInfo({
-                        feedback
-                    })
-                    toast.error(message)
-                }
-                setShowDialog(true)
+                return toast.error(formMessage)
             }
+
+            const { secure_url: url, error: uploadError } = await uploadFile(form.getValues("imageFile"), uploadConfig)
+            if (uploadError) throw new Error(uploadError)
+
+            const { error, message, rejected: rejectedInfo, score, streak, feedback  } = await evaluateSubmission({ url, description: formData.description }, task, submissionId)
+            if (!rejectedInfo) {
+                if (streak) {
+                    toast(`${streak.count} ` + streak.message, {
+                        icon: <Flame className="size-4" />
+                    })
+                }
+                setSubmissionInfo({
+                    score,
+                    feedback,
+                    id: submissionId,
+                })
+                toast.success(message)
+            } else {
+                setRejected(rejectedInfo)
+                setSubmissionInfo({
+                    feedback
+                })
+                toast.error(message)
+            }
+            setShowDialog(true)
         } catch (error) {
             toast.error("Some think went wrong. Please try again later!!")
         } finally {

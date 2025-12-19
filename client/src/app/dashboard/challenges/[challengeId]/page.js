@@ -1,14 +1,14 @@
 "use server"
 
 import { ChallengeDetail } from "@/components/challenge-detail"
-import { getChallengesInfoById, getAllTasks } from "@/lib/dal/challenge"
 import { getCompletedTaskInfo, isUserRegistredInChallenge } from "@/lib/dal/user"
+import { getChallengesInfoCacheById, getAllTasksCache } from "@/lib/dal/cache"
 
 export default async function ChallengePage({ params }) {
 
     const { challengeId } = await params
 
-    const {data: challengeInfo, error: challengeInfoError} = await getChallengesInfoById(challengeId)
+    const {data: challengeInfo, error: challengeInfoError} = await getChallengesInfoCacheById(challengeId)
     if (challengeInfoError) {
         console.error(challengeInfoError)
         return (
@@ -16,7 +16,7 @@ export default async function ChallengePage({ params }) {
         )
     }
     
-    const {data: challengeTasks, error: challengeTasksError} = await getAllTasks(challengeId)
+    const {data: challengeTasks, error: challengeTasksError} = await getAllTasksCache(challengeId)
     if (challengeTasksError) {
         console.error(challengeTasksError)
         return (

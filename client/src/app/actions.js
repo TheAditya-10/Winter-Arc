@@ -1,7 +1,6 @@
 'use server'
 import { auth } from "@clerk/nextjs/server"
 import { clerkClient } from "@clerk/nextjs/server"
-import { writeFile } from "fs/promises"
 import { registerFormSchema, submitFormSchema } from "./schema"
 import { z } from "zod"
 import { evaluateTaskSubmissionsByAI } from "@/ai/controllers"
@@ -11,10 +10,10 @@ import { uploadBinaryFile, registerUploadInLinkedin, publishLinkedinPostWithImag
 import { getChallengesInfoById, insertChallengeRegistration } from "@/lib/dal/challenge"
 import { getUserStatsById, insertUser, updateUserById } from "@/lib/dal/user"
 import { getUserCred } from "@/lib/dal/creds"
-import { getSubmissionInfoById, insertSubmission } from "@/lib/dal/submission"
+import { getSubmissionInfoById, insertSubmission, updateSubmissionById } from "@/lib/dal/submission"
 import { redirect } from "next/navigation"
 import { isRegistered } from "@/utils/auth"
-import { uploadFile } from "@/utils/cloud-storage"
+import { uploadFile, genrateSignature } from "@/utils/cloud-storage"
 
 const clerk = await clerkClient()
 
@@ -70,45 +69,17 @@ export async function createUser(formData, userLocalTimeZone) {
     }
 }
 
-export async function submitTask(formData, task) {
+export async function evaluateSubmission(formData, task, submissionId) {
 
     const { userId, status, redirectToRegister } = await isRegistered()
     if (!status) return redirectToRegister()
 
     try {
 
-        try {
-            const { success } = await submissionLimit.limit(userId)
-
-            if (!success) {
-                return { message: "You can't submit more than 3 time in a day!!", error: true }
-            }
-        } catch (error) {
-            console.warn("Rate Limit Skipped:\n", error)
-        }
-
-        // verify form data
-        const { success: formVerified, error: formError } = submitFormSchema.safeParse(formData)
-
-        if (!formVerified) {
-            const formFieldErrors = z.flattenError(formError).fieldErrors
-
-            return {
-                error: {
-                    description: formFieldErrors.description[0],
-                    imageFile: formFieldErrors.imageFile[0],
-                },
-                message: "Invalid input!!"
-            }
-        }
-
         const { data: challenge, error: challengeError } = await getChallengesInfoById(task.challengeId)
-
         if (challengeError) throw new Error(challengeError.message)
 
-        // upload image
-        const { imageFile, description } = formData;
-        const { secure_url: url } = await uploadFile(imageFile);
+        const { url, description } = formData;
 
         // evaluate submission using ai
         const currentState = {
@@ -136,24 +107,18 @@ export async function submitTask(formData, task) {
         newUserInfo.points = userInfo.points ? userInfo.points + finalState.score : finalState.score;
 
 
-        // insert submission in posts table
+        // update submission in posts table
         const taskSubmission = {
-            task_id: task.id,
-            challenge_id: challenge.id,
-            user_id: userId,
             image_url: url,
-            text: description,
             ai_score: finalState.score,
         }
 
-        const { data: submissionId, error: insertSubmissionError } = await insertSubmission(taskSubmission)
-
-        if (insertSubmissionError) throw new Error(insertSubmissionError.message);
+        const { error: updateSubmissionError } = await updateSubmissionById(submissionId, taskSubmission)
+        if (updateSubmissionError) throw new Error(updateSubmissionError.message);
 
 
         // update users streaks and points
         const { error: updateUserPointsError } = await updateUserById(userId, newUserInfo)
-
         if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
         const streakUpdateInfo = {
@@ -161,7 +126,59 @@ export async function submitTask(formData, task) {
             count: newUserInfo.streak_count
         }
 
-        return { message: "Submit successfully!!", score: finalState.score, streak: newUserInfo.streak_count && streakUpdateInfo, feedback: finalState.feedback, submissionId }
+        return { message: "Submit successfully!!", score: finalState.score, streak: newUserInfo.streak_count && streakUpdateInfo, feedback: finalState.feedback }
+    } catch (error) {
+        console.error("Error:\n", error)
+        return { message: "Please try again later!!", error: true }
+    }
+}
+
+export async function createSubmission(formData, task) {
+
+    const { userId, status, redirectToRegister } = await isRegistered()
+    if (!status) return redirectToRegister()
+
+    try {
+
+        try {
+            const { success } = await submissionLimit.limit(userId)
+
+            if (!success) {
+                return { message: "You can't submit more than 3 time in a day!!", error: true }
+            }
+        } catch (error) {
+            console.warn("Rate Limit Skipped:\n", error)
+        }
+
+        // verify form data
+        const { success: formVerified, error: formError } = submitFormSchema.safeParse(formData)
+
+        if (!formVerified) {
+            const formFieldErrors = z.flattenError(formError).fieldErrors
+
+            return {
+                error: {
+                    description: formFieldErrors.description?.shift(),
+                    imageFile: formFieldErrors.imageFile?.shift(),
+                },
+                message: "Invalid input!!"
+            }
+        }
+
+        // insert submission in posts table
+        const taskSubmission = {
+            task_id: task.id,
+            challenge_id: task.challengeId,
+            user_id: userId,
+            text: formData.description,
+        }
+
+        const { data: submissionId, error: insertSubmissionError } = await insertSubmission(taskSubmission)
+        if (insertSubmissionError) throw new Error(insertSubmissionError.message);
+
+        const { uploadConfig } = await genrateSignature()
+
+        return { submissionId, uploadConfig }
     } catch (error) {
         console.error("Error:\n", error)
         return { message: "Please try again later!!", error: true }
@@ -251,7 +268,7 @@ export async function checkStreak() {
         }
         return { error: false, message: "Continue Your streak to be in the top of the leaderboard." }
     } catch (error) {
-        console.log(error)
+        console.error(error)
         return { error: true, message: "Fail to update your streak!!" }
     }
 }

@@ -1,16 +1,19 @@
 import "server-only"
 
-import { fetcher } from "./apiService";
+import { createHash } from "node:crypto"
 
+export const genrateSignature = async () => {
+    const timestamp = Math.round(Date.now() / 1000);
+    const upload_preset = "demo-preset";
+    const text = `timestamp=${timestamp}&upload_preset=${upload_preset}${process.env.CLOUDINARY_API_SECRET}`
+    const signature = createHash("sha256").update(text).digest("hex");
 
-export const uploadFile = async (file) => {
-    const url = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`
-
-    const form = new FormData()
-    form.append("api_key", process.env.CLOUDINARY_API_KEY)
-    form.append("upload_preset", "demo-preset")
-    form.append("file", file)
-
-    const response = await fetcher(url, "post", form, { headers: { "Content-Type": "multipart/form-data" } })
-    return response;
+    const uploadConfig = {
+        timestamp,
+        upload_preset,
+        signature_algorithm: "sha256",
+        api_key: process.env.CLOUDINARY_API_KEY,
+        signature,
+    }
+    return { uploadConfig }
 }
