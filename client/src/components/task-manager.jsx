@@ -64,24 +64,32 @@ function TaskManager({ task }) {
         setIsLoading(true)
         setShowDialog(false)
         setRejected("")
-        const loadToast = toast.loading("You submission is under process...")
+        let loadToast = toast.loading("Processing your submission...")
         try {
             const { error: formError, message: formMessage, uploadConfig, submissionId } = await createSubmission(formData, task)
             if (formError) {
-                Object.entries(error).map(([field, message]) => {
+                Object.entries(formError).map(([field, message]) => {
                     form.setError(field, { message })
                 })
                 return toast.error(formMessage)
             }
 
+
+            toast.dismiss(loadToast)
+            loadToast = toast.loading("Loading your image...")
+            
             const { secure_url: url, error: uploadError } = await uploadFile(form.getValues("imageFile"), uploadConfig)
             if (uploadError) throw new Error(uploadError)
+
+            toast.dismiss(loadToast)
+            loadToast = toast.loading("AI is evaluating your submission...")
 
             const { error, message, rejected: rejectedInfo, score, streak, feedback  } = await evaluateSubmission({ url, description: formData.description }, task, submissionId)
             if (!rejectedInfo) {
                 if (streak) {
                     toast(`${streak.count} ` + streak.message, {
-                        icon: <Flame className="size-4" />
+                        icon: <Flame className="size-4" />,
+                        position: "top-right"
                     })
                 }
                 setSubmissionInfo({
@@ -99,7 +107,8 @@ function TaskManager({ task }) {
             }
             setShowDialog(true)
         } catch (error) {
-            toast.error("Some think went wrong. Please try again later!!")
+            toast.error(error.message)
+            // toast.error("Some think went wrong. Please try again later!!")
         } finally {
             toast.dismiss(loadToast)
             setIsLoading(false)
@@ -120,7 +129,8 @@ function TaskManager({ task }) {
                 toast.error(message)
             }
         } catch (error) {
-            toast.error("Some think went wrong. Please try again later!!")
+            toast.error(error.message)
+            // toast.error("Some think went wrong. Please try again later!!")
         } finally {
             toast.dismiss(loadToast)
             setIsLoading(false)

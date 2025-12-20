@@ -19,6 +19,10 @@ export default clerkMiddleware(async (auth, req) => {
     const url = new URL('/auth/register', req.url)
     return NextResponse.redirect(url)
   }
+  if(isAuthRoute(req) && sessionClaims?.publicMetadata?.status == 'registered') {
+    const url = new URL('/dashboard/me', req.url)
+    return NextResponse.redirect(url)
+  }
 
   return NextResponse.next()
 

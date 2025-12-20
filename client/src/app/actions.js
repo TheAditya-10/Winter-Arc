@@ -4,7 +4,7 @@ import { clerkClient } from "@clerk/nextjs/server"
 import { registerFormSchema, submitFormSchema } from "./schema"
 import { z } from "zod"
 import { evaluateTaskSubmissionsByAI } from "@/ai/controllers"
-import { updateStreak } from "@/utils/streaks"
+import { updateStreak, getStreakInfo } from "@/utils/streaks"
 import { submissionLimit } from "@/utils/rate-limiter"
 import { uploadBinaryFile, registerUploadInLinkedin, publishLinkedinPostWithImage } from "@/utils/share-on-linkedin"
 import { getChallengesInfoById, insertChallengeRegistration } from "@/lib/dal/challenge"
@@ -13,7 +13,7 @@ import { getUserCred } from "@/lib/dal/creds"
 import { getSubmissionInfoById, insertSubmission, updateSubmissionById } from "@/lib/dal/submission"
 import { redirect } from "next/navigation"
 import { isRegistered } from "@/utils/auth"
-import { uploadFile, genrateSignature } from "@/utils/cloud-storage"
+import { genrateSignature } from "@/utils/cloud-storage"
 
 const clerk = await clerkClient()
 
@@ -93,7 +93,7 @@ export async function evaluateSubmission(formData, task, submissionId) {
 
         const finalState = await evaluateTaskSubmissionsByAI(currentState);
 
-        if (finalState.score < 10) {
+        if (finalState.score < 6) {
             return { message: "Your submission is rejected!!", feedback: finalState.feedback, rejected: "content-quality" }
         }
 
@@ -105,6 +105,9 @@ export async function evaluateSubmission(formData, task, submissionId) {
         // calculate users streaks and points
         let newUserInfo = updateStreak(userInfo);
         newUserInfo.points = userInfo.points ? userInfo.points + finalState.score : finalState.score;
+
+        const streakUpdateInfo = getStreakInfo(newUserInfo.streak_count)
+        newUserInfo.points += streakUpdateInfo.bonusPoints
 
 
         // update submission in posts table
@@ -121,11 +124,6 @@ export async function evaluateSubmission(formData, task, submissionId) {
         const { error: updateUserPointsError } = await updateUserById(userId, newUserInfo)
         if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
-        const streakUpdateInfo = {
-            message: newUserInfo.streak_count === 1 ? "Your new streak is started, Complete tasks daily to maintain your streak!!" : "Your streak is updated successfully.",
-            count: newUserInfo.streak_count
-        }
-
         return { message: "Submit successfully!!", score: finalState.score, streak: newUserInfo.streak_count && streakUpdateInfo, feedback: finalState.feedback }
     } catch (error) {
         console.error("Error:\n", error)
@@ -140,15 +138,15 @@ export async function createSubmission(formData, task) {
 
     try {
 
-        try {
-            const { success } = await submissionLimit.limit(userId)
+        // try {
+        //     const { success } = await submissionLimit.limit(userId)
 
-            if (!success) {
-                return { message: "You can't submit more than 3 time in a day!!", error: true }
-            }
-        } catch (error) {
-            console.warn("Rate Limit Skipped:\n", error)
-        }
+        //     if (!success) {
+        //         return { message: "You can't submit more than 3 time in a day!!", error: true }
+        //     }
+        // } catch (error) {
+        //     console.warn("Rate Limit Skipped:\n", error)
+        // }
 
         // verify form data
         const { success: formVerified, error: formError } = submitFormSchema.safeParse(formData)
@@ -261,10 +259,10 @@ export async function checkStreak() {
         const newUserInfo = updateStreak(userInfo, false)
 
         if (newUserInfo.streak_status == "reset") {
-            newUserInfo.points = userInfo.points - 20;
+            newUserInfo.points = userInfo.points - 50;
             const { error } = await updateUserById(userId, newUserInfo)
             if (error) throw new Error(error.message)
-            return { error: false, message: "You have lost your streak and 20 XP point", reset: true }
+            return { error: false, message: "You have lost your streak and 50 XP point", reset: true }
         }
         return { error: false, message: "Continue Your streak to be in the top of the leaderboard." }
     } catch (error) {

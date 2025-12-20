@@ -11,9 +11,6 @@ export default function CheckStreak() {
             if (error || reset) {
                 return toast.error(message)
             } 
-            // else {
-            //     toast.success(message)
-            // }
         }
         run()
     }, [])
