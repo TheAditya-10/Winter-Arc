@@ -38,18 +38,18 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
+import { ButtonGroup } from "@/components/ui/button-group"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { useRouter } from "next/navigation";
-
-
 
 
 export const leadearboardColumns = [
     {
         accessorKey: "rank",
         header: () => <div className="w-full text-center">Rank</div>,
-        cell: ({ row }) => (<div className="w-full text-center">{row.original.rank}</div>)
+        cell: ({ row, table }) => (<div className="w-full text-center">{(table.getSortedRowModel()?.flatRows?.findIndex((flatRow)=> flatRow.id == row.id) || 0) + 1}</div>)
     },
     {
         accessorKey: "name",
@@ -107,6 +107,7 @@ export function LeaderboardTable(
 
     const [data, setData] = React.useState(() => initialData)
     const [columnFilters, setColumnFilters] = React.useState([])
+    const [sorting, setSorting] = React.useState([{ id: "points", desc: true }])
     const [pagination, setPagination] = React.useState({
         pageIndex: 0,
         pageSize: 10,
@@ -122,11 +123,13 @@ export function LeaderboardTable(
         state: {
             columnFilters,
             pagination,
-            columnVisibility
+            columnVisibility,
+            sorting
         },
         getRowId: (row) => row.id.toString(),
         enableRowSelection: true,
         onColumnFiltersChange: setColumnFilters,
+        onSortingChange: setSorting,
         onPaginationChange: setPagination,
         onColumnVisibilityChange: setColumnVisibility,
         getCoreRowModel: getCoreRowModel(),
@@ -139,16 +142,31 @@ export function LeaderboardTable(
 
 
     return (
-        <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6 @2xl/main:w-[44rem] @2xl/main:self-center">
-            <div className="flex items-center py-4">
+        <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6 @2xl/main:w-[42rem] @2xl/main:self-center">
+            <div className="flex items-center justify-between py-4">
                 <Input
-                    placeholder="Filter by username..."
+                    placeholder="Search by username..."
                     value={(table.getColumn("username")?.getFilterValue()) ?? ""}
                     onChange={(event) =>
                         table.getColumn("username")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
+                <ButtonGroup>
+                    <Button
+                        variant={columnVisibility.username? "ghost" : "secondary"}
+                        onClick={() => {
+                            setSorting([{ id: "points", desc: true }])
+                            setColumnVisibility({ username: false, points: true })
+                        }}>Daily</Button>
+                    <Button
+                        variant={columnVisibility.username? "secondary" : "ghost"}
+                        onClick={() => {
+                            setSorting([{ id: "points", desc: false }])
+                            setColumnVisibility({ username: true, points: false })
+                        }}
+                    >Weekly</Button>
+                </ButtonGroup>
             </div>
             <div className="overflow-hidden rounded-lg border">
                 <Table>
@@ -170,11 +188,11 @@ export function LeaderboardTable(
                     <TableBody className="**:data-[slot=table-cell]:first:w-8">
                         {table.getRowModel().rows?.length ? (
                             <>
-                                {table.getRowModel().rows.map((row) => (
+                                {table.getRowModel().rows.map((row, i) => (
                                     <TableRow
                                         key={row.id}
                                         className="relative z-0 even:bg-muted/20"
-                                        onClick={()=>router.push(`/dashboard/${row.id}`)}
+                                        onClick={() => router.push(`/dashboard/${row.id}`)}
                                     >
                                         {row.getVisibleCells().map((cell) => (
                                             <TableCell key={cell.id}>

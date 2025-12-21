@@ -19,5 +19,5 @@ export default async function Leaderboard() {
         return { ...item, rank: index + 1 }
     })
 
-    return (<LeaderboardTable columns={leadearboardColumns} data={rankedUsers} />)
+    return (<LeaderboardTable columns={leadearboardColumns} data={data} />)
 }
