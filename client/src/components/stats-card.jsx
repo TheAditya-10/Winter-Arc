@@ -20,13 +20,13 @@ export default function StatsCards({ stats }) {
     },
     {
       label: "Tasks Completed",
-      value: stats.totalTasks ?? 0,
+      value: stats.totalDailyTasks ?? 0,
       icon: <IconCheck className="w-6 h-6" />,
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
       {items.map((item) => (
         <Card
           key={item.label}

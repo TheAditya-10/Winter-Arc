@@ -2,11 +2,14 @@
 
 import { LeaderboardTable, leadearboardColumns } from "@/components/leaderboard-table";
 import { getAllUserProfile } from "@/lib/dal/user";
+import { auth } from "@clerk/nextjs/server";
 
 
 export default async function Leaderboard() {
 
     const { data, error } = await getAllUserProfile()
+
+    const {userId} = await auth()
 
     if (error) {
         console.error(error)
@@ -15,9 +18,5 @@ export default async function Leaderboard() {
         )
     }
 
-    const rankedUsers = data.map((item, index) => {
-        return { ...item, rank: index + 1 }
-    })
-
-    return (<LeaderboardTable columns={leadearboardColumns} data={data} />)
+    return (<LeaderboardTable columns={leadearboardColumns} data={data} userId={userId} />)
 }

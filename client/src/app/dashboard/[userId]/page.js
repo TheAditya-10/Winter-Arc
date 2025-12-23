@@ -7,10 +7,9 @@ import { getUserProfileById, getUserStatsById, getActiveChallengeInfoByUserId } 
 import { auth } from "@clerk/nextjs/server"
 
 
-export default async function Page({ params, searchParams }) {
+export default async function Page({ params }) {
 
     let { userId } = await params;
-    const {message, type} = await searchParams;
 
     if (userId == "me") {
         const {userId: uId} = await auth()
@@ -54,7 +53,7 @@ export default async function Page({ params, searchParams }) {
                     totalXp: userStats.points,
                     currentStreak: userStats.streakCount,
                     highestStreak: userStats.longestStreak,
-                    totalTasks: userStats.taskCompleted,
+                    totalDailyTasks: userStats.dailyTaskCompletedCount,
                 }} />
             </section>
             <section>

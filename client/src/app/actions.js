@@ -106,8 +106,12 @@ export async function evaluateSubmission(formData, task, submissionId) {
         let newUserInfo = updateStreak(userInfo);
         newUserInfo.points = userInfo.points ? userInfo.points + finalState.score : finalState.score;
 
+        if(newUserInfo.streak_count == 1 && userInfo.streakCount > 0) newUserInfo.points -= 50;
+
         const streakUpdateInfo = getStreakInfo(newUserInfo.streak_count)
         newUserInfo.points += streakUpdateInfo.bonusPoints
+
+        newUserInfo.daily_task_completed_count = userInfo.dailyTaskCompletedCount + 1;
 
 
         // update submission in posts table
@@ -138,15 +142,15 @@ export async function createSubmission(formData, task) {
 
     try {
 
-        // try {
-        //     const { success } = await submissionLimit.limit(userId)
+        try {
+            const { success } = await submissionLimit.limit(userId)
 
-        //     if (!success) {
-        //         return { message: "You can't submit more than 3 time in a day!!", error: true }
-        //     }
-        // } catch (error) {
-        //     console.warn("Rate Limit Skipped:\n", error)
-        // }
+            if (!success) {
+                return { message: "You can't submit more than 3 time in a day!!", error: true }
+            }
+        } catch (error) {
+            console.warn("Rate Limit Skipped:\n", error)
+        }
 
         // verify form data
         const { success: formVerified, error: formError } = submitFormSchema.safeParse(formData)
@@ -262,7 +266,12 @@ export async function checkStreak() {
             newUserInfo.points = userInfo.points - 50;
             const { error } = await updateUserById(userId, newUserInfo)
             if (error) throw new Error(error.message)
-            return { error: false, message: "You have lost your streak and 50 XP point", reset: true }
+                return { error: false, message: "You have lost your streak and 50 XP point", reset: true }
+        }
+        if(newUserInfo.streak_freeze_count !== undefined){
+            const { error } = await updateUserById(userId, newUserInfo)
+            if (error) throw new Error(error.message)
+            return { error: false, message: "Streak freeze is used to save your streak!!" }
         }
         return { error: false, message: "Continue Your streak to be in the top of the leaderboard." }
     } catch (error) {

@@ -85,6 +85,8 @@ function TaskManager({ task }) {
             loadToast = toast.loading("AI is evaluating your submission...")
 
             const { error, message, rejected: rejectedInfo, score, streak, feedback  } = await evaluateSubmission({ url, description: formData.description }, task, submissionId)
+            if(error) throw new Error(error.message)
+
             if (!rejectedInfo) {
                 if (streak) {
                     toast(`${streak.count} ` + streak.message, {

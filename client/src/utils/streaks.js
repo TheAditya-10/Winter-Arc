@@ -41,17 +41,20 @@ function isStreakBroken({ lastStreakDate }) {
     return differenceInDays(todayStart, lastUpdateStart) > 1;
 }
 
-function getStreakInfo(streakCount){
-    switch(streakCount){
-        case 10: return {bonusPoints: 150, count: streakCount, message: "+150XP Consistency always rewards!!"};
-        case 20: return {bonusPoints: 300, count: streakCount, message: "+300XP Consistency always rewards!!"};
-        case 30: return {bonusPoints: 500, count: streakCount, message: "+500XP Consistency always rewards!!"};
-        case 1: return {bonusPoints: 0, count: streakCount, message: "Your new streak is started, Complete tasks daily to maintain your streak!!"};
-        case _: return {bonusPoints: 0, count: streakCount, message: "Your streak is updated successfully."};
+function getStreakInfo(streakCount) {
+    switch (streakCount) {
+        case 10: return { bonusPoints: 150, count: streakCount, message: "+150XP Consistency always rewards!!" };
+        case 20: return { bonusPoints: 300, count: streakCount, message: "+300XP Consistency always rewards!!" };
+        case 30: return { bonusPoints: 500, count: streakCount, message: "+500XP Consistency always rewards!!" };
+        case 1: return { bonusPoints: 0, count: streakCount, message: "Your new streak is started, Complete tasks daily to maintain your streak!!" };
+        case _: return { bonusPoints: 0, count: streakCount, message: "Your streak is updated successfully." };
     }
 }
 
 function updateStreak(userInfo, increment = true) {
+
+    const { streakFreezeCount } = userInfo
+    const canFreezeStreak = (streakFreezeCount && streakFreezeCount > 0)
 
     const canUpdateStreak = canUpdateStreakToday({
         lastStreakDate: userInfo.lastStreakUpdate
@@ -71,13 +74,21 @@ function updateStreak(userInfo, increment = true) {
     const { now } = getStreakDates();
 
     if (!increment) {
-        if(!isBroken) return {}
+        if (!isBroken) return {}
 
+        if (!canFreezeStreak) {
+            const updatedUserInfo = {
+                streak_count: 0,
+                last_streak_update_date: now.getTime(),
+                streak_status: "reset",
+            };
+            return updatedUserInfo
+        }
         const updatedUserInfo = {
-            streak_count: 0,
+            streak_freeze_count: streakFreezeCount - 1,
             last_streak_update_date: now.getTime(),
-            streak_status: "reset",
         };
+
         return updatedUserInfo
     }
 
@@ -85,7 +96,7 @@ function updateStreak(userInfo, increment = true) {
 
     // Calculate new streak count
     // If broken, start over at 1
-    const newCount = isBroken ? 1 : currentStreak + 1;
+    const newCount = isBroken && !canFreezeStreak ? 1 : currentStreak + 1;
 
     // Update longest streak if needed
     const newLongest = Math.max(newCount, userInfo.longestStreak);
@@ -96,6 +107,7 @@ function updateStreak(userInfo, increment = true) {
         last_streak_update_date: now.getTime(),
         longest_streak: newLongest,
         streak_status: "started",
+        streak_freeze_count: isBroken && canFreezeStreak ? streakFreezeCount - 1 : streakFreezeCount,
     };
 
     return updatedUserInfo;

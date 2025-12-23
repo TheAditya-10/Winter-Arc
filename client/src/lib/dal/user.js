@@ -19,7 +19,7 @@ export const getUserProfileById = async (userId) => {
 
 export const getUserStatsById = async (userId, streakMetadata = false) => {
 
-    const column = `points, streakCount:streak_count, longestStreak:longest_streak${streakMetadata ? ", lastStreakUpdate:last_streak_update_date, streakStatus:streak_status" : ""}`
+    const column = `points, streakCount:streak_count, longestStreak:longest_streak, dailyTaskCompletedCount:daily_task_completed_count${streakMetadata ? ", lastStreakUpdate:last_streak_update_date, streakStatus:streak_status, streakFreezeCount:streak_freeze_count" : ""}`
     const { data, error } = await supabase
         .from("users")
         .select(column)
@@ -27,15 +27,14 @@ export const getUserStatsById = async (userId, streakMetadata = false) => {
         .limit(1)
         .single()
 
-    return { data: { ...data, taskCompleted: -1 }, error }
+    return { data, error }
 }
 
-export const getAllUserProfile = async (orderBy = "points", ascending = false) => {
+export const getAllUserProfile = async () => {
 
     const { data, error } = await supabase
         .from("users")
-        .select(`id, name, username, avatarUrl:avatar_url, ${orderBy}`)
-        .order(orderBy, { ascending: ascending })
+        .select(`id, name, username, avatarUrl:avatar_url, points, weeklyPoints:weekly_points`)
 
     return { data, error }
 }
