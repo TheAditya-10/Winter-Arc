@@ -106,7 +106,7 @@ export async function evaluateSubmission(formData, task, submissionId) {
         let newUserInfo = updateStreak(userInfo);
         newUserInfo.points = userInfo.points ? userInfo.points + finalState.score : finalState.score;
 
-        if(newUserInfo.streak_count == 1 && userInfo.streakCount > 0) newUserInfo.points -= 50;
+        if (newUserInfo.streak_count == 1 && userInfo.streakCount > 0) newUserInfo.points -= 50;
 
         const streakUpdateInfo = getStreakInfo(newUserInfo.streak_count)
         newUserInfo.points += streakUpdateInfo.bonusPoints
@@ -266,9 +266,9 @@ export async function checkStreak() {
             newUserInfo.points = userInfo.points - 50;
             const { error } = await updateUserById(userId, newUserInfo)
             if (error) throw new Error(error.message)
-                return { error: false, message: "You have lost your streak and 50 XP point", reset: true }
+            return { error: false, message: "You have lost your streak and 50 XP point", reset: true }
         }
-        if(newUserInfo.streak_freeze_count !== undefined){
+        if (newUserInfo.streak_freeze_count !== undefined) {
             const { error } = await updateUserById(userId, newUserInfo)
             if (error) throw new Error(error.message)
             return { error: false, message: "Streak freeze is used to save your streak!!" }

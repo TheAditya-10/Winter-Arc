@@ -125,7 +125,7 @@ function TaskManager({ task }) {
         try {
             const { error, message } = await shareOnLinkedIn(submissionInfo.id)
             if (!error) {
-                router.push("https://www.linkedin.com/feed/")
+                router.push("/linkedin")
                 toast.success(message)
             } else {
                 toast.error(message)
