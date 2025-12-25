@@ -1,7 +1,7 @@
 'use server'
 import { auth } from "@clerk/nextjs/server"
 import { clerkClient } from "@clerk/nextjs/server"
-import { registerFormSchema, submitFormSchema } from "./schema"
+import { registerFormSchema, submitFormSchema, draftFormSchema } from "./schema"
 import { z } from "zod"
 import { evaluateTaskSubmissionsByAI } from "@/ai/controllers"
 import { updateStreak, getStreakInfo } from "@/utils/streaks"
@@ -231,7 +231,7 @@ export async function registerForChallenge(challengeId) {
 }
 
 
-export async function shareOnLinkedIn(submissionId) {
+export async function shareOnLinkedIn(formData) {
 
     return withServerActionInstrumentation("share-on-linkedin",
         async () => {
@@ -239,6 +239,20 @@ export async function shareOnLinkedIn(submissionId) {
             if (!status) return redirectToRegister()
 
             try {
+                // verify form data
+                const { success: formVerified, error: formError } = draftFormSchema.safeParse(formData)
+
+                if (!formVerified) {
+                    const formFieldErrors = z.flattenError(formError).fieldErrors
+
+                    return {
+                        error: {
+                            textContent: formFieldErrors.description?.shift(),
+                            imageUrl: formFieldErrors.imageFile?.shift(),
+                        },
+                        message: "Invalid input!!"
+                    }
+                }
 
                 const { data: userCreds, error: userCredsError } = await getUserCred()
 
@@ -253,16 +267,10 @@ export async function shareOnLinkedIn(submissionId) {
                     throw new Error("Credential get expired!!")
                 }
 
-                const { data: taskSubmission, error: taskSubmissionError } = await getSubmissionInfoById(submissionId)
-
-                if (taskSubmissionError) {
-                    throw new Error(taskSubmissionError.message);
-                }
-
-                const textContent = "📅 Day {{DAY_NUMBER}} / 30 – {{CHALLENGE_NAME}}\n\nToday’s focus was on **{{TODAY_TASK}}**.\n\n✅ What I completed today:\n- {{TASK_POINT_1}}\n- {{TASK_POINT_2}}\n- {{TASK_POINT_3}}\n\n📚 Key learnings:\n- {{LEARNING_1}}\n- {{LEARNING_2}}\n\nThis challenge is helping me build consistency, improve problem-solving, and stay accountable through daily progress.\n\nLooking forward to continuing the journey tomorrow 🚀\n\n#30DayChallenge #DailyProgress #LearningInPublic #Consistency #ProfessionalGrowth #BuildInPublic #CareerGrowth"
+                const {textContent, imageUrl} = formData
 
                 const { uploadUrl, asset: imageAsset } = await registerUploadInLinkedin(userCreds.linkedinId, userCreds.accessToken)
-                await uploadBinaryFile(taskSubmission.imageUrl, uploadUrl, userCreds.accessToken);
+                await uploadBinaryFile(imageUrl, uploadUrl, userCreds.accessToken);
                 await publishLinkedinPostWithImage(userCreds.accessToken, userCreds.linkedinId, imageAsset, textContent, "imageDescription", "imageTitle")
 
                 return { message: "Draft of Linkedin Post is created!!" }
