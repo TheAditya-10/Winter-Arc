@@ -289,18 +289,27 @@ export async function checkStreak() {
 
                 const newUserInfo = updateStreak(userInfo, false)
 
+                let response = { message: "Continue Your streak to be in the top of the leaderboard." }
+
+                if (newUserInfo.streak_freeze_count !== undefined) {
+                    response = { message: "Streak freeze is used to save your streak!!" }
+                }
+
                 if (newUserInfo.streak_status == "reset") {
                     newUserInfo.points = userInfo.points - 50;
-                    const { error } = await updateUserById(userId, newUserInfo)
-                    if (error) throw new Error(error.message)
-                    return { error: false, message: "You have lost your streak and 50 XP point", reset: true }
+                    response = { message: "You have lost your streak and 50 XP point", reset: true }
                 }
-                if (newUserInfo.streak_freeze_count !== undefined) {
-                    const { error } = await updateUserById(userId, newUserInfo)
-                    if (error) throw new Error(error.message)
-                    return { error: false, message: "Streak freeze is used to save your streak!!" }
+
+                const { error } = await updateUserById(userId, newUserInfo)
+                if (error) throw new Error(error.message)
+
+                const clientUserInfo = {
+                    longestStreak: newUserInfo.longest_streak || userInfo.longestStreak,
+                    points: newUserInfo.points || userInfo.points,
+                    streakCount: newUserInfo.streak_count || userInfo.streakCount
                 }
-                return { error: false, message: "Continue Your streak to be in the top of the leaderboard." }
+
+                return { error: false, userStats: clientUserInfo, ...response }
             } catch (error) {
                 console.error(error)
                 return { error: true, message: "Fail to update your streak!!" }

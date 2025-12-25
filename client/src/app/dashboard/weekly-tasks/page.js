@@ -16,7 +16,7 @@ export default async function Page() {
 
     const titles = ["Week One", "Week Two", "Week Three", "Week Four"]
 
-    const weeklyTaskStartTime = ["04", "11", "22", "25"].map((dayNumber) => new TZDate(new Date(`2025-12-${dayNumber}T00:00:00`), "Asia/Calcutta").getTime())
+    const weeklyTaskStartTime = ["04", "11", "18", "25"].map((dayNumber) => new TZDate(new Date(`2026-01-${dayNumber}T00:00:00`), "Asia/Calcutta").getTime())
 
     const weeklyTaskState = weeklyTaskStartTime.map((startTime) => {
         const now = new TZDate(new Date(), "Asia/Calcutta").getTime();
