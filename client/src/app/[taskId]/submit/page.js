@@ -1,26 +1,23 @@
 "use server"
 
-import { createClient } from "@/utils/supabase/server"
 import { TaskManager } from "@/components/task-manager"
+import { getTaskInfoCacheById } from "@/lib/dal/cache"
+import { isRegistered } from "@/utils/auth"
 
 export default async function Page({ params }) {
-    const { taskId } = await params
-    const supabase = await createClient()
-    const { data, error } = await supabase
-        .from("challenge_tasks")
-        .select(`
-                id, description, day_number, title,
-                challenge: challenges(title, description, id)
-            `)
-        .eq('id', taskId)
-        .limit(1)
-        .single()
 
-    if(error) {
-        console.error(error)
-        return <h1>Some thing went wrong. Please try again later!!</h1>
+    const {status, redirectToRegister} = await isRegistered()
+    if(!status) return redirectToRegister()
+
+    const { taskId } = await params
+
+    const { data: task, error: taskError } = await getTaskInfoCacheById(taskId)
+    if (taskError) {
+        console.error(taskError)
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
     }
+
     return (
-        <TaskManager task={data}/>
+        <TaskManager task={task} />
     )
 }

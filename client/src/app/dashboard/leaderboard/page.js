@@ -1,19 +1,20 @@
 "use server"
 
-import { LeaderboardTable, leadearboardColumns, leaderboardInitialData } from "@/components/leaderboard-table";
-import { createClient } from "@/utils/supabase/server";
+import { LeaderboardTable, leadearboardColumns } from "@/components/leaderboard-table";
+import { getAllUserProfile } from "@/lib/dal/user";
+import { auth } from "@clerk/nextjs/server";
+
+
 export default async function Leaderboard() {
-    const supabase = await createClient();
 
-    const { data, error } = await supabase
-        .from("users")
-        .select("name, username, id, points, avatar_url")
-        .gt("points", 0)
-        .order("points", { ascending: false })
+    const { data, error } = await getAllUserProfile()
 
-    const rankedUsers = data.map((item, index) => {
-        return { ...item, rank: index + 1 }
-    })
-    
-    return (<LeaderboardTable columns={leadearboardColumns} data={rankedUsers} />)
+    const {userId} = await auth()
+
+    if (error) {
+        console.error(error)
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
+    }
+
+    return (<LeaderboardTable columns={leadearboardColumns} data={data} userId={userId} />)
 }

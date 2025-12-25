@@ -6,12 +6,15 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
-import { auth } from "@clerk/nextjs/server"
+import { isRegistered } from "@/utils/auth"
+import CheckStreak from "@/components/check-streak"
 
 
 export default async function DashboardLayout({ children }) {
 
-  const { sessionClaims } = await auth()
+  const { status, redirectToRegister, sessionClaims } = await isRegistered()
+  if (!status) return redirectToRegister()
+
   const user = {
     id: sessionClaims.id,
     email: sessionClaims.email,
@@ -24,11 +27,12 @@ export default async function DashboardLayout({ children }) {
     <SidebarProvider
       style={
         {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--sidebar-width": "calc(var(--spacing) * 56)",
           "--header-height": "calc(var(--spacing) * 12)"
         }
       }>
-      <AppSidebar variant="inset" user={user}/>
+      <AppSidebar variant="inset" user={user} />
+      <CheckStreak />
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">

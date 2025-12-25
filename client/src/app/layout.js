@@ -23,7 +23,7 @@ export const metadata = {
 
 
 export default function RootLayout({ children }) {
-  
+
   return (
     <ClerkProvider
       appearance={{ theme: dark, }}
@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           {children}
-          <Toaster position="top-center"/>
+          <Toaster position="top-center" />
         </body>
       </html>
     </ClerkProvider>

@@ -1,35 +1,40 @@
 "use server"
 
-import { createClient } from "@/utils/supabase/server"
 import { ChallengeDetail } from "@/components/challenge-detail"
-import { auth } from "@clerk/nextjs/server"
+import { getCompletedTaskInfo, isUserRegistredInChallenge } from "@/lib/dal/user"
+import { getChallengesInfoCacheById, getAllTasksCache } from "@/lib/dal/cache"
 
 export default async function ChallengePage({ params }) {
+
     const { challengeId } = await params
-    const { userId } = await auth()
 
-    const supabase = await createClient()
-    const { data, error } = await supabase
-        .from("challenges")
-        .select("*, challenge_tasks(*), challenge_registrations(id), posts(task_id, ai_score)")
-        .eq("id", challengeId)
-        .eq("posts.user_id", userId)
-        .filter('challenge_registrations.user_id', 'eq', userId)
-        .limit(1)
-        .single()
-        .order("day_number", { referencedTable: 'challenge_tasks' })
-
-    if (error) {
-        console.error(error)
-        return (
-            <h1>Some thing went wrong. Please try again later!!</h1>
-        )
+    const {data: challengeInfo, error: challengeInfoError} = await getChallengesInfoCacheById(challengeId)
+    if (challengeInfoError) {
+        console.error(challengeInfoError)
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
     }
-    const { challenge_tasks: tasks, challenge_registrations: registred, posts: taskCompleted, ...challenge } = data
-
-    const isRegistred = (registred.length > 0)
     
+    const {data: challengeTasks, error: challengeTasksError} = await getAllTasksCache(challengeId)
+    if (challengeTasksError) {
+        console.error(challengeTasksError)
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
+    }
+
+    const {data: completedTaskInfoMap, error: completedTaskInfoMapError} = await getCompletedTaskInfo(challengeId)
+    
+    if (completedTaskInfoMapError) {
+        console.error(completedTaskInfoMapError)
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
+    }
+    
+    const {data:isRegistred, error: isRegistredError} = await isUserRegistredInChallenge(challengeId)
+    if (isRegistredError) {
+        console.error(isRegistredError)
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
+    }
+
+
     return (
-        <ChallengeDetail tasks={tasks} challenge={challenge} isRegistred={isRegistred} taskCompleted={taskCompleted} />
+        <ChallengeDetail tasks={challengeTasks} challenge={challengeInfo} isRegistred={isRegistred} taskCompleted={completedTaskInfoMap} />
     )
 }

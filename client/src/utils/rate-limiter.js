@@ -1,19 +1,13 @@
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+import "server-only"
 
-export const globalLimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.fixedWindow(100, "10m"),
-  ephemeralCache: new Map(),
-  prefix: "@upstash/ratelimit",
-  analytics: true,
-});
+import { Ratelimit } from "@upstash/ratelimit";
+import { redis } from "./redis";
 
 export const submissionLimit = new Ratelimit({
-  redis: Redis.fromEnv(),
+  redis: redis,
   limiter: Ratelimit.fixedWindow(3, "1d"),
   ephemeralCache: new Map(),
-  prefix: "task-submit-",
+  prefix: "task-submit",
   analytics: true,
 });
 

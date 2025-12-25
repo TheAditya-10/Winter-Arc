@@ -33,13 +33,9 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Separator } from "./ui/separator"
+import Link from "next/link"
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -52,19 +48,14 @@ const data = {
       icon: IconListDetails,
     },
     {
-      title: "Leaderboard",
-      url: "/dashboard/leaderboard",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
+      title: "Weekly Task",
+      url: "/dashboard/weekly-tasks",
       icon: IconFolder,
     },
     {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
+      title: "Leaderboard",
+      url: "/dashboard/leaderboard",
+      icon: IconChartBar,
     },
   ],
   navClouds: [
@@ -161,10 +152,10 @@ export function AppSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
-              <a href="#">
+              <Link href="/">
                 <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
+                <span className="text-base font-semibold font-mono">Winter Arc</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

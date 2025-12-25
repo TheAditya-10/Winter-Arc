@@ -1,4 +1,4 @@
-"use server"
+import "server-only"
 
 import { TZDate } from "@date-fns/tz";
 import { startOfDay, differenceInDays } from "date-fns";
@@ -31,7 +31,7 @@ function canUpdateStreakToday({
 
 function isStreakBroken({ lastStreakDate }) {
     // New users haven't broken their streak
-    if (lastStreakDate < 0) return false;
+    if (!lastStreakDate) return false;
 
     const { todayStart, timezone } = getStreakDates();
     const lastUpdate = new TZDate(lastStreakDate, timezone);
@@ -41,42 +41,114 @@ function isStreakBroken({ lastStreakDate }) {
     return differenceInDays(todayStart, lastUpdateStart) > 1;
 }
 
-function updateStreak(userInfo) {
+function streakFreeze({ lastStreakUpdate, streakFreezeCount, streakCount, longestStreak }) {
+    const { todayStart, timezone, now } = getStreakDates();
+    const lastUpdate = new TZDate(lastStreakUpdate, timezone);
+    const lastUpdateStart = startOfDay(lastUpdate);
+    const streakGap = differenceInDays(todayStart, lastUpdateStart) - 1;
+    if (streakGap > streakFreezeCount) {
+        return {
+            streak_count: 0,
+            last_streak_update_date: now.getTime(),
+            longest_streak: Math.max(streakCount + streakFreezeCount, longestStreak),
+            streak_status: "reset",
+            streak_freeze_count: 0,
+        }
+    } else {
+        return {
+            streak_count: streakCount + streakGap,
+            last_streak_update_date: now.getTime(),
+            longest_streak: Math.max(streakCount + streakGap, longestStreak),
+            streak_status: "started",
+            streak_freeze_count: streakFreezeCount - streakGap,
+        }
+    }
+}
+
+function getStreakInfo(streakCount) {
+    switch (streakCount) {
+        case 10: return { bonusPoints: 150, count: streakCount, message: "+150XP Consistency always rewards!!" };
+        case 20: return { bonusPoints: 300, count: streakCount, message: "+300XP Consistency always rewards!!" };
+        case 30: return { bonusPoints: 500, count: streakCount, message: "+500XP Consistency always rewards!!" };
+        case 1: return { bonusPoints: 0, count: streakCount, message: "Your new streak is started, Complete tasks daily to maintain your streak!!" };
+        default: return { bonusPoints: 0, count: streakCount, message: "Your streak is updated successfully." };
+    }
+}
+
+function updateStreak(userInfo, increment = true) {
+
+    const { streakFreezeCount } = userInfo
+    const canFreezeStreak = (streakFreezeCount && streakFreezeCount > 0)
 
     const canUpdateStreak = canUpdateStreakToday({
-        lastStreakDate: userInfo.last_streak_update_date,
+        lastStreakDate: userInfo.lastStreakUpdate
     });
-    
-    const hasStreakStarted = userInfo.streak_status === "started";
+
+    const hasStreakStarted = userInfo.streakStatus === "started";
 
     if (hasStreakStarted && !canUpdateStreak) {
         return {};
     }
 
     // They missed a day?
-    const isBroken = isStreakBroken({
-        lastStreakDate: userInfo.last_streak_update_date,
+    const isBroken = hasStreakStarted && isStreakBroken({
+        lastStreakDate: userInfo.lastStreakUpdate,
     });
 
     const { now } = getStreakDates();
-    const currentStreak = userInfo.streak_count;
 
-    // Calculate new streak count
-    // If broken, start over at 1
-    const newCount = isBroken ? 1 : currentStreak + 1;
+    if (!increment) {
+        if (!isBroken) return {}
 
-    // Update longest streak if needed
-    const newLongest = Math.max(newCount, userInfo.longest_streak);
+        if (!canFreezeStreak) {
+            const updatedUserInfo = {
+                streak_count: 0,
+                last_streak_update_date: now.getTime(),
+                streak_status: "reset",
+            };
+            return updatedUserInfo
+        }
+        const updatedUserInfo = streakFreeze({
+            lastStreakUpdate: userInfo.lastStreakUpdate,
+            streakFreezeCount,
+            streakCount: userInfo.streakCount,
+            longestStreak: userInfo.longestStreak,
+        })
 
-    // Update user data
-    const updatedUserInfo = {
-        streak_count: newCount,
-        last_streak_update_date: now.getTime(),
-        longest_streak: newLongest,
-        streak_status: "started",
-    };
+        return updatedUserInfo
+    }
 
-    return updatedUserInfo;
+    const currentStreak = userInfo.streakCount;
+
+    if (!isBroken) {
+        const updatedUserInfo = {
+            streak_count: currentStreak + 1,
+            last_streak_update_date: now.getTime(),
+            longest_streak: Math.max(currentStreak + 1, userInfo.longestStreak),
+            streak_status: "started",
+        };
+
+        return updatedUserInfo;
+    }
+
+    if (!canFreezeStreak) {
+        const updatedUserInfo = {
+            streak_count: 1,
+            last_streak_update_date: now.getTime(),
+            longest_streak: Math.max(1, userInfo.longestStreak),
+            streak_status: "started",
+        };
+
+        return updatedUserInfo;
+    }
+
+    const updatedUserInfo = streakFreeze({
+        lastStreakUpdate: userInfo.lastStreakUpdate,
+        streakFreezeCount,
+        streakCount: userInfo.currentStreak,
+        longestStreak: userInfo.longestStreak,
+    })
+    return { ...updatedUserInfo, streak_count: updatedUserInfo.streak_count + 1, streak_status: "started" };
 }
 
-export { updateStreak };
+export { updateStreak, getStreakInfo };

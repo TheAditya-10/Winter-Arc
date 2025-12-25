@@ -1,3 +1,5 @@
+import "server-only"
+
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { EvaluationResponseSchema } from "./schemas.js";
 

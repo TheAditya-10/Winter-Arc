@@ -2,12 +2,6 @@
 
 import * as React from "react"
 
-import {
-    IconChevronLeft,
-    IconChevronRight,
-    IconChevronsLeft,
-    IconChevronsRight,
-} from "@tabler/icons-react"
 import { UserRound, AtSign, CircleStar } from "lucide-react";
 import {
     flexRender,
@@ -15,50 +9,35 @@ import {
     getFacetedRowModel,
     getFacetedUniqueValues,
     getFilteredRowModel,
-    getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+
+import { ButtonGroup } from "@/components/ui/button-group"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { useRouter } from "next/navigation";
 
-
-
-
 export const leadearboardColumns = [
     {
         accessorKey: "rank",
-        header: () => <div className="w-full text-center">Rank</div>,
-        cell: ({ row }) => (<div className="w-full text-center">{row.original.rank}</div>)
+        header: () => <div className="w-full text-center">#</div>,
+        cell: ({ row, table }) => {
+            const rank = (table.getSortedRowModel()?.flatRows?.findIndex((flatRow) => flatRow.id == row.id) || 0) + 1
+            return (<div className="w-full text-center">{rank}</div>)
+        }
     },
     {
         accessorKey: "name",
-        header: "User",
+        header: () => <div className="w-full text-left">User</div>,
         cell: ({ row }) => {
-            return (<Button variant="link" className="text-foreground h-12 w-fit px-0 text-left flex items-center">
+            return (<Button variant="link" className="text-foreground h-12 w-fit px-0 text-left flex items-center flex-1">
                 <div className="relative m-auto">
                     <Avatar className="h-8 w-8">
-                        <AvatarImage src={row.original.avatar_url} alt="Profile" />
+                        <AvatarImage src={row.original.avatarUrl} alt="Profile" />
                         <AvatarFallback className="text-2xl"><UserRound size={60} /></AvatarFallback>
                     </Avatar>
                 </div>
@@ -91,7 +70,12 @@ export const leadearboardColumns = [
     {
         accessorKey: "points",
         header: () => <div className="w-full text-center">XP</div>,
-        cell: ({ row }) => (<div className="w-full text-center flex justify-center items-center gap-1">{row.original.points} <CircleStar size={16} /></div>)
+        cell: ({ row }) => (<div className="w-full flex justify-center items-center gap-1">{row.original.points || 0} <CircleStar size={16} /></div>)
+    },
+    {
+        accessorKey: "weeklyPoints",
+        header: () => <div className="w-full text-center">WP</div>,
+        cell: ({ row }) => (<div className="w-full flex justify-center items-center gap-1">{row.original.weeklyPoints || 0} <CircleStar size={16} /></div>)
     },
 ]
 
@@ -100,6 +84,7 @@ export function LeaderboardTable(
     {
         data: initialData,
         columns,
+        userId,
     }
 ) {
 
@@ -107,31 +92,29 @@ export function LeaderboardTable(
 
     const [data, setData] = React.useState(() => initialData)
     const [columnFilters, setColumnFilters] = React.useState([])
-    const [pagination, setPagination] = React.useState({
-        pageIndex: 0,
-        pageSize: 10,
-    })
+    const [sorting, setSorting] = React.useState([{ id: "points", desc: true }])
     const [columnVisibility, setColumnVisibility] = React.useState({
         username: false, // hide in table but still accessible
+        weeklyPoints: false,
     })
 
+    let youRow = null;
 
     const table = useReactTable({
         data,
         columns,
         state: {
             columnFilters,
-            pagination,
-            columnVisibility
+            columnVisibility,
+            sorting
         },
         getRowId: (row) => row.id.toString(),
         enableRowSelection: true,
         onColumnFiltersChange: setColumnFilters,
-        onPaginationChange: setPagination,
+        onSortingChange: setSorting,
         onColumnVisibilityChange: setColumnVisibility,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFacetedRowModel: getFacetedRowModel(),
         getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -139,126 +122,91 @@ export function LeaderboardTable(
 
 
     return (
-        <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6 @2xl/main:w-[44rem] @2xl/main:self-center">
-            <div className="flex items-center py-4">
+        <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6 @2xl/main:w-[42rem] @2xl/main:self-center">
+            <div className="flex items-center justify-between py-4">
                 <Input
-                    placeholder="Filter by username..."
+                    placeholder="Search by username..."
                     value={(table.getColumn("username")?.getFilterValue()) ?? ""}
                     onChange={(event) =>
                         table.getColumn("username")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
+                <ButtonGroup>
+                    <Button
+                        variant={columnVisibility.weeklyPoints == undefined ? "ghost" : "secondary"}
+                        onClick={() => {
+                            setSorting([{ id: "points", desc: true }])
+                            setColumnVisibility({ username: false, weeklyPoints: false })
+                        }}>Daily</Button>
+                    <Button
+                        variant={columnVisibility.weeklyPoints == undefined ? "secondary" : "ghost"}
+                        onClick={() => {
+                            setSorting([{ id: "weeklyPoints", desc: true }])
+                            setColumnVisibility({ username: false, points: false })
+                        }}
+                    >Weekly</Button>
+                </ButtonGroup>
             </div>
-            <div className="overflow-hidden rounded-lg border">
-                <Table>
-                    <TableHeader className="bg-muted sticky top-0 z-10">
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id} colSpan={header.colSpan}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(header.column.columnDef.header, header.getContext())}
-                                        </TableHead>
-                                    );
-                                })}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-                    <TableBody className="**:data-[slot=table-cell]:first:w-8">
-                        {table.getRowModel().rows?.length ? (
-                            <>
-                                {table.getRowModel().rows.map((row) => (
-                                    <TableRow
+            <div className="rounded-lg border h-fit relative overflow-y-auto">
+                <div className="bg-muted sticky top-0 z-10">
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <div key={headerGroup.id} className="grid @sm/main:grid-cols-[80px_1fr_120px] grid-cols-[40px_1fr_80px] px-1 gap-1 py-2 font-semibold">
+                            {headerGroup.headers.map((header) => {
+                                return (
+                                    <div key={header.id} colSpan={header.colSpan} >
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(header.column.columnDef.header, header.getContext())}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ))}
+                </div>
+                <div className="**:data-[slot=table-cell]:first:w-8 max-h-96 overflow-y-auto scrollbar-hidden">
+                    {table.getRowModel().rows?.length ? (
+                        <>
+                            {table.getRowModel().rows.map((row) => {
+                                if (row.id == userId) {
+                                    youRow = row
+                                }
+                                return (
+                                    <div
                                         key={row.id}
-                                        className="relative z-0 even:bg-muted/20"
-                                        onClick={()=>router.push(`/dashboard/${row.id}`)}
+                                        className="relative z-0 even:bg-muted/20 grid @sm/main:grid-cols-[80px_1fr_120px] grid-cols-[40px_1fr_80px] gap-1 px-1 py-1 items-center"
+                                        onClick={() => router.push(`/dashboard/${row.id}`)}
                                     >
-                                        {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id}>
-                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                            </TableCell>
-                                        ))}
+                                        {row.getVisibleCells().map((cell) => {
+                                            return (
+                                                <div key={cell.id}>
+                                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                                </div>
+                                            )
+                                        })}
 
-                                    </TableRow>
-                                ))}
-                            </>
-                        ) : (
-                            <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
-            <div className="flex items-center justify-between px-4">
-                <div className="flex w-full items-center gap-8 @lg/main:w-fit">
-                    <div className="hidden items-center gap-2 @lg/main:flex">
-                        <Label htmlFor="rows-per-page" className="text-sm font-medium">
-                            Rows per page
-                        </Label>
-                        <Select
-                            value={`${table.getState().pagination.pageSize}`}
-                            onValueChange={(value) => {
-                                table.setPageSize(Number(value))
-                            }}>
-                            <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                                <SelectValue placeholder={table.getState().pagination.pageSize} />
-                            </SelectTrigger>
-                            <SelectContent side="top">
-                                {[10, 20, 30, 40, 50].map((pageSize) => (
-                                    <SelectItem key={pageSize} value={`${pageSize}`}>
-                                        {pageSize}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className="flex w-fit items-center justify-center text-sm font-medium">
-                        Page {table.getState().pagination.pageIndex + 1} of{" "}
-                        {table.getPageCount()}
-                    </div>
-                    <div className="ml-auto flex items-center gap-2 @lg/main:ml-0">
-                        <Button
-                            variant="outline"
-                            className="hidden h-8 w-8 p-0 @lg/main:flex"
-                            onClick={() => table.setPageIndex(0)}
-                            disabled={!table.getCanPreviousPage()}>
-                            <span className="sr-only">Go to first page</span>
-                            <IconChevronsLeft />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="size-8"
-                            size="icon"
-                            onClick={() => table.previousPage()}
-                            disabled={!table.getCanPreviousPage()}>
-                            <span className="sr-only">Go to previous page</span>
-                            <IconChevronLeft />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="size-8"
-                            size="icon"
-                            onClick={() => table.nextPage()}
-                            disabled={!table.getCanNextPage()}>
-                            <span className="sr-only">Go to next page</span>
-                            <IconChevronRight />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="hidden size-8 @lg/main:flex"
-                            size="icon"
-                            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                            disabled={!table.getCanNextPage()}>
-                            <span className="sr-only">Go to last page</span>
-                            <IconChevronsRight />
-                        </Button>
-                    </div>
+                                    </div>
+                                )
+                            })}
+                            {youRow && (<div
+                                className="sticky bottom-0 z-10 bg-black grid grid-cols-[80px_1fr_120px] gap-1 px-1 py-1 items-center"
+                            >
+                                {youRow.getVisibleCells().map((cell) => {
+                                    return (
+                                        <div key={cell.id}>
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </div>
+                                    )
+                                })}
+
+                            </div>
+                            )}
+                        </>
+                    ) : (
+                        <div colSpan={columns.length} className="h-24 text-center">
+                            No results.
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

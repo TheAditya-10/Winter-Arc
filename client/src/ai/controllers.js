@@ -1,4 +1,4 @@
-"use server"
+import "server-only"
 
 import { EvaluationStateSchema } from "./schemas";
 import { evaluationGraph } from "./graph";

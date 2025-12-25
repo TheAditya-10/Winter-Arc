@@ -1,12 +1,13 @@
-import fs from "fs/promises";
+import "server-only"
+
 import { evaluationModel } from "./model";
-import z from "zod";
 
 const loadImage = async (state) => {
     const url = state.imageUrl;
-    const buffer = await fs.readFile(url);
-    const b64 = buffer.toString('base64');
-    return { imageB64: b64 };
+    const response = await fetch(url);
+    const blob = await response.arrayBuffer();
+    const contentType = response.headers.get("content-type");
+    return { imageB64: `data:${contentType};base64,${Buffer.from(blob).toString("base64")}` };
 }
 
 const evaluateSubmissions = async (state) => {
@@ -33,25 +34,16 @@ const evaluateSubmissions = async (state) => {
                 },
                 {
                     type: 'image_url',
-                    image_url: { url: `data:image/png;base64,${state.imageB64}` },
-                }
+                    image_url: { url: state.imageB64 },
+                },
             ]
         },
     ];
 
 
-    const {feedback, score} = await evaluationModel.invoke(messages);
+    const { feedback, score } = await evaluationModel.invoke(messages);
 
     return { feedback, score };
 }
 
 export { loadImage, evaluateSubmissions }
-
-const initialState = {
-    task: "build a portfolio website using html, css and javascript make it responsive and simple",
-    imageUrl: "C:\\Users\\learn\\LocalFiles\\Documents\\web_devlopment\\Winter-Arc\\client\\public\\test.png",
-    imageB64: z.base64(),
-    description: "I first build structure of my portfolio website using html and then style it using css make website responsive using media query and write logic of contect form using javascript",
-    score: z.int().gte(0).lte(50),
-    feedback: z.string(),
-}
