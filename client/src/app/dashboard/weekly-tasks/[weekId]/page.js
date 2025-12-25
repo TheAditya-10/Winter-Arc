@@ -1,6 +1,7 @@
 "use server"
 
 import { TZDate } from "@date-fns/tz"
+import { notFound } from "next/navigation";
 
 const weekMap = {
     "week-one": "04",
@@ -20,7 +21,7 @@ function getWeekState(dayNumber) {
 export default async function Page({ params }) {
     const { weekId } = await params
     
-    if(!weekMap[weekId]) return "404"
+    if(!weekMap[weekId]) return notFound()
 
     const weekState = getWeekState(weekMap[weekId])
 

@@ -41,7 +41,7 @@ function isStreakBroken({ lastStreakDate }) {
     return differenceInDays(todayStart, lastUpdateStart) > 1;
 }
 
-function useStreakFreeze({ lastStreakUpdate, streakFreezeCount, streakCount, longestStreak }) {
+function streakFreeze({ lastStreakUpdate, streakFreezeCount, streakCount, longestStreak }) {
     const { todayStart, timezone, now } = getStreakDates();
     const lastUpdate = new TZDate(lastStreakUpdate, timezone);
     const lastUpdateStart = startOfDay(lastUpdate);
@@ -71,7 +71,7 @@ function getStreakInfo(streakCount) {
         case 20: return { bonusPoints: 300, count: streakCount, message: "+300XP Consistency always rewards!!" };
         case 30: return { bonusPoints: 500, count: streakCount, message: "+500XP Consistency always rewards!!" };
         case 1: return { bonusPoints: 0, count: streakCount, message: "Your new streak is started, Complete tasks daily to maintain your streak!!" };
-        case _: return { bonusPoints: 0, count: streakCount, message: "Your streak is updated successfully." };
+        default: return { bonusPoints: 0, count: streakCount, message: "Your streak is updated successfully." };
     }
 }
 
@@ -108,7 +108,7 @@ function updateStreak(userInfo, increment = true) {
             };
             return updatedUserInfo
         }
-        const updatedUserInfo = useStreakFreeze({
+        const updatedUserInfo = streakFreeze({
             lastStreakUpdate: userInfo.lastStreakUpdate,
             streakFreezeCount,
             streakCount: userInfo.streakCount,
@@ -142,7 +142,7 @@ function updateStreak(userInfo, increment = true) {
         return updatedUserInfo;
     }
 
-    const updatedUserInfo = useStreakFreeze({
+    const updatedUserInfo = streakFreeze({
         lastStreakUpdate: userInfo.lastStreakUpdate,
         streakFreezeCount,
         streakCount: userInfo.currentStreak,

@@ -27,7 +27,7 @@ export const updateSubmissionById = async (submissionId, taskSubmission) => {
 export const getSubmissionInfoById = async (submissionId) => {
     const { data, error } = await supabase
         .from('posts')
-        .select('taskId:task_id, challengeId:challenge_id, imageUrl:image_url')
+        .select('taskId:task_id, challengeId:challenge_id, imageUrl:image_url, score:ai_score, description:text')
         .eq('id', submissionId)
         .limit(1)
         .single()

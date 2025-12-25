@@ -10,18 +10,14 @@ const Challages = async () => {
 
     if (error) {
         console.error(error)
-        return (
-            <h1>Some thing went wrong. Please try again later!!</h1>
-        )
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
     }
 
     const { data: userActiveChallengeMap, error: userActiveChallengeMapError } = await getActiveChallengeId()
 
     if (userActiveChallengeMapError) {
         console.error(userActiveChallengeMapError)
-        return (
-            <h1>Some thing went wrong. Please try again later!!</h1>
-        )
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
     }
 
     return (

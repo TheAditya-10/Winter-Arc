@@ -62,7 +62,9 @@ export const getCompletedTaskInfo = async (challengeId) => {
         .select("taskId:task_id, score:ai_score")
         .eq("user_id", userId)
         .eq("challenge_id", challengeId)
+        .not("image_url", "is", null)
 
+    console.log(data)
     const hashMap = new Map()
 
     data?.map(e => hashMap.set(e.taskId, e.score))

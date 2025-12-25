@@ -4,7 +4,7 @@ import { createHash } from "node:crypto"
 
 export const genrateSignature = async () => {
     const timestamp = Math.round(Date.now() / 1000);
-    const upload_preset = "demo-preset";
+    const upload_preset = "test-preset";
     const text = `timestamp=${timestamp}&upload_preset=${upload_preset}${process.env.CLOUDINARY_API_SECRET}`
     const signature = createHash("sha256").update(text).digest("hex");
 
