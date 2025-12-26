@@ -1,26 +1,32 @@
+"use client"
+
 import { Card, CardContent } from "@/components/ui/card";
 import { IconBolt, IconFlame, IconCrown, IconCheck } from "@tabler/icons-react";
+import useCheckStreak from "../hooks/check-streak";
 
-export default function StatsCards({ stats }) {
+export default function StatsCards({ userStats, isMe }) {
+
+  const { stats } = useCheckStreak(userStats, isMe)
+
   const items = [
     {
       label: "Total XP",
-      value: stats.totalXp ?? 0,
+      value: stats.points ?? 0,
       icon: <IconBolt className="w-6 h-6" />,
     },
     {
       label: "Current Streak",
-      value: stats.currentStreak ?? 0,
+      value: stats.streakCount ?? 0,
       icon: <IconFlame className="w-6 h-6" />,
     },
     {
       label: "Highest Streak",
-      value: stats.highestStreak ?? 0,
+      value: stats.longestStreak ?? 0,
       icon: <IconCrown className="w-6 h-6" />,
     },
     {
       label: "Tasks Completed",
-      value: stats.totalDailyTasks ?? 0,
+      value: stats.dailyTaskCompletedCount ?? 0,
       icon: <IconCheck className="w-6 h-6" />,
     },
   ];

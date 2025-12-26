@@ -7,7 +7,6 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 import { isRegistered } from "@/utils/auth"
-import CheckStreak from "@/components/check-streak"
 
 
 export default async function DashboardLayout({ children }) {
@@ -32,9 +31,8 @@ export default async function DashboardLayout({ children }) {
         }
       }>
       <AppSidebar variant="inset" user={user} />
-      <CheckStreak />
       <SidebarInset>
-        <SiteHeader />
+        <SiteHeader user={user}/>
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             {children}

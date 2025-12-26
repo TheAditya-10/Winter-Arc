@@ -5,7 +5,7 @@ Sentry.init({
     sendDefaultPii: true,
     // Capture 100% in dev, 10% in production
     // Adjust based on your traffic volume
-    tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0.1,
+    tracesSampleRate: process.env.NODE_ENV === "development" ? 0 : 0.1,
     // Enable logs to be sent to Sentry
     enableLogs: true,
 })

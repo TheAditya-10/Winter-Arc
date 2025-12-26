@@ -43,12 +43,7 @@ export default async function Page({ params }) {
             <ProfileHeader user={userProfile} />
             <section id="performance-overview">
                 <h3 className="mb-4 mt-2 text-center text-xl font-semibold">Performance Overview</h3>
-                <StatsCards stats={{
-                    totalXp: userStats.points,
-                    currentStreak: userStats.streakCount,
-                    highestStreak: userStats.longestStreak,
-                    totalDailyTasks: userStats.dailyTaskCompletedCount,
-                }} />
+                <StatsCards userStats={userStats} isMe={"me" == (await params).userId}/>
             </section>
             <section>
                 <h3 className="mb-4 mt-2 text-center text-xl font-semibold">Active Challenges</h3>
