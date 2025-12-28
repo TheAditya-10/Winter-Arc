@@ -4,9 +4,9 @@ const ChangesSection = () => {
     return (
         <div>
 
-            <p className='text-[60px] text-center '>“What changes in me if I complete this?”</p>
+            <p className='text-[60px] text-center max-md:text-2xl '>“What changes in me if I complete this?”</p>
 
-            <div className='grid grid-cols-2 gap-y-4 gap-x-7 w-[85%] m-auto mt-10'>
+            <div className='grid grid-cols-2 gap-y-4 gap-x-7 w-[85%] m-auto mt-10 max-md:grid-cols-1'>
                 <div>
                     <img src="/ChangesBox1.svg" />
                 </div>
