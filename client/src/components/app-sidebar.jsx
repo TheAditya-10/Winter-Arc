@@ -16,6 +16,7 @@ import {
   IconReport,
   IconSearch,
   IconSettings,
+  IconShoppingBag, // <--- 1. Import the Shop Icon
   IconUsers,
 } from "@tabler/icons-react"
 
@@ -56,6 +57,17 @@ const data = {
       title: "Leaderboard",
       url: "/dashboard/leaderboard",
       icon: IconChartBar,
+    },
+    // --- 2. Add the Shop Entry Here ---
+    {
+      title: "Shop",
+      url: "/dashboard/shop", 
+      icon: IconShoppingBag,
+    },
+    {
+      title: "profile",
+      url: "/dashboard/profile", 
+      icon: IconUsers,
     },
   ],
   navClouds: [
