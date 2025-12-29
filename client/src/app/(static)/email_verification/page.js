@@ -19,7 +19,7 @@ const page = () => {
                 <p className='mt-2 text-[#929191] text-2xl font-semibold'>Verify Your Email</p>
                 <p className='text-[#929191] w-[90%] text-center text-md font-light'>Thanks for helping us keep your account secure! Click the button below to finish verifying your email address.</p>
                 <button className='bg-blue-400 px-6 py-2 font-semibold rounded-md'>Confirm Email</button>
-                <p className='font-light text-center mt-3 text-[#929191] w-[90%]'>Didn't create an account? <a className='text-blue-400'>Click here</a> to remove this email address.</p>
+                <p className='font-light text-center mt-3 text-[#929191] w-[90%]'>Didn&#39;t create an account? <a className='text-blue-400'>Click here</a> to remove this email address.</p>
             </div>
             
             <div className='mt-25 flex justify-between w-[50%] mx-auto'>

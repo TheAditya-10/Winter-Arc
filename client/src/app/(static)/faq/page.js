@@ -5,7 +5,7 @@ import FaqBox from '@/components/static/FaqBox'
 import React, { useState } from 'react';
 
 
-const faq = () => {
+const Faq = () => {
 
   const [openIndex, setOpenIndex] = useState(null);
 
@@ -65,7 +65,7 @@ const faq = () => {
     <div>
       <div className='flex flex-col items-center'>
         <p className='mt-35 text-[#8ACADE] text-6xl font-bold max-md:text-4xl'>GOT QUESTIONS?</p>
-        <p className='mt-8 font-semibold text-xl w-[80%] max-md:w-[70%] text-center max-md:text-sm'>We’ve answered the most common queries about the event—rules, registration, participation, and more. If you're still unsure, we’ve got your back!</p>
+        <p className='mt-8 font-semibold text-xl w-[80%] max-md:w-[70%] text-center max-md:text-sm'>We&#39;ve answered the most common queries about the event—rules, registration, participation, and more. If you're still unsure, we’ve got your back!</p>
       </div>
 
       <div className='w-[80%] mx-auto flex justify-between items-center mt-20 max-md:flex-col'>
@@ -113,4 +113,4 @@ const faq = () => {
   )
 }
 
-export default faq
+export default Faq
