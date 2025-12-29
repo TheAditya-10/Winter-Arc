@@ -5,6 +5,7 @@ import StatsCards from "@/components/stats-card"
 import { ChallengeCard } from "@/components/challenge-card"
 import { getUserProfileById, getUserStatsById, getActiveChallengeInfoByUserId } from "@/lib/dal/user"
 import { auth } from "@clerk/nextjs/server"
+import { notFound } from "next/navigation"
 
 
 export default async function Page({ params }) {
@@ -20,6 +21,7 @@ export default async function Page({ params }) {
 
     if (userProfileError) {
         console.error(userProfileError)
+        notFound()
         return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
     }
 

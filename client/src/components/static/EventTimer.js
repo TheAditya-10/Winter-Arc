@@ -1,6 +1,6 @@
-import React from 'react'
+import Link from "next/link"
 
-const EventTimer = () => {
+const EventTimer = ({ isRegistered }) => {
     return (
         <div className='max-md:h-[40%]'>
             <div
@@ -17,9 +17,11 @@ const EventTimer = () => {
                 </div>
 
                 <div className='mt-6'>
-                    <button className='ml-45 py-1 rounded-lg px-8 bg-[#8ACADE] border-2 border-[#0A0F1F] text-black font-semibold max-md:mx-auto  max-md:scale-70'>
-                        Register
-                    </button>
+                    <Link href={isRegistered ? "/dashboard/me" : "/auth/register"}>
+                        <button className='ml-45 py-1 rounded-lg px-8 bg-[#8ACADE] border-2 border-[#0A0F1F] text-black font-semibold max-md:mx-auto  max-md:scale-70'>
+                            {isRegistered ? "Dashboard" : "Register"}
+                        </button>
+                    </Link>
                 </div>
 
 

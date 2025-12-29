@@ -1,16 +1,21 @@
-import React from 'react'
+"use server"
+
 import HeroSection from '@/components/static/HeroSection'
 import EventTimer from '@/components/static/EventTimer'
 import ChangesSection from '@/components/static/ChangesSection'
+import { isRegistered } from '@/utils/auth'
 
-const page = () => {
+const page = async () => {
+
+  const { status } = await isRegistered()
+
   return (
     <div>
-        <HeroSection />
+      <HeroSection />
 
-        <EventTimer />
+      <EventTimer isRegistered={status} />
 
-        <ChangesSection />
+      <ChangesSection />
 
     </div>
   )

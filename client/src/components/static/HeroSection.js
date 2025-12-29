@@ -1,4 +1,4 @@
-import React from 'react'
+import Link from "next/link"
 
 const HeroSection = () => {
   return (
@@ -14,9 +14,9 @@ const HeroSection = () => {
           <p className='text-2xl text-center max-md:text-sm'>“Commit to January. Build discipline.”</p>
         </div>
 
-        <button className='bg-[#8ACADE] text-black py-3 px-4 mt-10 rounded-xl font-bold max-md:scale-80'>
+        <Link href={"/auth/register"} className='bg-[#8ACADE] text-black py-3 px-4 mt-10 rounded-xl font-bold max-md:scale-80'>
           START THE WINTER ARC
-        </button>
+        </Link>
 
         <button className='bg-[rgb(217,225,227,0.53)] text-black py-2 px-8 mt-4 rounded-xl font-bold text-sm max-md:scale-85'>
           KNOW MORE!!

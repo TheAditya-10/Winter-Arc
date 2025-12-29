@@ -6,17 +6,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import React from 'react'
 import Link from 'next/link'
+import { Button } from '../ui/button';
 
-const Header = () => {
+const Header = ({ isRegistered }) => {
 
   const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'Sponsors', href: '#about' },
-    { name: 'Humans', href: '#services' },
-    { name: 'Rules & Rewards', href: '#portfolio' },
-    { name: 'FAQs', href: '#contact' },
-    { name: 'Contact Us', href: '#contact' },
-    { name: 'Gallery', href: '#contact' },
+    { name: 'Home', href: '/' },
+    { name: 'Sponsors', href: '/sponsors' },
+    { name: 'Humans', href: '/humans' },
+    { name: 'Rules & Rewards', href: '/rules-rewards' },
+    { name: 'FAQs', href: '/faq' },
+    { name: 'Contact Us', href: '/contact' },
   ];
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -36,18 +36,12 @@ const Header = () => {
           </Link>
 
           <div className='flex justify-between w-[50%]'>
-            <Link href="/">Home</Link>
-            <Link href="/">Sponsors</Link>
-            <Link href="/">Humans</Link>
-            <Link href="/">Rules & Rewards</Link>
-            <Link href="/">FAQs</Link>
-            <Link href="/">Contact Us</Link>
-            <Link href="/">Gallery</Link>
+            {navItems.map((item) => <Link href={item.href} key={item.name}>{item.name}</Link>)}
           </div>
 
-          <button>
-            Register
-          </button>
+          <Link href={isRegistered ? "/dashboard/me" : "/auth/register"}>
+            <Button>{isRegistered ? "Dashboard" : "Register"}</Button>
+          </Link>
 
         </div>
       </div>
@@ -89,18 +83,21 @@ const Header = () => {
               className="md:hidden bg-[#070C1B] border-t border-gray-200 overflow-hidden"
             >
               <div className="px-4 py-4 space-y-3">
-                {navItems.map((item, index) => (
-                  <motion.a
-                    key={item.name}
-                    href={item.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="block px-4 py-2 text-white hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors duration-200 font-medium"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.name}
-                  </motion.a>
+                {[
+                  ...navItems,
+                  { name: isRegistered ? "Dashboard" : "Register", href: isRegistered ? "/dashboard/me" : "/auth/register" }
+                ].map((item, index) => (
+                  <Link href={item.href} key={item.name}>
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="block px-4 py-2 text-white hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors duration-200 font-medium"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.name}
+                    </motion.div>
+                  </Link>
                 ))}
               </div>
             </motion.div>
