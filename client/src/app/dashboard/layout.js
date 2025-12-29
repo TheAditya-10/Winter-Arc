@@ -7,6 +7,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 import { isRegistered } from "@/utils/auth"
+import Image from "next/image"
 
 
 export default async function DashboardLayout({ children }) {
@@ -33,8 +34,9 @@ export default async function DashboardLayout({ children }) {
       <AppSidebar variant="inset" user={user} />
       <SidebarInset>
         <SiteHeader user={user}/>
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
+        <div className="flex flex-1 flex-col relative overflow-hidden">
+          <Image src={"/background.svg"} fill alt="background image" className="object-cover opacity-20"/>
+          <div className="@container/main flex flex-1 flex-col gap-2 z-10">
             {children}
           </div>
         </div>

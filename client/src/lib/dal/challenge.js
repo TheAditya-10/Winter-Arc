@@ -36,6 +36,7 @@ export const getTaskInfoById = async (taskId) => {
 
 export const getAllTasks = async (challengeId) => {
 
+    console.log("getAllTasks", challengeId)
     const { data, error } = await supabase
         .from("challenge_tasks")
         .select("id, title, description, dayNumber:day_number")

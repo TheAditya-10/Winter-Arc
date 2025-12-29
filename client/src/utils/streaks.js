@@ -50,15 +50,12 @@ function streakFreeze({ lastStreakUpdate, streakFreezeCount, streakCount, longes
         return {
             streak_count: 0,
             last_streak_update_date: now.getTime(),
-            longest_streak: Math.max(streakCount + streakFreezeCount, longestStreak),
             streak_status: "reset",
-            streak_freeze_count: 0,
         }
     } else {
         return {
-            streak_count: streakCount + streakGap,
-            last_streak_update_date: now.getTime(),
-            longest_streak: Math.max(streakCount + streakGap, longestStreak),
+            streak_count: streakCount,
+            last_streak_update_date: now.getTime() - 24*60*60*1000,
             streak_status: "started",
             streak_freeze_count: streakFreezeCount - streakGap,
         }
@@ -148,7 +145,10 @@ function updateStreak(userInfo, increment = true) {
         streakCount: userInfo.currentStreak,
         longestStreak: userInfo.longestStreak,
     })
-    return { ...updatedUserInfo, streak_count: updatedUserInfo.streak_count + 1, streak_status: "started" };
+    updatedUserInfo.streak_count += 1
+    updatedUserInfo.longestStreak = Math.max(userInfo.lastStreakDate, updatedUserInfo.streak_count)
+    updatedUserInfo.streak_status = "started"
+    return updatedUserInfo
 }
 
 export { updateStreak, getStreakInfo };

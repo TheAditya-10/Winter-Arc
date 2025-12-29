@@ -40,22 +40,22 @@ const data = {
     {
       title: "Dashboard",
       url: "/dashboard/me",
-      icon: IconDashboard,
+      icon: "/sidebar/dashboard.svg",
     },
     {
       title: "Challenges",
       url: "/dashboard/challenges",
-      icon: IconListDetails,
+      icon: "/sidebar/challenge.svg",
     },
     {
       title: "Weekly Task",
       url: "/dashboard/weekly-tasks",
-      icon: IconFolder,
+      icon: "/sidebar/dashboard.svg",
     },
     {
       title: "Leaderboard",
       url: "/dashboard/leaderboard",
-      icon: IconChartBar,
+      icon: "/sidebar/leaderboard.svg",
     },
   ],
   navClouds: [
