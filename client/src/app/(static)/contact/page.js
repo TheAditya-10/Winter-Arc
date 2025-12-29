@@ -9,7 +9,7 @@ const ContactUs = () => {
 
 
                     <div className="w-[50%] max-md:w-[100%] mt-6">
-                        <p className=' text-left text-4xl font-semibold text-white max-md:text-2xl'>We’re Here To</p>
+                        <p className=' text-left text-4xl font-semibold text-white max-md:text-2xl'>We&#39;re Here To</p>
                         <p className='mt-2 text-left text-3xl font-semibold text-white max-md:text-2xl'>Connect And</p>
                         <p className='mt-2 text-left text-3xl font-semibold text-white max-md:text-2xl'>Assist You</p>
                         <p className='mt-10 font-light text-lg text-white max-md:text-lg max-md:mt-4'>Have questions, need assistance, or just want to connect?

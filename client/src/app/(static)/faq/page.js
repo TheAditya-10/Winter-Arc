@@ -65,7 +65,7 @@ const Faq = () => {
     <div>
       <div className='flex flex-col items-center'>
         <p className='mt-35 text-[#8ACADE] text-6xl font-bold max-md:text-4xl'>GOT QUESTIONS?</p>
-        <p className='mt-8 font-semibold text-xl w-[80%] max-md:w-[70%] text-center max-md:text-sm'>We&#39;ve answered the most common queries about the event—rules, registration, participation, and more. If you're still unsure, we’ve got your back!</p>
+        <p className='mt-8 font-semibold text-xl w-[80%] max-md:w-[70%] text-center max-md:text-sm'>We&#39;ve answered the most common queries about the event—rules, registration, participation, and more. If you&#39;re still unsure, we&#39;ve got your back!</p>
       </div>
 
       <div className='w-[80%] mx-auto flex justify-between items-center mt-20 max-md:flex-col'>
@@ -76,12 +76,12 @@ const Faq = () => {
 
           <div className='flex flex-col items-start'>
             <p className='mt-8'>Got questions about the event ?</p>
-            <p className=' '>We’ve got all the info you need to get started</p>
+            <p className=' '>We&#39;ve got all the info you need to get started</p>
           </div>
           <div className='flex flex-col items-start'>
             <p className='mt-4'>Still curious?</p>
             <p className=' '>Ping us anytime at team.matrix.jec@gmail.com</p>
-            <p className=' '>— we’re all ears (and keyboards)! 👨‍💻👩‍💻</p>
+            <p className=' '>— we&#39;re all ears (and keyboards)! 👨‍💻👩‍💻</p>
           </div>
 
         </div>
