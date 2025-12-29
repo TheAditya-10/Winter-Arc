@@ -7,7 +7,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 import { isRegistered } from "@/utils/auth"
-import CheckStreak from "@/components/check-streak"
+import Image from "next/image"
 
 
 export default async function DashboardLayout({ children }) {
@@ -27,16 +27,16 @@ export default async function DashboardLayout({ children }) {
     <SidebarProvider
       style={
         {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--sidebar-width": "calc(var(--spacing) * 56)",
           "--header-height": "calc(var(--spacing) * 12)"
         }
       }>
       <AppSidebar variant="inset" user={user} />
-      <CheckStreak />
       <SidebarInset>
-        <SiteHeader />
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
+        <SiteHeader user={user}/>
+        <div className="flex flex-1 flex-col relative overflow-hidden">
+          <Image src={"/background.svg"} fill alt="background image" className="object-cover opacity-20"/>
+          <div className="@container/main flex flex-1 flex-col gap-2 z-10">
             {children}
           </div>
         </div>

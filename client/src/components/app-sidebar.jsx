@@ -33,33 +33,29 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Separator } from "./ui/separator"
+import Link from "next/link"
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
       url: "/dashboard/me",
-      icon: IconDashboard,
+      icon: "/sidebar/dashboard.svg",
     },
     {
       title: "Challenges",
       url: "/dashboard/challenges",
-      icon: IconListDetails,
+      icon: "/sidebar/challenge.svg",
+    },
+    {
+      title: "Weekly Task",
+      url: "/dashboard/weekly-tasks",
+      icon: "/sidebar/dashboard.svg",
     },
     {
       title: "Leaderboard",
       url: "/dashboard/leaderboard",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
+      icon: "/sidebar/leaderboard.svg",
     },
   ],
   navClouds: [
@@ -156,10 +152,10 @@ export function AppSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
-              <a href="#">
+              <Link href="/">
                 <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
+                <span className="text-base font-semibold font-mono">Winter Arc</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -171,7 +167,7 @@ export function AppSidebar({
         {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        {/* <NavUser user={user} /> */}
       </SidebarFooter>
     </Sidebar>
   );

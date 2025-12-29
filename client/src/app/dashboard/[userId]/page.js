@@ -7,42 +7,35 @@ import { getUserProfileById, getUserStatsById, getActiveChallengeInfoByUserId } 
 import { auth } from "@clerk/nextjs/server"
 
 
-export default async function Page({ params, searchParams }) {
+export default async function Page({ params }) {
 
     let { userId } = await params;
-    const {message, type} = await searchParams;
 
     if (userId == "me") {
-        const {userId: uId} = await auth()
+        const { userId: uId } = await auth()
         userId = uId;
     }
-    
+
     const { data: userProfile, error: userProfileError } = await getUserProfileById(userId)
 
     if (userProfileError) {
         console.error(userProfileError)
-        return (
-            <h1>Some thing went wrong. Please try again later!!</h1>
-        )
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
     }
-    
+
     const { data: userStats, error: userStatsError } = await getUserStatsById(userId)
-    
+
     if (userStatsError) {
         console.error(userStatsError)
-        return (
-            <h1>Some thing went wrong. Please try again later!!</h1>
-        )
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
     }
-    
+
 
     const { data: activeChallenges, error: activeChallengesError } = await getActiveChallengeInfoByUserId(userId)
 
     if (activeChallengesError) {
         console.error(activeChallengesError)
-        return (
-            <h1>Some thing went wrong. Please try again later!!</h1>
-        )
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
     }
 
     return (<>
@@ -50,12 +43,7 @@ export default async function Page({ params, searchParams }) {
             <ProfileHeader user={userProfile} />
             <section id="performance-overview">
                 <h3 className="mb-4 mt-2 text-center text-xl font-semibold">Performance Overview</h3>
-                <StatsCards stats={{
-                    totalXp: userStats.points,
-                    currentStreak: userStats.streakCount,
-                    highestStreak: userStats.longestStreak,
-                    totalTasks: userStats.taskCompleted,
-                }} />
+                <StatsCards userStats={userStats} isMe={"me" == (await params).userId}/>
             </section>
             <section>
                 <h3 className="mb-4 mt-2 text-center text-xl font-semibold">Active Challenges</h3>

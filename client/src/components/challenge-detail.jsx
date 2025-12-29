@@ -1,26 +1,20 @@
 "use client"
 
-import { Card, CardContent, CardAction, CardHeader, CardFooter } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import { Button } from "./ui/button"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
 import { registerForChallenge } from "@/app/actions"
 import { useState } from "react"
 import { toast } from "sonner"
 import Link from "next/link"
-import { Badge } from "./ui/badge"
-import { CircleCheckBig } from "lucide-react"
+import Image from "next/image"
 
 
 const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [taskDetail, setTaskDetail] = useState({})
+  const [showChallengeInfo, setShowChallengeInfo] = useState(false)
+  const currentDayNumber = taskCompleted.size
 
-  const handleClick = async () => {
+  const onStartNowClick = async () => {
     setIsLoading(true)
     const loadToast = toast.loading("loading ...")
     try {
@@ -41,77 +35,118 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
 
 
   return (
-    <section className="bg-background pb-32 pt-10">
-      <div className="">
-        <h1 className="text-foreground px-2 mb-10 text-center text-3xl font-bold tracking-tighter @sm/main:text-5xl">
+    <>
+      <section className="pb-32 pt-10">
+        <h1 className="text-foreground px-2 mb-10 text-center text-2xl font-bold tracking-tighter @sm/main:text-3xl">
           {challenge.title}
         </h1>
-        <div className="text-foreground @lg/main:px-8 px-2 mb-10 max-w-4xl mx-auto">
-          <Card className="@max-xl/main:py-3">
-            <CardContent className="@max-xl/main:px-4">
-              <p className="prose dark:prose-invert text-foreground">
-                {challenge.description}
-              </p>
-              {
-                !isRegistred &&
-                <div className="@xl/main:mt-6 mt-3 flex justify-center">
-                  <Button onClick={handleClick} disabled={isLoading}>Start Now</Button>
-                </div>
-              }
-            </CardContent>
-          </Card>
-        </div>
-        <div className="relative mx-auto max-w-4xl px-2">
-          <h2 className="rounded-xl text-2xl font-bold tracking-tight @5xl/main:mb-4 mb-2">Daliy Tasks</h2>
-          <Separator
-            orientation="vertical"
-            className="bg-muted absolute left-4 top-16"
-          />
-          {tasks.map((task) => {
-            const taskScore = taskCompleted.get(task.id)
-            return (
-              <div key={task.id} className="relative mb-10 pl-8">
-                <div className="border-foreground border-2 bg-primary-foreground absolute left-0 top-6 flex size-4 items-center justify-center rounded-full" />
 
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>
-                      <h4 className={`rounded-xl text-xl font-bold tracking-tight @5xl/main:mb-2 @xl/main:px-3 w-full ${!!taskScore? "text-muted-foreground": ""}`}>
-                        {task.title}
-                      </h4>
-                      {!!taskScore && <Badge variant={"secondary"}><CircleCheckBig/> Completed</Badge>}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <Card className="my-5 border-none shadow-none">
-                        <CardContent className="px-2">
-                          <div
-                            className="prose dark:prose-invert text-foreground"
-                          >
-                            {task.description}
-                          </div>
-                        </CardContent>
-                        {(isRegistred) &&
-                          <CardFooter>
-                            <div className="flex w-full justify-end">
-                              {
-                                (!!taskScore)
-                                  ? (<Button variant={"outline"}>{taskScore} XP earned!</Button>)
-                                  : (
-                                    <Link href={`/${task.id}/submit`}><Button>Submit</Button></Link>
-                                  )}
-                            </div>
-                          </CardFooter>}
-                      </Card>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+        <div className="">
+          {
+            (showChallengeInfo || !isRegistred) && (
+              <div className="mb-10 mx-auto w-76 @sm/main:w-96 @lg/main:w-[32rem] @2xl/main:w-[40rem] rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+                <h3 className="font-semibold text-center text-lg mb-1">Challenge Details</h3>
+                <div className="flex gap-2">
+                  <Image src={"/challenge-detail/clock.svg"} width={20} height={20} alt="estimated time" />
+                  <span className="font-medium">Level:</span> Biginner
+                </div>
+                <div className="flex gap-2">
+                  <Image src={"/challenge-detail/clock.svg"} width={20} height={20} alt="estimated time" />
+                  <span className="font-medium">Duration:</span> 30 Days
+                </div>
+                <div>
+                  <h4 className="font-medium flex items-center gap-2 mb-2 mt-1">
+                    <Image src={"/challenge-detail/question-mark.svg"} width={20} height={20} alt="what to do" />
+                    <span>What You Gain</span>
+                  </h4>
+                  <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                    {challenge.description.split("\n\n").map((text, i) => <li key={i}>{text}</li>)}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium flex items-center gap-2 mb-2 mt-1">
+                    <Image src={"/challenge-detail/question-mark.svg"} width={20} height={20} alt="what to do" />
+                    <span>Requirements</span>
+                  </h4>
+                  <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                    <li>No programming experence needed.</li>
+                    <li>A laptop with access to the internet</li>
+                  </ul>
+                </div>
+                {!isRegistred
+                  ? <Button onClick={onStartNowClick} className={"w-fit mx-auto"}>Start Now</Button>
+                  : <Button variant={"secondary"} onClick={() => setShowChallengeInfo(false)} className={"w-fit mx-auto"}>View Progress</Button>
+                }
               </div>
             )
-          })}
+          }
+          {
+            (!showChallengeInfo && isRegistred) && (
+              <div className="mb-10 mx-auto w-76 @sm/main:w-96 @lg/main:w-[32rem] @2xl/main:w-[40rem] rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+                <h3 className="font-semibold text-center text-lg mb-1">Challenge Progress</h3>
+                <div className="mb-4 @sm/main:px-4">
+                  <div className="flex justify-between items-center"><span className="font-medium">Total Submissions</span><span className="text-sm">{taskCompleted.size - 1} / 30</span></div>
+                  <div className="w-full h-2 bg-[#4B4B4B] rounded-full"><div className="bg-[#FFC800] rounded-full h-full" style={{ width: `${(taskCompleted.size - 1) * 100 / 30}%` }} /></div>
+                </div>
+                <div className="mb-4 @sm/main:px-4">
+                  <div className="flex justify-between items-center"><span className="font-medium">Total XP Earned</span><span className="text-sm">{taskCompleted.get("xpEarned")} XP</span></div>
+                  <div className="w-full h-2 bg-[#4B4B4B] rounded-full"><div className="bg-[#FFC800] rounded-full h-full" style={{ width: `${taskCompleted.get("xpEarned") * 100 / 1500}%` }} /></div>
+                </div>
+                <Button variant={"secondary"} onClick={() => setShowChallengeInfo(true)} className={"w-fit mx-auto"}>View Details</Button>
+              </div>
+            )
+          }
+
+          <div className="relative mx-auto max-w-4xl px-2">
+            {tasks.map((task) => {
+              const taskScore = taskCompleted.get(task.id)
+              const isCurrentDay = currentDayNumber == task.dayNumber;
+              return (
+                <div key={task.id} className=" flex items-center justify-center mb-4">
+                  <div
+                    className="size-16 text-center relative flex items-center justify-center cursor-pointer"
+                    onClick={() => setTaskDetail({ ...task, score: taskScore, isCurrentTask: currentDayNumber == task.dayNumber })}
+                    style={{ left: Math.floor(Math.sin(task.dayNumber - 1) * 100) }}>
+                    <Image src={`/challenge-detail/${isCurrentDay ? "white" : (!!taskScore ? "blue" : "gray")}-snow-ball.svg`} alt="task" fill className="absolute top-0 bottom-0" />
+                    <p className={`z-10 relative -top-1 text-xl font-bold ${isCurrentDay ? "text-[#2DB4E0]" : "text-white"}`}>{task.dayNumber}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+      {taskDetail.id && <TaskDetailCard task={taskDetail} isRegistred={isRegistred} close={() => setTaskDetail({})} />}
+    </>
   );
 };
 
 export { ChallengeDetail };
+
+const TaskDetailCard = ({ task, close, isRegistred }) => {
+  return (<div className="w-dvw h-dvh fixed bg-muted/80 backdrop-blur-md flex items-center justify-center z-100 top-0 left-0" onClick={() => close()}>
+    <div className="">
+      <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">Day-{task.dayNumber}</h2>
+      <div className="w-76 sm:w-96 rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+        <h3 className="font-semibold text-center text-lg mb-1">{task.title}</h3>
+        <div className="flex gap-2">
+          <Image src={"/challenge-detail/clock.svg"} width={20} height={20} alt="estimated time" />
+          Estimated time: 45-60 mins
+        </div>
+        <div>
+          <h4 className="font-medium flex items-center gap-2 mb-2 mt-1">
+            <Image src={"/challenge-detail/question-mark.svg"} width={20} height={20} alt="what to do" />
+            <span>What to do</span>
+          </h4>
+          <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+            {task.description.split("\n\n").map((text, i) => <li key={i}>{text}</li>)}
+          </ul>
+        </div>
+        {(isRegistred && task.isCurrentTask) && <>{!!task.score
+          ? <Button variant={"outline"}>{task.score} XP Earned</Button>
+          : <Link href={`/${task.id}/submit`} className={"self-center"}><Button>Submit</Button></Link>
+        }</>}
+      </div>
+    </div>
+  </div>)
+}
