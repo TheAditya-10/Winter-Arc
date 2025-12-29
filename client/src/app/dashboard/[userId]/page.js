@@ -49,10 +49,10 @@ export default async function Page({ params }) {
             </section>
             <section>
                 <h3 className="mb-4 mt-2 text-center text-xl font-semibold">Active Challenges</h3>
-                <div className="flex @md/main:flex-col w-full items-center justify-center">
+                <div className="flex @max-xs/main:flex-col flex-wrap gap-2 w-full items-center justify-center">
                     {activeChallenges.map((challengeInfo) => {
                         return (
-                            <div key={challengeInfo.id} className="min-w-72 w-96">
+                            <div key={challengeInfo.id} className="w-full @min-xs:w-96">
                                 <ChallengeCard key={challengeInfo.id} challenge={challengeInfo} count={-1} isRegistred={true} />
                             </div>
                         )

@@ -12,7 +12,7 @@ const Header = ({ isRegistered }) => {
 
   const navItems = [
     { name: 'Home', href: '/' },
-    { name: 'Sponsors', href: '/sponsors' },
+    // { name: 'Sponsors', href: '/sponsors' },
     { name: 'Humans', href: '/humans' },
     { name: 'Rules & Rewards', href: '/rules-rewards' },
     { name: 'FAQs', href: '/faq' },

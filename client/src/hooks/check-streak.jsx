@@ -14,9 +14,10 @@ export default function useCheckStreak(initialStats, isMe) {
             if (userStats) setStats({ ...initialStats, ...userStats })
             if (error || reset) {
                 return toast.error(message)
-            } else {
-                return toast.success(message)
-            }
+            } 
+            // else {
+            //     return toast.success(message)
+            // }
         }
         if(isMe) run()
     }, [])

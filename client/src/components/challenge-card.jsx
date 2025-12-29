@@ -17,7 +17,7 @@ const ChallengeCard = ({ challenge, count, isRegistred }) => {
                 <Badge variant="secondary">Technology</Badge>
                 {isRegistred && <Badge variant="secondary" className={"ml-2"}>Active</Badge>}
 
-                <h3 className="mt-4 text-[1.3rem] font-semibold tracking-tight h-16 overflow-ellipsis line-clamp-2">
+                <h3 className="mt-4 text-xl font-medium tracking-tight h-16 overflow-ellipsis line-clamp-2">
                     {challenge?.title}
                 </h3>
                 <div className="mt-6 flex items-center justify-between">

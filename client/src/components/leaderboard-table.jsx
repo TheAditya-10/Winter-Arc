@@ -71,12 +71,12 @@ export const leadearboardColumns = [
     {
         accessorKey: "points",
         header: () => <div className="w-full text-center">XP</div>,
-        cell: ({ row }) => (<div className="w-full flex justify-center items-center gap-1">{row.original.points || 0} <CircleStar size={16} /></div>)
+        cell: ({ row }) => (<div className="w-full flex justify-center items-center gap-1">{row.original.points || 0} <Image src="/dashboard/snow-flake.svg" alt="snow flake points" width={20} height={20}/></div>)
     },
     {
         accessorKey: "weeklyPoints",
         header: () => <div className="w-full text-center">WP</div>,
-        cell: ({ row }) => (<div className="w-full flex justify-center items-center gap-1">{row.original.weeklyPoints || 0} <CircleStar size={16} /></div>)
+        cell: ({ row }) => (<div className="w-full flex justify-center items-center gap-1">{row.original.weeklyPoints || 0} <Image src="/dashboard/snow-flake.svg" alt="snow flake points" width={20} height={20}/></div>)
     },
 ]
 
