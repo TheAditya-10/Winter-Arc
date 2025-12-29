@@ -48,7 +48,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
                 <h3 className="font-semibold text-center text-lg mb-1">Challenge Details</h3>
                 <div className="flex gap-2">
                   <Image src={"/challenge-detail/clock.svg"} width={20} height={20} alt="estimated time" />
-                  <span className="font-medium">Level:</span> Biginner
+                  <span className="font-medium">Level:</span> Beginner
                 </div>
                 <div className="flex gap-2">
                   <Image src={"/challenge-detail/clock.svg"} width={20} height={20} alt="estimated time" />
