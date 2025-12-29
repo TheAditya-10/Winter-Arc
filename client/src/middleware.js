@@ -5,7 +5,11 @@ const isPublicRoute = createRouteMatcher([
   '/auth/login(.*)',
   '/auth/signup(.*)',
   '/',
-  '/static/:path*'
+  '/static/:path*',
+  '/contact',
+  '/faq',
+  '/humans',
+  '/rules-rewards',
 ])
 const isAuthRoute = createRouteMatcher(['/auth/register'])
 

@@ -5,6 +5,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import Image from "next/image"
+import { Timer } from "@/components/timer"
 
 export default async function Page() {
 
@@ -13,8 +15,6 @@ export default async function Page() {
         active: <IconActivity className="w-8 h-8" />,
         completed: <IconCheck className="w-8 h-8" />,
     }
-
-    const titles = ["Week One", "Week Two", "Week Three", "Week Four"]
 
     const weeklyTaskStartTime = ["04", "11", "18", "25"].map((dayNumber) => new TZDate(new Date(`2026-01-${dayNumber}T00:00:00`), "Asia/Calcutta").getTime())
 
@@ -25,30 +25,40 @@ export default async function Page() {
         else return "completed";
     })
 
+    const currentWeekInfo = weeklyTaskState.reduce((acc, curr, i) => {
+        if (curr != "completed" && !acc) return { state: curr, index: i }
+        return acc
+    }, null)
+
+    const progressState = (Date.now() - weeklyTaskStartTime[0])/(weeklyTaskStartTime[3]-weeklyTaskStartTime[0])
+
     return (
-        <div className="flex flex-col w-full gap-4 p-4 items-center">
-            {weeklyTaskState.map((state, i) => (
-                <Card
-                    key={titles[i]}
-                    className="rounded-2xl shadow-md bg-gradient-to-br from-background to-muted/30 border border-muted/40 hover:shadow-lg transition-all p-5 w-64 @lg/main:w-96"
-                >
-                    <CardContent className="flex flex-col gap-4 items-center justify-between p-0">
-                        <div className="flex justify-between px-4 w-full">
-                            <p className="text-sm text-foreground font-medium tracking-wide">{titles[i]}</p>
-                            <Badge variant="secondary">{state}</Badge>
+        <section className="flex flex-col items-center gap-4 px-2">
+            <div className="rounded-lg p-4 max-w-[30rem] w-full my-4 text-center text-xl font-bold bg-[#021024] shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+                JOIN US ON SUNDAY!!
+            </div>
+            <div className="flex w-full max-w-[36rem] gap-4 items-center justify-between relative">
+                <div className="w-[calc(100%-24px)] mx-3 overflow-hidden rounded-full h-2 absolute bg-[#616E95] top-4 sm:top-6">
+                    <div className="h-full bg-[#3FD7FA] rounded-full" style={{ width: `${(progressState > 0? progressState : 0) * 100}%` }} />
+                </div>
+                {weeklyTaskState.map((state, i) => (
+                    <div key={i} className={`${state == "active" ? "text-[#2DB4E0]" : "text-white"} flex items-center justify-center mb-4`}>
+                        <div
+                            className="size-12 sm:size-16 text-center relative flex items-center justify-center cursor-pointer">
+                            <Image src={`/challenge-detail/${state == "active" ? "white" : (state == "completed" ? "blue" : "gray")}-snow-ball.svg`} alt="weekly-task" fill className="absolute top-0 bottom-0" />
+                            <span className="absolute z-1000 font-semibold text-xs sm:top-2 top-1">week</span>
+                            <p className={`z-10 relative text-xl font-bold `}>{i + 1}</p>
                         </div>
-                        <div className="flex w-full gap-4 items-center justify-between px-4">
-                            <div className="p-4 rounded-2xl bg-primary/10 text-primary shadow-inner">
-                                {icons[state]}
-                            </div>
-                            {state != "upcoming" && (<div>
-                                <Link href={`/dashboard/weekly-tasks/${titles[i].replace(" ", "-").toLowerCase()}`}><Button variant={state == "completed" ? "secondary" : "default"}>{state == "completed" ? "Stats" : "Tasks"}</Button></Link>
-                            </div>)}
-                        </div>
-                    </CardContent>
-                </Card>
-            ))}
-        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="rounded-lg p-4 max-w-[30rem] w-full my-4 bg-[#021024] shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+                <h3 className="font-bold text-xl">STARTS IN:</h3>
+                <div className="font-semibold flex items-center justify-center my-8">
+                    <Timer timestamp={weeklyTaskStartTime[currentWeekInfo?.index]+(currentWeekInfo?.state == "active"? 24*60*60*1000: 0)} />
+                </div>
+            </div>
+        </section>
     );
 }
 

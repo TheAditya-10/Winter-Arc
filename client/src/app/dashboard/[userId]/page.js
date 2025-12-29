@@ -5,6 +5,7 @@ import StatsCards from "@/components/stats-card"
 import { ChallengeCard } from "@/components/challenge-card"
 import { getUserProfileById, getUserStatsById, getActiveChallengeInfoByUserId } from "@/lib/dal/user"
 import { auth } from "@clerk/nextjs/server"
+import { notFound } from "next/navigation"
 
 
 export default async function Page({ params }) {
@@ -20,6 +21,7 @@ export default async function Page({ params }) {
 
     if (userProfileError) {
         console.error(userProfileError)
+        notFound()
         return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
     }
 
@@ -47,10 +49,10 @@ export default async function Page({ params }) {
             </section>
             <section>
                 <h3 className="mb-4 mt-2 text-center text-xl font-semibold">Active Challenges</h3>
-                <div className="flex @md/main:flex-col w-full items-center justify-center">
+                <div className="flex @max-xs/main:flex-col flex-wrap gap-2 w-full items-center justify-center">
                     {activeChallenges.map((challengeInfo) => {
                         return (
-                            <div key={challengeInfo.id} className="min-w-72 w-96">
+                            <div key={challengeInfo.id} className="w-full @min-xs:w-96">
                                 <ChallengeCard key={challengeInfo.id} challenge={challengeInfo} count={-1} isRegistred={true} />
                             </div>
                         )

@@ -64,11 +64,14 @@ export const getCompletedTaskInfo = async (challengeId) => {
         .eq("challenge_id", challengeId)
         .not("image_url", "is", null)
 
-    console.log(data)
     const hashMap = new Map()
+    let xpEarned = 0;
+    data?.map(e => {
+        xpEarned += e.score;
+        hashMap.set(e.taskId, e.score);
+    })
 
-    data?.map(e => hashMap.set(e.taskId, e.score))
-
+    hashMap.set("xpEarned", xpEarned || 0);
     return { data: hashMap, error }
 }
 
