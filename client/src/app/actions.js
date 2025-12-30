@@ -4,7 +4,7 @@ import { clerkClient } from "@clerk/nextjs/server"
 import { registerFormSchema, submitFormSchema, draftFormSchema } from "./schema"
 import { z } from "zod"
 import { evaluateTaskSubmissionsByAI } from "@/ai/controllers"
-import { updateStreak, getStreakInfo } from "@/utils/streaks"
+import { updateStreak, checkForBonus } from "@/utils/streaks"
 import { submissionLimit } from "@/utils/rate-limiter"
 import { uploadBinaryFile, registerUploadInLinkedin, publishLinkedinPostWithImage } from "@/utils/share-on-linkedin"
 import { insertChallengeRegistration } from "@/lib/dal/challenge"
@@ -118,11 +118,18 @@ export async function evaluateSubmission(formData, task, submissionId) {
 
                 if (newUserInfo.streak_count == 1 && userInfo.streakCount > 0) newUserInfo.points -= 50;
 
-                const streakUpdateInfo = getStreakInfo(newUserInfo.streak_count)
-                newUserInfo.points += streakUpdateInfo.bonusPoints
-
                 newUserInfo.daily_task_completed_count = userInfo.dailyTaskCompletedCount + 1;
 
+                const {bonusPoints, messages, userMilestoneInfo} = checkForBonus({
+                    streakCount: newUserInfo.streak_count,
+                    dailyTaskCompletedCount: userInfo.dailyTaskCompletedCount + 1,
+                    streakMilestoneLevel: 0,
+                    taskMilestoneLevel: 0
+                })
+
+                // TODO: update milestone info in database.
+                // newUserInfo.points += bonusPoints
+                console.log(bonusPoints, messages, userMilestoneInfo)
 
                 // update submission in posts table
                 const taskSubmission = {
@@ -138,7 +145,10 @@ export async function evaluateSubmission(formData, task, submissionId) {
                 const { error: updateUserPointsError } = await updateUserById(userId, newUserInfo)
                 if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
-                return { message: "Submit successfully!!", score: finalState.score, streak: newUserInfo.streak_count && streakUpdateInfo, feedback: finalState.feedback }
+                if(newUserInfo.streak_count) messages.streak.push({ text: "Your streak is updated successfully.", highlight: `+${streak.count} DAY STREAK` })
+                messages.task.push({ text: "Submit successfully!!", highlight: `+${finalState.score} XP` })
+                
+                return { messages, score: finalState.score, feedback: finalState.feedback }
             } catch (error) {
                 console.error("Error:\n", error)
                 return { message: "Please try again later!!", error: true }
@@ -156,15 +166,15 @@ export async function createSubmission(formData, task) {
 
             try {
 
-                try {
-                    const { success } = await submissionLimit.limit(userId)
+                // try {
+                //     const { success } = await submissionLimit.limit(userId)
 
-                    if (!success) {
-                        return { message: "You can't submit more than 3 time in a day!!", error: true }
-                    }
-                } catch (error) {
-                    console.warn("Rate Limit Skipped:\n", error)
-                }
+                //     if (!success) {
+                //         return { message: "You can't submit more than 3 time in a day!!", error: true }
+                //     }
+                // } catch (error) {
+                //     console.warn("Rate Limit Skipped:\n", error)
+                // }
 
                 // verify form data
                 const { success: formVerified, error: formError } = submitFormSchema.safeParse(formData)

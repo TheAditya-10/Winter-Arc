@@ -27,9 +27,9 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { submitFormSchema as formSchema } from "@/app/schema"
-import { TaskSubmissionDialog } from "./task-submission"
-import { Flame } from "lucide-react"
-import { shareOnLinkedIn, createSubmission, evaluateSubmission } from "@/app/actions"
+import { createSubmission, evaluateSubmission } from "@/app/actions"
+import Image from "next/image"
+import { FeedbackOverlay } from "./feedback-overlay"
 
 
 function TaskManager({ task }) {
@@ -61,7 +61,7 @@ function TaskManager({ task }) {
         return await response.json();
     }
 
-    
+
     const handleSubmit = async (formData) => {
         setIsLoading(true)
         setShowDialog(false)
@@ -79,35 +79,28 @@ function TaskManager({ task }) {
 
             toast.dismiss(loadToast)
             loadToast = toast.loading("Loading your image...")
-            
+
             const { secure_url: url, error: uploadError } = await uploadFile(form.getValues("imageFile"), uploadConfig)
             if (uploadError) throw new Error(uploadError)
 
             toast.dismiss(loadToast)
             loadToast = toast.loading("AI is evaluating your submission...")
 
-            const { error, message, rejected: rejectedInfo, score, streak, feedback  } = await evaluateSubmission({ url, description: formData.description }, task, submissionId)
-            if(error) throw new Error(error.message)
+            const { error, messages: feedbackMessage, rejected: rejectedInfo, score, feedback } = await evaluateSubmission({ url, description: formData.description }, task, submissionId)
+            if (error) throw new Error(error.message)
 
             if (!rejectedInfo) {
-                if (streak) {
-                    toast(`${streak.count} ` + streak.message, {
-                        icon: <Flame className="size-4" />,
-                        position: "top-right"
-                    })
-                }
                 setSubmissionInfo({
                     score,
                     feedback,
                     id: submissionId,
+                    messages: feedbackMessage
                 })
-                toast.success(message)
             } else {
                 setRejected(rejectedInfo)
                 setSubmissionInfo({
                     feedback
                 })
-                toast.error(message)
             }
             setShowDialog(true)
         } catch (error) {
@@ -121,14 +114,14 @@ function TaskManager({ task }) {
 
     return (
         <div className="w-full h-full min-h-fit flex items-center justify-center">
-            <TaskSubmissionDialog
+            {/* <TaskSubmissionDialog
                 showDialog={showDialog}
                 setShowDialog={setShowDialog}
                 score={submissionInfo.score}
                 feedback={submissionInfo.feedback}
                 rejected={rejected}
                 onContinue={() => router.push(`/dashboard/challenges/${task.challengeId}`)}
-                onShareLinkedin={() => router.push(`/share/${submissionInfo.id}`)} />
+                onShareLinkedin={() => router.push(`/share/${submissionInfo.id}`)} /> */}
             <Card className="w-full max-w-md max-sm:max-w-sm max-sm:py-4">
                 <CardHeader className={"max-sm:px-4"}>
                     <CardTitle className={"line-clamp-1"}>{task?.title}</CardTitle>
@@ -180,6 +173,13 @@ function TaskManager({ task }) {
                     </Form>
                 </CardContent>
             </Card>
+            <FeedbackOverlay
+                isOpen={showDialog}
+                setIsOpen={setShowDialog}
+                messages={submissionInfo.messages}
+                aiFeedback={submissionInfo.feedback}
+                rejected={rejected}
+                redirectUrl={`/share/${submissionInfo.id}`} />
         </div>
     )
 }
