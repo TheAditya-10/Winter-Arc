@@ -1,10 +1,12 @@
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
+import { submissionLimit } from "@/utils/rate-limiter"
 
 
 export async function GET(request) {
     const { userId } = await auth()
-    return NextResponse.json({ userId })
+    const res = await submissionLimit.limit("test")
+    return NextResponse.json(res)
 
 }
 

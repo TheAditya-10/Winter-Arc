@@ -18,4 +18,9 @@ const submitFormSchema = z.object({
     ]),
 })
 
-export { registerFormSchema, submitFormSchema }
+const draftFormSchema = z.object({
+    textContent: z.string().min(20, "minimum 20 characters are required."),
+    imageUrl: z.string()
+})
+
+export { registerFormSchema, submitFormSchema, draftFormSchema }

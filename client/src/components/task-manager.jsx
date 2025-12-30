@@ -60,6 +60,8 @@ function TaskManager({ task }) {
         });
         return await response.json();
     }
+
+    
     const handleSubmit = async (formData) => {
         setIsLoading(true)
         setShowDialog(false)
@@ -85,6 +87,8 @@ function TaskManager({ task }) {
             loadToast = toast.loading("AI is evaluating your submission...")
 
             const { error, message, rejected: rejectedInfo, score, streak, feedback  } = await evaluateSubmission({ url, description: formData.description }, task, submissionId)
+            if(error) throw new Error(error.message)
+
             if (!rejectedInfo) {
                 if (streak) {
                     toast(`${streak.count} ` + streak.message, {
@@ -115,28 +119,6 @@ function TaskManager({ task }) {
         }
     }
 
-
-    const onShareLinkedin = async () => {
-        setIsLoading(true)
-        setShowDialog(false)
-        const loadToast = toast.loading("Creating draft of linedin post...")
-        try {
-            const { error, message } = await shareOnLinkedIn(submissionInfo.id)
-            if (!error) {
-                router.push("https://www.linkedin.com/feed/")
-                toast.success(message)
-            } else {
-                toast.error(message)
-            }
-        } catch (error) {
-            toast.error(error.message)
-            // toast.error("Some think went wrong. Please try again later!!")
-        } finally {
-            toast.dismiss(loadToast)
-            setIsLoading(false)
-        }
-    }
-
     return (
         <div className="w-full h-full min-h-fit flex items-center justify-center">
             <TaskSubmissionDialog
@@ -146,7 +128,7 @@ function TaskManager({ task }) {
                 feedback={submissionInfo.feedback}
                 rejected={rejected}
                 onContinue={() => router.push(`/dashboard/challenges/${task.challengeId}`)}
-                onShareLinkedin={onShareLinkedin} />
+                onShareLinkedin={() => router.push(`/share/${submissionInfo.id}`)} />
             <Card className="w-full max-w-md max-sm:max-w-sm max-sm:py-4">
                 <CardHeader className={"max-sm:px-4"}>
                     <CardTitle className={"line-clamp-1"}>{task?.title}</CardTitle>

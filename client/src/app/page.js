@@ -38,7 +38,7 @@ export default async function Home() {
           <div className="flex justify-between gap-10 items-center">
             {!!(userId && sessionClaims) && <p>Hello, {sessionClaims.firstName}</p>}
             <div className="size-7">
-              <UserButton/>
+              <UserButton />
             </div>
           </div>
           <div className="w-fit m-auto">
@@ -47,7 +47,7 @@ export default async function Home() {
               : <Button><Link href={'/dashboard/me'}>Dashboard</Link></Button>}
           </div>
           {(sessionClaims?.publicMetadata?.status === 'registered') && <ConnectWithLinkedin />}
-          
+
         </SignedIn>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">

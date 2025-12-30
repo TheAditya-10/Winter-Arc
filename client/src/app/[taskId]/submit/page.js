@@ -1,7 +1,7 @@
 "use server"
 
 import { TaskManager } from "@/components/task-manager"
-import { getTaskInfoById } from "@/lib/dal/challenge"
+import { getTaskInfoCacheById } from "@/lib/dal/cache"
 import { isRegistered } from "@/utils/auth"
 
 export default async function Page({ params }) {
@@ -11,10 +11,10 @@ export default async function Page({ params }) {
 
     const { taskId } = await params
 
-    const { data: task, error: taskError } = await getTaskInfoById(taskId)
+    const { data: task, error: taskError } = await getTaskInfoCacheById(taskId)
     if (taskError) {
         console.error(taskError)
-        return <h1>Some thing went wrong. Please try again later!!</h1>
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
     }
 
     return (
