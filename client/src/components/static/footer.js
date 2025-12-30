@@ -6,54 +6,40 @@ const Footer = () => {
 
 
 
-      <div className='max-md:hidden w-[90%] flex justify-between mt-30 mb-14 mx-auto'>
+      <div className='max-md:hidden w-[90%] flex justify-around items-center mt-30 mb-14 mx-auto'>
 
         {/* Footer logo  */}
+
 
         <div>
           <img className='h-15 max-md:h-8' src="/MatrixFooterLogo.svg" />
           <p className='text-sm font-semibold mt-3 max-md:text-xs'>© 2025 Matrix JEC, All rights are reserved.</p>
         </div>
 
-        {/* footer links */}
-
-        <div className='grid grid-cols-2 gap-20'>
-          <div>
-            <p className='font-bold text-[rgb(255,255,255,0.8)] text-lg'>Community</p>
-            <div className='flex flex-col gap-2 mt-4'>
-
-              <p className='font-semibold text-sm text-[rgb(255,255,255,0.8)]'>About</p>
-              <p className='font-semibold text-sm text-[rgb(255,255,255,0.8)]'>Guidelines</p>
-              <p className='font-semibold text-sm text-[rgb(255,255,255,0.8)]'>Events</p>
-              <p className='font-semibold text-sm text-[rgb(255,255,255,0.8)]'>Blogs</p>
-
-            </div>
-          </div>
-
-          <div>
-            <p className='font-bold text-[rgb(255,255,255,0.8)] text-lg'>Resources</p>
-            <div className='flex flex-col gap-2 mt-4'>
-
-              <p className='font-semibold text-sm text-[rgb(255,255,255,0.8)]'>Documentation</p>
-              <p className='font-semibold text-sm text-[rgb(255,255,255,0.8)]'>Learning Center</p>
-              <p className='font-semibold text-sm text-[rgb(255,255,255,0.8)]'>API Reference</p>
-              <p className='font-semibold text-sm text-[rgb(255,255,255,0.8)]'>Support</p>
-
-            </div>
-          </div>
-
-
+        <div>
+          <img className='h-45' src="/WinterArcSnow2.svg" alt="" />
         </div>
+
 
         {/* footer connect with us  */}
         <div>
           <p className='text-3xl'>Connect with us</p>
 
           <div className='flex mt-4 gap-6'>
-            <img className='h-8' src="/twitter.svg" />
-            <img className='h-8' src="/github.svg" />
-            <img className='h-8' src="/linkedin.svg" />
-            <img className='h-8' src="/discord.svg" />
+
+            <a href='https://x.com/MatrixJec'>
+              <img className='h-8' src="/twitter.svg" />
+            </a>
+            <a href=''>
+              <img className='h-8' src="/github.svg" />
+            </a>
+            <a href='https://www.linkedin.com/company/matrix-jec/'>
+              <img className='h-8' src="/linkedin.svg" />
+            </a>
+            <a href='https://www.instagram.com/matrix.jec/'>
+              <img className='h-9' src="/instagram.svg" />
+            </a>
+
           </div>
 
         </div>
@@ -93,11 +79,21 @@ const Footer = () => {
 
           <img className='h-12 ' src="/MatrixFooterLogo.svg" />
           <div className='flex mt-1 gap-7'>
-            <img className='h-6' src="/twitter.svg" />
-            <img className='h-6' src="/github.svg" />
-            <img className='h-6' src="/linkedin.svg" />
-            <img className='h-6' src="/discord.svg" />
-            <img className='h-6' src="/instagram.svg" />
+
+
+
+            <a href='https://x.com/MatrixJec'>
+              <img className='h-6' src="/twitter.svg" />
+            </a>
+            <a href=''>
+              <img className='h-6' src="/github.svg" />
+            </a>
+            <a href='https://www.linkedin.com/company/matrix-jec/'>
+              <img className='h-6' src="/linkedin.svg" />
+            </a>
+            <a href='https://www.instagram.com/matrix.jec/'>
+              <img className='h-6' src="/instagram.svg" />
+            </a>
 
           </div>
 

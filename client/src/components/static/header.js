@@ -12,7 +12,7 @@ const Header = () => {
   const navItems = [
     { name: 'Home', href: '#home' },
     { name: 'Sponsors', href: '#about' },
-    { name: 'Humans', href: '#services' },
+    { name: 'Team', href: '#services' },
     { name: 'Rules & Rewards', href: '#portfolio' },
     { name: 'FAQs', href: '#contact' },
     { name: 'Contact Us', href: '#contact' },
@@ -38,7 +38,7 @@ const Header = () => {
           <div className='flex justify-between w-[50%]'>
             <Link href="/">Home</Link>
             <Link href="/">Sponsors</Link>
-            <Link href="/">Humans</Link>
+            <Link href="/">Team</Link>
             <Link href="/">Rules & Rewards</Link>
             <Link href="/">FAQs</Link>
             <Link href="/">Contact Us</Link>

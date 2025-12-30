@@ -14,13 +14,13 @@ const HeroSection = () => {
           <p className='text-2xl text-center max-md:text-sm'>“Commit to January. Build discipline.”</p>
         </div>
 
-        <button className='bg-[#8ACADE] text-black py-3 px-4 mt-10 rounded-xl font-bold max-md:scale-80'>
+        <button className='bg-[#8ACADE] text-black py-4 px-5 mt-10 rounded-xl font-bold max-md:scale-80'>
           START THE WINTER ARC
         </button>
 
-        <button className='bg-[rgb(217,225,227,0.53)] text-black py-2 px-8 mt-4 rounded-xl font-bold text-sm max-md:scale-85'>
-          KNOW MORE!!
-        </button>
+        <a href="https://chat.whatsapp.com/CocJDKNXlbEIZ4RRhytkLs" target="_blank" className='bg-[#25d366] text-[#052e16] py-3 font-semibold px-6  mt-4 rounded-4xl text-sm max-md:scale-85'>
+        Join the WhatsApp Circle
+        </a>
 
         <div className='flex items-center mt-15 max-md:flex-col'>
           <p className='text-3xl font-semibold'>POWERED BY  </p>
