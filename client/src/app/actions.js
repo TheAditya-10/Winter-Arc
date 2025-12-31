@@ -146,7 +146,7 @@ export async function evaluateSubmission(formData, task, submissionId) {
                 const { error: updateUserPointsError } = await updateUserById(userId, newUserInfo)
                 if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
-                if(newUserInfo.streak_count) messages.streak.push({ text: "Your streak is updated successfully.", highlight: `+${streak.count} DAY STREAK` })
+                if(newUserInfo.streak_count) messages.streak.push({ text: "Your streak is updated successfully.", highlight: `+${newUserInfo.streak_count.count} DAY STREAK` })
                 messages.task.push({ text: "Submit successfully!!", highlight: `+${finalState.score} XP` })
                 
                 return { messages, score: finalState.score, feedback: finalState.feedback }

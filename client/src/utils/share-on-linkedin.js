@@ -46,7 +46,7 @@ async function publishLinkedinPostWithImage(accessToken, linkedinId, imageAsset,
     const url = "https://api.linkedin.com/v2/ugcPosts";
     const body = {
         "author": `urn:li:person:${linkedinId}`,
-        "lifecycleState": "DRAFT",
+        "lifecycleState": "PUBLISHED",
         "specificContent": {
             "com.linkedin.ugc.ShareContent": {
                 "shareCommentary": {
