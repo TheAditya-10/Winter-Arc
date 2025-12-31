@@ -114,14 +114,6 @@ function TaskManager({ task }) {
 
     return (
         <div className="font-inter w-full h-full min-h-fit flex items-center justify-center">
-            {/* <TaskSubmissionDialog
-                showDialog={showDialog}
-                setShowDialog={setShowDialog}
-                score={submissionInfo.score}
-                feedback={submissionInfo.feedback}
-                rejected={rejected}
-                onContinue={() => router.push(`/dashboard/challenges/${task.challengeId}`)}
-                onShareLinkedin={() => router.push(`/share/${submissionInfo.id}`)} /> */}
             <Card className="w-full max-w-md max-sm:max-w-sm max-sm:py-4">
                 <CardHeader className={"max-sm:px-4"}>
                     <CardTitle className={"line-clamp-1"}>{task?.title}</CardTitle>
