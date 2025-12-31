@@ -48,7 +48,7 @@ export async function createUser(formData, userLocalTimeZone) {
 
 
                 const { avatar_url, id } = sessionClaims
-                const user = { ...formData, avatar_url, id, points: 0 }
+                const user = { ...formData, avatar_url, id, points: 1000 }
                 const { error } = await insertUser(user)
                 if (error) {
                     if (error.code == "23505") {
