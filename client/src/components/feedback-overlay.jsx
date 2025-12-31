@@ -45,7 +45,7 @@ export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFe
 
 
     return (
-        <div className="fixed w-dvw h-dvh flex flex-col text-center items-center justify-center bg-[#0A0F1F] top-0 pb-24 gap-2 px-2">
+        <div className="font-inter fixed w-dvw h-dvh flex flex-col text-center items-center justify-center bg-[#0A0F1F] top-0 pb-24 gap-2 px-2">
             <Image
                 src="/background.svg"
                 fill

@@ -92,7 +92,7 @@ const Faq = () => {
   ];
 
   return (
-    <div>
+    <div className='font-poppins'>
       <div className='flex flex-col items-center'>
         <p className='mt-35 text-[#8ACADE] text-6xl font-bold max-md:text-4xl'>GOT QUESTIONS?</p>
         <p className='mt-8 font-semibold text-xl w-[80%] max-md:w-[70%] text-center max-md:text-sm'>We&#39;ve answered the most common queries about the event—rules, registration, participation, and more. If you&#39;re still unsure, we&#39;ve got your back!</p>

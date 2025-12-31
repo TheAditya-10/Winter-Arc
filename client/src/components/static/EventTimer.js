@@ -20,12 +20,12 @@ const EventTimer = ({ isRegistered }) => {
                 <p className='text-4xl text-[#184654] max-md:text-lg max-md:pt-14 max-md:pl-7'>Event Starts In</p>
                 <p className='text-[120px] text-[#0A0F1F] max-md:text-5xl max-md:pl-9'>{days*24 + hours}:{minutes}:{seconds}</p>
 
-                <div className='flex gap-30 ml-10 text-[#0A0F1F] max-md:m-0 max-md:gap-6 max-md:text-xs max-md:pl-12'>
+                {/* <div className='flex gap-30 ml-10 text-[#0A0F1F] max-md:m-0 max-md:gap-6 max-md:text-xs max-md:pl-12'>
                     <p>HOURS</p>
                     <p>MINUTES</p>
                     <p>SEC</p>
-                </div>
-                <div className='mt-6'>
+                </div> */}
+                <div className='mt-6 font-inter'>
                     <Link href={isRegistered ? "/dashboard/me" : "/auth/register"}>
                         <button className='ml-45 py-1 rounded-lg px-8 bg-[#8ACADE] border-2 border-[#0A0F1F] text-black font-semibold max-md:mx-auto  max-md:scale-70'>
                             {isRegistered ? "Dashboard" : "Register"}

@@ -119,7 +119,7 @@ const humans = [
 ]
 
   return (
-    <div className='max-md:mt-15 mt-35 mb-10'>
+    <div className='max-md:mt-15 mt-35 mb-10 font-poppins'>
 
 {/* hero section  */}
       <div className='flex justify-between w-[80%] mx-auto max-md:flex-col '>

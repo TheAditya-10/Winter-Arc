@@ -24,7 +24,7 @@ const Header = ({ isRegistered }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
+    <div className='font-space-grotesk'>
       {/* laptop view  */}
 
       <div className='absolute w-full top-4 max-md:hidden'>

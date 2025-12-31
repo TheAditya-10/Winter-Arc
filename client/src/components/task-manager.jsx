@@ -113,7 +113,7 @@ function TaskManager({ task }) {
     }
 
     return (
-        <div className="w-full h-full min-h-fit flex items-center justify-center">
+        <div className="font-inter w-full h-full min-h-fit flex items-center justify-center">
             {/* <TaskSubmissionDialog
                 showDialog={showDialog}
                 setShowDialog={setShowDialog}

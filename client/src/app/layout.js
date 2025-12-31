@@ -13,6 +13,7 @@ import {
   Syne,
   Space_Grotesk,
   K2D,
+  Tac_One
 } from "next/font/google";
 
 export const poppins = Poppins({
@@ -25,6 +26,11 @@ export const goldman = Goldman({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-goldman",
+});
+export const tacOne = Tac_One({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-tacone",
 });
 
 export const inter = Inter({
@@ -76,6 +82,7 @@ export default function RootLayout({ children }) {
                       ${spaceGrotesk.variable}
                       ${k2d.variable}
                       ${geistMono.variable} 
+                      ${tacOne.variable} 
                       antialiased
                       `}>
           {children}

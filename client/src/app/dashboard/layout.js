@@ -31,7 +31,7 @@ export default async function DashboardLayout({ children }) {
           "--header-height": "calc(var(--spacing) * 12)"
         }
       }>
-      <AppSidebar variant="inset" user={user} />
+      <AppSidebar variant="inset" user={user} className={"font-inter"}/>
       <SidebarInset>
         <SiteHeader user={user}/>
         <div className="flex flex-1 flex-col relative overflow-hidden">

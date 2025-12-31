@@ -47,12 +47,12 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
 
   return (
     <>
-      <section className="pb-32 pt-10">
+      <section className="pb-32 pt-10 font-poppins">
         <h1 className="text-foreground px-2 mb-10 text-center text-2xl font-bold tracking-tighter @sm/main:text-3xl">
           {challenge.title}
         </h1>
 
-        <div className="">
+        <div className="font-inter">
           {
             (showChallengeInfo || !isRegistred) && (
               <div className="mb-10 mx-auto w-76 @sm/main:w-96 @lg/main:w-[32rem] @2xl/main:w-[40rem] rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
@@ -119,9 +119,9 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
               const taskScore = taskCompleted.get(task.id)
               const isCurrentDay = currentDayNumber == task.dayNumber;
               return (
-                <div key={task.id}>
-                  {i % 7 == 0 && (<div className="my-16">
-                    <div className="rounded-lg px-2 bg-[#86C8DE] text-white w-[24rem] justify-between mx-auto flex gap-2 items-center">
+                <div key={task.id} className="">
+                  {i % 7 == 0 && (<div className="my-16 font-inter">
+                    <div className="rounded-lg px-2 bg-[#61bedd] text-white w-[24rem] justify-between mx-auto flex gap-2 items-center">
                       <div className="py-2">
                         <h3 className="font-bold">{weekBox.title[i / 7]}</h3>
                         <p className="text-sm">{weekBox.text[i / 7]}</p>
@@ -139,7 +139,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
                       onClick={() => setTaskDetail({ ...task, score: taskScore, isCurrentTask: currentDayNumber == task.dayNumber })}
                       style={{ left: Math.floor(Math.sin(task.dayNumber - 1) * 100) }}>
                       <Image src={`/challenge-detail/${isCurrentDay ? "white" : (!!taskScore ? "blue" : "gray")}-snow-ball.svg`} alt="task" fill className="absolute top-0 bottom-0" />
-                      <p className={`z-10 relative -top-1 text-xl font-bold ${isCurrentDay ? "text-[#2DB4E0]" : "text-white"}`}>{task.dayNumber}</p>
+                      <p className={`z-10 relative -top-1 text-3xl ${isCurrentDay ? "text-[#2DB4E0]" : "text-white"} font-tacone`}>{task.dayNumber}</p>
                     </div>
                   </div>
                 </div>
@@ -156,7 +156,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
 export { ChallengeDetail };
 
 const TaskDetailCard = ({ task, close, isRegistred }) => {
-  return (<div className="w-dvw h-dvh fixed bg-muted/80 backdrop-blur-md flex items-center justify-center z-100 top-0 left-0" onClick={() => close()}>
+  return (<div className="font-poppins w-dvw h-dvh fixed bg-muted/80 backdrop-blur-md flex items-center justify-center z-100 top-0 left-0" onClick={() => close()}>
     <div className="">
       <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">Day-{task.dayNumber}</h2>
       <div className="w-76 sm:w-96 rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">

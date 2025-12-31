@@ -32,7 +32,7 @@ export default function StatsCards({ userStats, isMe }) {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 items-center p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 items-center p-4 font-inter">
       {items.map((item) => (
         <Card
           key={item.label}

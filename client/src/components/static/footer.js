@@ -50,7 +50,7 @@ const Footer = () => {
         <div className='mt-10'>
 
           <img className='h-12 ' src="/MatrixFooterLogo.svg" />
-          <div className='flex mt-1 gap-7'>
+          <div className='flex mt-3 justify-center gap-7'>
 
             <a href='https://x.com/MatrixJec'>
               <img className='h-6' src="/twitter.svg" />

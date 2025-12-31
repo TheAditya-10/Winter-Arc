@@ -164,6 +164,7 @@ body,
   --font-syne: var(--font-syne);
   --font-space-grotesk: var(--font-space-grotesk);
   --font-k2d: var(--font-k2d);
+  --font-tacone: var(--font-tacone);
 }
 
 /* Font utilities */
@@ -189,5 +190,9 @@ body,
 
 @utility font-k2d {
   font-family: var(--font-k2d);
+}
+
+@utility font-k2d {
+  font-family: var(--font-tacone);
 }
 

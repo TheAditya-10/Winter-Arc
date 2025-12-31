@@ -23,7 +23,7 @@ function Timer({ timestamp }) {
         : { labels: ["HOURS", "MIN", "SEC"], values: [hours, minutes, seconds] }
 
     return (
-        <div className='w-fit flex flex-col items-center mt-2 ms:mb-8 mb-4'>
+        <div className='w-fit flex flex-col items-center mt-2 ms:mb-8 mb-4 font-syne'>
             <div className='ml:text-8xl ms:text-6xl text-4xl w-fit mb-4'>
                 {
                     clock.values.map((value, index) => {

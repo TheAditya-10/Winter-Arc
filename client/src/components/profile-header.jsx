@@ -7,7 +7,7 @@ import { Camera, Calendar, Mail, MapPin, UserRound , AtSign, Share2 } from "luci
 export default function ProfileHeader({ user }) {
 
     return (
-                <div className="flex gap-6 items-center mx-auto">
+                <div className="flex gap-6 items-center mx-auto font-inter">
                     <div className="relative m-auto">
                         <Avatar className="size-20 ">
                             <AvatarImage src={user.avatarUrl} alt="Profile" />

@@ -124,7 +124,7 @@ export function LeaderboardTable(
 
 
     return (
-        <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6 @2xl/main:w-[42rem] @2xl/main:self-center pb-2">
+        <div className="font-poppins relative flex flex-col gap-4 overflow-auto px-4 lg:px-6 @2xl/main:w-[42rem] @2xl/main:self-center pb-2">
             <div className="flex items-center justify-between py-4 gap-2">
                 <Input
                     placeholder="Search by username..."
@@ -217,7 +217,7 @@ export function LeaderboardTable(
                     </div>
                 </div>
                 {!!topThree[2] &&
-                    <div className="flex items-end justify-center gap-0 pt-8">
+                    <div className="flex items-end justify-center gap-0 pt-8 font-inter">
                         <div
                             className="w-28 h-24 pt-6 bg-[#1E2237] rounded-l-lg flex flex-col items-center relative cursor-pointer"
                             onClick={() => router.push(`/dashboard/${topThree[1].id}`)}>

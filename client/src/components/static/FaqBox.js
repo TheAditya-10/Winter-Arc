@@ -31,7 +31,7 @@ const FaqBox = ({ no, question, answer, isOpen, onToggle }) => {
                 onClick={onToggle}
                 className="w-full px-6 py-6 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
             >
-                <motion.span layout="position" className="font-semibold text-gray-800 text-lg pr-4">
+                <motion.span layout="position" className="font-semibold text-gray-800 text-lg pr-4 font-space-grotesk">
                     <div className='flex items-center'>
 
                         <p className='text-4xl mr-3'>
@@ -44,7 +44,7 @@ const FaqBox = ({ no, question, answer, isOpen, onToggle }) => {
                 <motion.div
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="flex-shrink-0"
+                    className="flex-shrink-0 font-inter"
                 >
                     {isOpen ? (
                         <svg
