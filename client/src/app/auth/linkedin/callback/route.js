@@ -3,7 +3,9 @@ import { fetcher } from "@/utils/apiService"
 import { auth } from "@clerk/nextjs/server"
 import { isValidateState } from "@/utils/share-on-linkedin"
 import { setUserCred } from "@/lib/dal/creds"
+import { clerkClient } from "@clerk/nextjs/server"
 
+const clerk = await clerkClient()
 
 export async function GET(request) {
     try {
@@ -33,8 +35,12 @@ export async function GET(request) {
         }
         const { expires_in, access_token, id_token } = await fetcher('https://www.linkedin.com/oauth/v2/accessToken', 'post', body, { headers: { "Content-Type": "application/x-www-form-urlencoded" } })
         const { sub: linkedin_id } = JSON.parse(Buffer.from(id_token.split(".")[1], "base64").toString())
-        
+
         const { error } = await setUserCred(access_token, linkedin_id, expires_in)
+
+        const updateMetadataRes = await clerk.users.updateUserMetadata(userId, {
+            publicMetadata: { linkedin: "connected" },
+        })
 
         if (error) {
             throw new Error(error.message)
@@ -42,7 +48,7 @@ export async function GET(request) {
 
         return NextResponse.redirect('http://localhost:3000/dashboard/me?type=success&message=Your+LinkedIn+account+is+successfully+connected%21%21')
     } catch (error) {
-        console.error(error)
+        console.error(error.message || error)
         return NextResponse.redirect('http://localhost:3000/dashboard/me?type=error&message=Failed+to+connect+with+your+linkedIn+account%21%21')
     }
 }

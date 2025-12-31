@@ -16,6 +16,7 @@ import { redirect } from "next/navigation"
 import { isRegistered } from "@/utils/auth"
 import { genrateSignature } from "@/utils/cloud-storage"
 import { withServerActionInstrumentation } from "@sentry/nextjs"
+import {createVerifcationState} from "@/utils/share-on-linkedin"
 
 const clerk = await clerkClient()
 
@@ -336,3 +337,14 @@ export async function checkStreak() {
         }
     )
 }
+
+export async function initiateConnectWithLinkedin() {
+        const { status, redirectToRegister, userId } = await isRegistered()
+        if (!status) return redirectToRegister()
+
+        const state = await createVerifcationState(userId)
+
+        const url = `https://www.linkedin.com/oauth/v2/authorization?enable_extended_login=true&response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.LINKEDIN_CALLBACK_URL}&state=${state}&scope=profile%20email%20w_member_social%20openid`
+
+        return redirect(url)
+    }

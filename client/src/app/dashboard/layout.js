@@ -20,7 +20,8 @@ export default async function DashboardLayout({ children }) {
     email: sessionClaims.email,
     username: sessionClaims.publicMetadata.username,
     name: sessionClaims.firstName,
-    avatar_url: sessionClaims.avatar_url
+    avatar_url: sessionClaims.avatar_url,
+    isLinkedinConnected: sessionClaims.publicMetadata.linkedin == "connected"
   }
 
   return (
