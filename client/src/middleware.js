@@ -10,6 +10,7 @@ const isPublicRoute = createRouteMatcher([
   '/faq',
   '/humans',
   '/rules-rewards',
+  '/api/revalidate',
 ])
 const isAuthRoute = createRouteMatcher(['/auth/register'])
 
