@@ -154,3 +154,40 @@ body,
   }
 
 }
+
+
+/* Your theme */
+@theme {
+  --font-poppins: var(--font-poppins);
+  --font-goldman: var(--font-goldman);
+  --font-inter: var(--font-inter);
+  --font-syne: var(--font-syne);
+  --font-space-grotesk: var(--font-space-grotesk);
+  --font-k2d: var(--font-k2d);
+}
+
+/* Font utilities */
+@utility font-poppins {
+  font-family: var(--font-poppins);
+}
+
+@utility font-goldman {
+  font-family: var(--font-goldman);
+}
+
+@utility font-inter {
+  font-family: var(--font-inter);
+}
+
+@utility font-syne {
+  font-family: var(--font-syne);
+}
+
+@utility font-space-grotesk {
+  font-family: var(--font-space-grotesk);
+}
+
+@utility font-k2d {
+  font-family: var(--font-k2d);
+}
+

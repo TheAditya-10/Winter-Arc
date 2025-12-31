@@ -23,7 +23,7 @@ const Challages = async () => {
     return (
         <div className="grid @xl/main:grid-cols-2 @4xl/main:grid-cols-3 gap-6 px-6 py-6">
             {challenges.map((challenge) => (
-                <ChallengeCard key={challenge.id} challenge={challenge} count={-1} isRegistred={userActiveChallengeMap.get(challenge.id)} />
+                <ChallengeCard key={challenge.id} challenge={challenge} isRegistred={userActiveChallengeMap.get(challenge.id)} />
             ))}
         </div>
     );

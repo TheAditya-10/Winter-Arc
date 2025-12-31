@@ -12,7 +12,7 @@ const EventTimer = ({ isRegistered }) => {
          }, [restart])
 
     return (
-        <div className='max-md:h-[40%]'>
+        <div className='max-md:h-[40%] font-syne'>
             <div
                 className='h-screen bg-cover bg-center py-[180px] bg-no-repeat my-[-30px] px-[100px] max-md:h-[150%] max-md:bg-cover max-md:px-0 max-md:py-0 max-md:my-5'
                 style={{ backgroundImage: "url('/EventTimerBg.svg')" }}

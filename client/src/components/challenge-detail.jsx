@@ -33,6 +33,17 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
     }
   }
 
+  const weekBox = {
+    title: ["week 1", "week 2", "week 3", "week 4", "Final Days"],
+    text: [
+      "The cold doesn't care about your excuses. Lock in.",
+      "Most people are hibernating. This is where you pull ahead.",
+      "Motivation gets you started; the Arc keeps you going.",
+      "It's easier to keep the fire going than to restart it from the ash.",
+      "Form basic sentences, greet people"
+    ]
+  }
+
 
   return (
     <>
@@ -73,10 +84,13 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
                     <li>A laptop with access to the internet</li>
                   </ul>
                 </div>
-                {!isRegistred
-                  ? <Button onClick={onStartNowClick} className={"w-fit mx-auto"}>Start Now</Button>
-                  : <Button variant={"secondary"} onClick={() => setShowChallengeInfo(false)} className={"w-fit mx-auto"}>View Progress</Button>
-                }
+                <div className="flex items-center w-full justify-around mt-4">
+                  {!isRegistred
+                    ? <Button onClick={onStartNowClick} className={"w-fit"}>Start Now</Button>
+                    : <Button variant={"secondary"} onClick={() => setShowChallengeInfo(false)} className={"w-fit"}>Progress</Button>
+                  }
+                  <Link href={`/roadmap/${challenge.id}.pdf`}><Button variant={"secondary"}>Roadmap</Button></Link>
+                </div>
               </div>
             )
           }
@@ -92,23 +106,41 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
                   <div className="flex justify-between items-center"><span className="font-medium">Total XP Earned</span><span className="text-sm">{taskCompleted.get("xpEarned")} XP</span></div>
                   <div className="w-full h-2 bg-[#4B4B4B] rounded-full"><div className="bg-[#FFC800] rounded-full h-full" style={{ width: `${taskCompleted.get("xpEarned") * 100 / 1500}%` }} /></div>
                 </div>
-                <Button variant={"secondary"} onClick={() => setShowChallengeInfo(true)} className={"w-fit mx-auto"}>View Details</Button>
+                <div className="flex items-center w-full justify-around mt-4">
+                  <Button variant={"secondary"} onClick={() => setShowChallengeInfo(true)} className={"w-fit"}>Details</Button>
+                  <Link href={`/roadmap/${challenge.id}.pdf`}><Button variant={"secondary"}>Roadmap</Button></Link>
+                </div>
               </div>
             )
           }
 
           <div className="relative mx-auto max-w-4xl px-2">
-            {tasks.map((task) => {
+            {tasks.map((task, i) => {
               const taskScore = taskCompleted.get(task.id)
               const isCurrentDay = currentDayNumber == task.dayNumber;
               return (
-                <div key={task.id} className=" flex items-center justify-center mb-4">
-                  <div
-                    className="size-16 text-center relative flex items-center justify-center cursor-pointer"
-                    onClick={() => setTaskDetail({ ...task, score: taskScore, isCurrentTask: currentDayNumber == task.dayNumber })}
-                    style={{ left: Math.floor(Math.sin(task.dayNumber - 1) * 100) }}>
-                    <Image src={`/challenge-detail/${isCurrentDay ? "white" : (!!taskScore ? "blue" : "gray")}-snow-ball.svg`} alt="task" fill className="absolute top-0 bottom-0" />
-                    <p className={`z-10 relative -top-1 text-xl font-bold ${isCurrentDay ? "text-[#2DB4E0]" : "text-white"}`}>{task.dayNumber}</p>
+                <div key={task.id}>
+                  {i % 7 == 0 && (<div className="my-16">
+                    <div className="rounded-lg px-2 bg-[#86C8DE] text-white w-[24rem] justify-between mx-auto flex gap-2 items-center">
+                      <div className="py-2">
+                        <h3 className="font-bold">{weekBox.title[i / 7]}</h3>
+                        <p className="text-sm">{weekBox.text[i / 7]}</p>
+                      </div>
+                      <Link href={"/rules-rewards"} className="rounded-lg bg-[#75B0C4] border-2 min-w-fit border-[#000000]/20 flex gap-2 p-2 text-sm font-medium">
+                        <Image src={"/challenge-detail/notebook.svg"} height={16} width={16} alt="rulebook" />
+                        RULEBOOK
+                      </Link>
+
+                    </div>
+                  </div>)}
+                  <div key={task.id} className=" flex items-center justify-center mb-4">
+                    <div
+                      className="size-16 text-center relative flex items-center justify-center cursor-pointer"
+                      onClick={() => setTaskDetail({ ...task, score: taskScore, isCurrentTask: currentDayNumber == task.dayNumber })}
+                      style={{ left: Math.floor(Math.sin(task.dayNumber - 1) * 100) }}>
+                      <Image src={`/challenge-detail/${isCurrentDay ? "white" : (!!taskScore ? "blue" : "gray")}-snow-ball.svg`} alt="task" fill className="absolute top-0 bottom-0" />
+                      <p className={`z-10 relative -top-1 text-xl font-bold ${isCurrentDay ? "text-[#2DB4E0]" : "text-white"}`}>{task.dayNumber}</p>
+                    </div>
                   </div>
                 </div>
               )
@@ -142,9 +174,9 @@ const TaskDetailCard = ({ task, close, isRegistred }) => {
             {task.description.split("\n\n").map((text, i) => <li key={i}>{text}</li>)}
           </ul>
         </div>
-        {(isRegistred && task.isCurrentTask) && <>{!!task.score
+        {(isRegistred) && <>{!!task.score
           ? <Button variant={"outline"}>{task.score} XP Earned</Button>
-          : <Link href={`/${task.id}/submit`} className={"self-center"}><Button>Submit</Button></Link>
+          : <>{task.isCurrentTask && <Link href={`/${task.id}/submit`} className={"self-center"}><Button>Submit</Button></Link>}</>
         }</>}
       </div>
     </div>

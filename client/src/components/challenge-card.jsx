@@ -7,9 +7,10 @@ import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
 import { UserRoundPen } from "lucide-react"
 import Link from "next/link"
+import ChallengeImage from "./challenge-img"
 
 
-const ChallengeCard = ({ challenge, count, isRegistred }) => {
+const ChallengeCard = ({ challenge, isRegistred }) => {
 
     return (
         <Card className="@container/card shadow-none py-0 gap-3">
@@ -21,11 +22,7 @@ const ChallengeCard = ({ challenge, count, isRegistred }) => {
                     {challenge?.title}
                 </h3>
                 <div className="mt-6 flex items-center justify-between">
-                    <Button variant="outline" size="sm">
-                        <UserRoundPen size={64} />
-                        { (count > 0) && <span>{count}</span>}
-                    </Button>
-
+                    {/* <ChallengeImage id={challenge?.id}/> */}
                     <Link href={`/dashboard/challenges/${challenge?.id}`}>
                         <Button>
                             View Details
