@@ -8,7 +8,7 @@ export const getChallengesInfoCacheById = unstable_cache(
     ['get-challenges-info'],
     {
         tags: ["get-challenges-info-by-id"],
-        revalidate: 3600 // Revalidate every hour
+        revalidate: false // Cache indefinitely - challenges don't change during event
     }
 )
 
@@ -17,7 +17,7 @@ export const getAllTasksCache = unstable_cache(
     ['get-all-tasks'],
     {
         tags: ["get-all-tasks"],
-        revalidate: 3600 // Revalidate every hour
+        revalidate: false // Cache indefinitely - tasks don't change during event
     }
 )
 
@@ -26,6 +26,6 @@ export const getTaskInfoCacheById = unstable_cache(
     ['get-task-info'],
     {
         tags: ["get-task-info-by-id"],
-        revalidate: 3600 // Revalidate every hour
+        revalidate: false // Cache indefinitely - tasks don't change during event
     }
 )
