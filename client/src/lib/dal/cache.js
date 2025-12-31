@@ -15,7 +15,7 @@ export const getAllTasksCache = unstable_cache(
     async (challengeId) => await getAllTasks(challengeId),
     [],
     {
-        tags: "get-all-tasks"
+        tags: ["get-all-tasks"]
     }
 )
 
@@ -23,6 +23,6 @@ export const getTaskInfoCacheById = unstable_cache(
     async (taskId) => await getTaskInfoById(taskId),
     [],
     {
-        tags: "get-task-info-by-id"
+        tags: ["get-task-info-by-id"]
     }
 )
