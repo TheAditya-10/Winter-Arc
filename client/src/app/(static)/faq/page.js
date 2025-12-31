@@ -16,48 +16,78 @@ const Faq = () => {
   const faqs = [
     {
       no: "01",
-      question: "What is React?",
-      answer: "React is a popular JavaScript library for building user interfaces, particularly single-page applications. It allows developers to create reusable UI components and manage application state efficiently."
+      question: "What is Winter-Arc?",
+      answer: "Winter-Arc is a 30-day gamified skill-development event by Matrix where students complete daily and weekly challenges, earn XP, maintain streaks, and get rewarded while building real skills."
     },
     {
       no: "02",
-      question: "What is Framer Motion?",
-      answer: "Framer Motion is a production-ready motion library for React. It provides a simple and powerful API for creating animations and gestures in your React applications with minimal code."
+      question: "Who can participate in Winter-Arc?",
+      answer: "Winter-Arc is open to all college-going students who want to learn new skills, stay consistent, and earn rewards. There are no restrictions based on branch or year."
     },
     {
       no: "03",
-      question: "How do I install these libraries?",
-      answer: "You can install React and Framer Motion using npm or yarn. Run 'npm install react react-dom framer-motion' or 'yarn add react react-dom framer-motion' in your project directory."
+      question: "Is it mandatory to post task completion on LinkedIn or X?",
+      answer: "Yes. Posting task completion on LinkedIn or X (Twitter) by tagging Matrix and using official hashtags (e.g., #WinterArcMatrix) is mandatory to be eligible for rewards."
     },
     {
       no: "04",
-      question: "Can I customize the styling?",
-      answer: "Absolutely! This component uses Tailwind CSS classes which you can easily modify. You can change colors, spacing, borders, and any other styling properties to match your design system."
+      question: "What happens if I don't post on LinkedIn or X?",
+      answer: "If a participant does not post task completion updates: XP may still be earned, but they will NOT be eligible for prizes or rewards."
     },
     {
       no: "05",
-      question: "Can I customize the styling?",
-      answer: "Absolutely! This component uses Tailwind CSS classes which you can easily modify. You can change colors, spacing, borders, and any other styling properties to match your design system."
+      question: "How many challenges can I enroll in?",
+      answer: "There is no maximum limit on Daily Challenge enrollment. However, participants are encouraged to master at least one skill during Winter-Arc."
     },
     {
       no: "06",
-      question: "Can I customize the styling?",
-      answer: "Absolutely! This component uses Tailwind CSS classes which you can easily modify. You can change colors, spacing, borders, and any other styling properties to match your design system."
+      question: "What are Daily Challenges?",
+      answer: "Daily Challenges consist of: 6 skill categories, 30 tasks per category, each task carries up to 50 XP. XP from Daily Challenges contributes to the Global Leaderboard."
     },
     {
       no: "07",
-      question: "Can I customize the styling?",
-      answer: "Absolutely! This component uses Tailwind CSS classes which you can easily modify. You can change colors, spacing, borders, and any other styling properties to match your design system."
+      question: "What are Weekly Fireplace Challenges?",
+      answer: "Weekly Fireplace Challenges go live every Sunday, have a separate leaderboard, offer rewards like gadgets and accessories, and do not affect the Global Leaderboard."
     },
     {
       no: "08",
-      question: "Can I customize the styling?",
-      answer: "Absolutely! This component uses Tailwind CSS classes which you can easily modify. You can change colors, spacing, borders, and any other styling properties to match your design system."
+      question: "Do Weekly Challenges require separate registration?",
+      answer: "Yes. To participate in Weekly Challenges, participants must first complete the required Power-Up task to unlock eligibility."
     },
     {
       no: "09",
-      question: "Is this component accessible?",
-      answer: "This component uses semantic HTML with button elements for interactive areas. For full accessibility, you could add ARIA attributes like aria-expanded and aria-controls to improve screen reader support."
+      question: "What are Power-Ups?",
+      answer: "Power-Ups are non-skill-based mini tasks that unlock special benefits such as: Streak Freeze, Access to Weekly Challenges, and other in-event advantages. Power-Ups do not directly provide XP."
+    },
+    {
+      no: "10",
+      question: "What happens if I miss a day?",
+      answer: "If you miss completing a Daily task on any day: Your streak will break, 50 XP will be deducted (no XP is deducted if your score is already zero). You can restart your streak any day during the event."
+    },
+    {
+      no: "11",
+      question: "Are there bonus points for consistency?",
+      answer: "Yes. Bonus XP is awarded for completing milestones in any Daily Challenge: 10 days → +150 XP, 20 days → +300 XP, 30 days → +500 XP."
+    },
+    {
+      no: "12",
+      question: "How are task submissions verified?",
+      answer: "Task submissions are verified using a multimodal AI system, supported by manual review when needed. Low-effort, fake, or copied submissions may be rejected."
+    },
+    {
+      no: "13",
+      question: "What happens if someone uses fake accounts or spams?",
+      answer: "Any participant found creating fake accounts, spamming submissions, or manipulating XP or leaderboards will be permanently banned from the platform."
+    },
+    {
+      no: "14",
+      question: "What rewards can I win?",
+      answer: "Rewards include: Cash prizes for Global Leaderboard winners, Gadgets & merchandise for Weekly Challenge winners, and Skill certificates & digital badges. Reward details may vary and will be finalized before the event starts."
+    },
+    {
+      no: "15",
+      question: "Can rules or rewards change during the event?",
+      answer: "Yes. Matrix reserves the right to: Modify rules, Adjust XP logic, and Update rewards. All changes will be communicated through the platform, and Matrix's decision will be final."
     }
   ];
 
