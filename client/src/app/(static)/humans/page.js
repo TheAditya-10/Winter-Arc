@@ -140,15 +140,13 @@ const humans = [
         </div>
       </div>
 
-      {/* names  */}
-      <div className='md:mt-30 max-md:mt-15 max-lg:grid-cols-2 max-sm:grid-cols-1  grid grid-cols-3 gap-7 w-[75%] mx-auto'>
+      {/* <div className='md:mt-30 max-md:mt-15 max-lg:grid-cols-2 max-sm:grid-cols-1  grid grid-cols-3 gap-7 w-[75%] mx-auto'>
         {
           humans.map((humans,index) => (
             <Person key={index} img={humans.img} name={humans.name} position={humans.position} github={humans.github} linkedin={humans.linkedin} info={humans.info} />
           ))
         }
-
-      </div>
+      </div> */}
 
 
     </div>

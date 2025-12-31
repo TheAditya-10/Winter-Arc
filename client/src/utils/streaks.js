@@ -62,16 +62,6 @@ function streakFreeze({ lastStreakUpdate, streakFreezeCount, streakCount, longes
     }
 }
 
-function getStreakInfo(streakCount) {
-    switch (streakCount) {
-        case 10: return { bonusPoints: 150, count: streakCount, message: "+150XP Consistency always rewards!!" };
-        case 20: return { bonusPoints: 300, count: streakCount, message: "+300XP Consistency always rewards!!" };
-        case 30: return { bonusPoints: 500, count: streakCount, message: "+500XP Consistency always rewards!!" };
-        case 1: return { bonusPoints: 0, count: streakCount, message: "Your new streak is started, Complete tasks daily to maintain your streak!!" };
-        default: return { bonusPoints: 0, count: streakCount, message: "Your streak is updated successfully." };
-    }
-}
-
 function updateStreak(userInfo, increment = true) {
 
     const { streakFreezeCount } = userInfo
@@ -151,4 +141,28 @@ function updateStreak(userInfo, increment = true) {
     return updatedUserInfo
 }
 
-export { updateStreak, getStreakInfo };
+function checkForBonus({streakCount, dailyTaskCompletedCount, streakMilestoneLevel, taskMilestoneLevel}){
+    const streakMilestone = {target: [7, 14, 21, 28], reward: [100, 200, 300, 400]}
+    const taskMilestone = {target: [1, 20, 30, 40], reward: [50, 100, 150, 200]}
+
+    let messages = { task: [], streak: []}
+    let bonusPoints = 0
+    let userMilestoneInfo = {}
+
+    if(streakCount && streakMilestoneLevel < 4 && streakCount >= streakMilestone.target[streakMilestoneLevel]){
+        userMilestoneInfo.streak_milestone_level = streakMilestoneLevel+1;
+        bonusPoints += streakMilestone.reward[streakMilestoneLevel];
+        messages.streak.push({text: `Milestone: ${streakCount} day streak completed.`, highlight: `+${streakMilestone.reward[streakMilestoneLevel]} XP BONUS`})
+    }
+
+    if(dailyTaskCompletedCount && taskMilestoneLevel < 4 && dailyTaskCompletedCount >= taskMilestone.target[taskMilestoneLevel]){
+        userMilestoneInfo.task_milestone_level = taskMilestoneLevel+1;
+        bonusPoints += taskMilestone.reward[streakMilestoneLevel];
+        messages.task.push({text: `Milestone: ${dailyTaskCompletedCount} daily task completed.`, highlight: `+${taskMilestone.reward[taskMilestoneLevel]} XP BONUS`})
+    }
+
+    return {messages, userMilestoneInfo, bonusPoints}
+
+}
+
+export { updateStreak, checkForBonus };
