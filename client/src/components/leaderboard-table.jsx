@@ -27,7 +27,7 @@ export const leadearboardColumns = [
         accessorKey: "rank",
         header: () => <div className="w-full text-center">#<span className="hidden sm:inline">Rank</span></div>,
         cell: ({ row, table }) => {
-            const rank = (table.getSortedRowModel()?.flatRows?.findIndex((flatRow) => flatRow.id == row.id) || 0) + 1
+            const rank = (table.getSortedRowModel()?.flatRows?.findIndex((flatRow) => flatRow.id === row.id) || 0) + 1
             return (<div className="w-full text-center">#{table.getColumn("username")?.getFilterValue() ? "#" : rank}</div>)
         }
     },
@@ -171,7 +171,7 @@ export function LeaderboardTable(
                         {table.getRowModel().rows?.length ? (
                             <>
                                 {table.getRowModel().rows.map((row, rowIndex) => {
-                                    if (row.id == userId) {
+                                    if (row.id === String(userId)) {
                                         youRow = row
                                     }
                                     if (rowIndex < 3 && !table.getColumn("username")?.getFilterValue()) {

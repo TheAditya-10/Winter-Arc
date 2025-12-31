@@ -8,7 +8,7 @@ export const getChallengesInfoById = async (challengeId) => {
     const { data, error } = await supabase
         .from("challenges")
         .select("id, title, description")
-        .eq("id", challengeId)
+        .eq("id", String(challengeId))
         .limit(1)
         .single()
 
@@ -27,7 +27,7 @@ export const getTaskInfoById = async (taskId) => {
     const { data, error } = await supabase
         .from("challenge_tasks")
         .select("id, title, description, dayNumber:day_number, challengeId:challenge_id")
-        .eq("id", taskId)
+        .eq("id", String(taskId))
         .limit(1)
         .single()
 
@@ -36,11 +36,11 @@ export const getTaskInfoById = async (taskId) => {
 
 export const getAllTasks = async (challengeId) => {
 
-    console.log("getAllTasks", challengeId)
+    console.log("getAllTasks", challengeId, typeof challengeId)
     const { data, error } = await supabase
         .from("challenge_tasks")
         .select("id, title, description, dayNumber:day_number")
-        .eq("challenge_id", challengeId)
+        .eq("challenge_id", String(challengeId))
         .order("day_number", { ascending: true })
 
     return { data, error }
@@ -49,7 +49,7 @@ export const getAllTasks = async (challengeId) => {
 export const insertChallengeRegistration = async (user_id, challenge_id) => {
     const { error } = await supabase
         .from("challenge_registrations")
-        .insert({ challenge_id, user_id })
+        .insert({ challenge_id: String(challenge_id), user_id: String(user_id) })
 
     return { error }
 }

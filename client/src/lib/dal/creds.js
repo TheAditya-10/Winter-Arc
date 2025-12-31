@@ -39,7 +39,7 @@ export const getUserCred = async () => {
     const { data, error } = await supabase
         .from("linked_creds")
         .select("accessToken:access_token, expiresIn:expires_in, createdAt:created_at, linkedinId:linkedin_id")
-        .eq("user_id", userId)
+        .eq("user_id", String(userId))
         .limit(1)
         .single()
 

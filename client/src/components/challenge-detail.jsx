@@ -116,11 +116,11 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
 
           <div className="relative mx-auto max-w-4xl px-2">
             {tasks.map((task, i) => {
-              const taskScore = taskCompleted.get(task.id)
-              const isCurrentDay = currentDayNumber == task.dayNumber;
+              const taskScore = taskCompleted.get(String(task.id))
+              const isCurrentDay = Number(currentDayNumber) === Number(task.dayNumber);
               return (
                 <div key={task.id} className="">
-                  {i % 7 == 0 && (<div className="my-16 font-inter">
+                  {i % 7 === 0 && (<div className="my-16 font-inter">
                     <div className="rounded-lg px-2 bg-[#61bedd] text-white w-[24rem] justify-between mx-auto flex gap-2 items-center">
                       <div className="py-2">
                         <h3 className="font-bold">{weekBox.title[i / 7]}</h3>
@@ -136,7 +136,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
                   <div key={task.id} className=" flex items-center justify-center mb-4">
                     <div
                       className="size-16 text-center relative flex items-center justify-center cursor-pointer"
-                      onClick={() => setTaskDetail({ ...task, score: taskScore, isCurrentTask: currentDayNumber == task.dayNumber })}
+                      onClick={() => setTaskDetail({ ...task, score: taskScore, isCurrentTask: Number(currentDayNumber) === Number(task.dayNumber) })}
                       style={{ left: Math.floor(Math.sin(task.dayNumber - 1) * 100) }}>
                       <Image src={`/challenge-detail/${isCurrentDay ? "white" : (!!taskScore ? "blue" : "gray")}-snow-ball.svg`} alt="task" fill className="absolute top-0 bottom-0" />
                       <p className={`z-10 relative -top-1 text-3xl ${isCurrentDay ? "text-[#2DB4E0]" : "text-white"} font-tacone`}>{task.dayNumber}</p>

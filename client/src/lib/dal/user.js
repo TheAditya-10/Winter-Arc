@@ -10,7 +10,7 @@ export const getUserProfileById = async (userId) => {
     const { data, error } = await supabase
         .from("users")
         .select("name, username, avatarUrl:avatar_url")
-        .eq("id", userId)
+        .eq("id", String(userId))
         .limit(1)
         .single()
 
@@ -23,7 +23,7 @@ export const getUserStatsById = async (userId, streakMetadata = false) => {
     const { data, error } = await supabase
         .from("users")
         .select(column)
-        .eq("id", userId)
+        .eq("id", String(userId))
         .limit(1)
         .single()
 
@@ -45,11 +45,11 @@ export const getActiveChallengeId = async () => {
     const { data, error } = await supabase
         .from("challenge_registrations")
         .select("challengeId:challenge_id")
-        .eq("user_id", userId)
+        .eq("user_id", String(userId))
 
     const hashMap = new Map()
 
-    data?.map(e => hashMap.set(e.challengeId, true))
+    data?.map(e => hashMap.set(String(e.challengeId), true))
 
     return { data: hashMap, error }
 }
@@ -60,15 +60,15 @@ export const getCompletedTaskInfo = async (challengeId) => {
     const { data, error } = await supabase
         .from("posts")
         .select("taskId:task_id, score:ai_score")
-        .eq("user_id", userId)
-        .eq("challenge_id", challengeId)
+        .eq("user_id", String(userId))
+        .eq("challenge_id", String(challengeId))
         .not("image_url", "is", null)
 
     const hashMap = new Map()
     let xpEarned = 0;
     data?.map(e => {
         xpEarned += e.score;
-        hashMap.set(e.taskId, e.score);
+        hashMap.set(String(e.taskId), e.score);
     })
 
     hashMap.set("xpEarned", xpEarned || 0);
@@ -81,8 +81,8 @@ export const isUserRegistredInChallenge = async (challengeId) => {
     const { data, error } = await supabase
         .from("challenge_registrations")
         .select("id")
-        .eq("user_id", userId)
-        .eq("challenge_id", challengeId)
+        .eq("user_id", String(userId))
+        .eq("challenge_id", String(challengeId))
         .limit(1)
         .maybeSingle()
 
@@ -94,7 +94,7 @@ export const getActiveChallengeInfoByUserId = async (userId) => {
     const { data, error } = await supabase
         .from("challenge_registrations")
         .select("challenges(id, title)")
-        .eq("user_id", userId)
+        .eq("user_id", String(userId))
 
     return { data: data?.map(e => e.challenges), error }
 }
