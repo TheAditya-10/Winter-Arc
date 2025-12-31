@@ -5,17 +5,15 @@ import { useState } from "react"
 
 
 const ConnectWithLinkedin = () => {
-    // const [hidde, setHidde] = useState(false)
 
     return (<>
-        {!hidde && <Button
+        <Button
             onClick={async () => {
                 await initiateConnectWithLinkedin()
-                // setHidde(true)
             }}
         >
             Connect with LinkedIn
-        </Button>}
+        </Button>
     </>
     )
 }

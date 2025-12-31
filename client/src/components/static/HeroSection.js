@@ -14,9 +14,11 @@ const HeroSection = () => {
           <p className='text-2xl text-center max-md:text-sm'>“Commit to January. Build discipline.”</p>
         </div>
 
+        <Link href={"/auth/register"}>
         <button className='bg-[#8ACADE] text-black py-4 px-5 mt-10 rounded-xl font-bold max-md:scale-80'>
           START THE WINTER ARC
         </button>
+        </Link>
 
         <a href="https://chat.whatsapp.com/CocJDKNXlbEIZ4RRhytkLs" target="_blank" className='bg-[#25d366] text-[#052e16] py-3 font-semibold px-6  mt-4 rounded-4xl text-sm max-md:scale-85'>
         Join the WhatsApp Circle

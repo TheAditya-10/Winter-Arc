@@ -99,7 +99,7 @@ function DraftArea({ taskInfo, challengeInfo, submissionInfo }) {
                             <div className="w-full h-48 rounded-md border overflow-hidden flex items-center justify-center">
                                 <img src={submissionInfo.imageUrl} className="object-cover" alt="" />
                             </div>
-                            <Button type="submit" className="w-full" disabled={isLoading}>Create Draft</Button>
+                            <Button type="submit" className="w-full" disabled={isLoading}>PUBLISH POST</Button>
                         </form>
                     </Form>
                 </CardContent>
