@@ -31,10 +31,18 @@ const ContactUs = () => {
                             <div>
                                 <p className='text-left text-xl text-[#8ACADE] font-bold max-md:text-xl'>FOLLOW US</p>
                                 <div className="flex gap-4 items-center">
-                                    <img className="h-4" src="/facebook.svg" />
-                                    <img className="h-7"  src="/linkedin.svg" />
-                                    <img className="h-8" src="/instagram.svg" />
-                                    <img className="h-4"  src="/youtube.svg" />
+                                    <a href='https://x.com/MatrixJec'>
+                                        <img className='h-6' src="/twitter.svg" />
+                                    </a>
+                                    <a href='https://github.com/Matrix-JEC'>
+                                        <img className='h-6' src="/github.svg" />
+                                    </a>
+                                    <a href='https://www.linkedin.com/company/matrix-jec/'>
+                                        <img className='h-6' src="/linkedin.svg" />
+                                    </a>
+                                    <a href='https://www.instagram.com/matrix.jec/'>
+                                        <img className='h-6' src="/insta.svg" />
+                                    </a>
                                 </div>
                             </div>
 

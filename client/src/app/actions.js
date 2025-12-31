@@ -51,6 +51,7 @@ export async function createUser(formData, userLocalTimeZone) {
                 const user = { ...formData, avatar_url, id, points: 0 }
                 const { error } = await insertUser(user)
                 if (error) {
+                    console.error(error)
                     if (error.code == "23505") {
                         return {
                             error: {

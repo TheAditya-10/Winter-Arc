@@ -45,7 +45,7 @@ export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFe
 
 
     return (
-        <div className="z-100 font-inter fixed w-dvw h-dvh flex flex-col text-center items-center justify-center bg-[#0A0F1F] top-0 left-0 pb-24 gap-2 px-2">
+        <div className="z-100 font-inter fixed w-dvw h-dvh flex flex-col text-center items-center justify-center bg-[#0A0F1F] top-0 left-0 pb-24 gap-4 px-2">
             <Image
                 src="/background.svg"
                 fill
@@ -73,6 +73,7 @@ export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFe
                         height={100}
                         alt="image"
                     />
+                    <div className="flex flex-col items-center justify-center gap-2">
                     {messagesToShow.map((message, i) => (
                         <p
                             key={i}
@@ -84,6 +85,7 @@ export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFe
                             </span>
                         </p>
                     ))}
+                    </div>
                 </>)
             }
 

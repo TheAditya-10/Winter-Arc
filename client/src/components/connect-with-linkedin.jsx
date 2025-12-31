@@ -1,7 +1,6 @@
 "use client"
 import { Button } from "./ui/button"
 import { initiateConnectWithLinkedin } from "@/app/actions"
-import { useState } from "react"
 
 
 const ConnectWithLinkedin = () => {

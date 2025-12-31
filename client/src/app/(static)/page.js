@@ -18,7 +18,7 @@ const page = async () => {
 
       <ChangesSection />
 
-      {/* <Image src={'./public/winter-arc-flow.svg'} width={0} height={0} alt='event flow' className='w-full h-auto'/> */}
+      {/* <Image src={'../../../../public/winter-arc-flow.svg'} width={0} height={0} alt='event flow' className='w-full h-auto'/> */}
 
     </div>
   )

@@ -33,11 +33,13 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { registerFormSchema as formSchema } from "@/app/schema"
+import { FeedbackOverlay } from "@/components/feedback-overlay"
 
 
 export default function Register() {
 
     const [isLoading, setIsLoading] = useState(false)
+    const [showFeedbackOverlay, setShowFeedbackOverlay] = useState(false)
 
     const router = useRouter()
 
@@ -63,8 +65,9 @@ export default function Register() {
                 })
                 toast.error(message)
             } else {
-                toast.success(message)
-                router.push('/')
+                // toast.success(message)
+                // router.push('/')
+                setShowFeedbackOverlay(true)
             }
         } catch (error) {
             toast.error("Some think went wrong. Please try again later!!")
@@ -177,6 +180,14 @@ export default function Register() {
                     </form>
                 </Form>
             </CardContent>
+            <FeedbackOverlay 
+                isOpen={showFeedbackOverlay}
+                setIsOpen={setShowFeedbackOverlay}
+                messages={{task: [{text: "", highlight: "+1000 XP BONUS"}]}}
+                redirectUrl={"/dashboard/me"}
+                title={"Welcome Bonus"}
+                imgUrl={"/dashboard/trasher.svg"}
+            />
         </Card>
     )
 }
