@@ -2,7 +2,7 @@ import React from 'react'
 
 const page = () => {
     return (
-        <div>
+        <div className='font-poppins'>
             <div className='flex flex-col items-center'>
                 <p className='mt-35 text-[#8ACADE] text-6xl font-bold max-md:text-3xl max-md:mt-25'>RULES and regulations </p>
                 <p className='mt-8 font-semibold text-xl w-[80%] max-md:w-[70%] text-center max-md:text-sm'>Please read carefully. Participation in Winter Arc implies full acceptance of the rules below.</p>

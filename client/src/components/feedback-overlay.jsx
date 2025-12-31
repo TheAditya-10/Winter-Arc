@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { X } from "lucide-react"
 
-export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFeedback, rejected }) => {
+export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFeedback, rejected, title, imgUrl }) => {
     const router = useRouter()
 
     const hasTask = messages?.task?.length > 0
@@ -45,7 +45,7 @@ export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFe
 
 
     return (
-        <div className="fixed w-dvw h-dvh flex flex-col text-center items-center justify-center bg-[#0A0F1F] top-0 pb-24 gap-2 px-2">
+        <div className="z-100 font-inter fixed w-dvw h-dvh flex flex-col text-center items-center justify-center bg-[#0A0F1F] top-0 left-0 pb-24 gap-2 px-2">
             <Image
                 src="/background.svg"
                 fill
@@ -64,11 +64,11 @@ export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFe
                 </>)
                 : (<>
                     <h1 className="text-xl font-bold">
-                        MISSION SECURED ARC MAINTAINED
+                        {title || "MISSION SECURED ARC MAINTAINED"}
                     </h1>
 
                     <Image
-                        src={`/dashboard/${isTaskStep ? "snow-flake" : "streak"}.svg`}
+                        src={imgUrl || `/dashboard/${isTaskStep ? "snow-flake" : "streak"}.svg`}
                         width={100}
                         height={100}
                         alt="image"

@@ -6,10 +6,54 @@ import {
 import { dark } from "@clerk/themes";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+import {
+  Poppins,
+  Goldman,
+  Inter,
+  Syne,
+  Space_Grotesk,
+  K2D,
+  Tac_One
+} from "next/font/google";
+
+export const poppins = Poppins({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
 });
+
+export const goldman = Goldman({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-goldman",
+});
+export const tacOne = Tac_One({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-tacone",
+});
+
+export const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+export const syne = Syne({
+  subsets: ["latin"],
+  variable: "--font-syne",
+});
+
+export const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+});
+
+export const k2d = K2D({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-k2d",
+});
+
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -30,8 +74,18 @@ export default function RootLayout({ children }) {
     >
       <html lang="en" className="dark">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+          className={`
+                      ${poppins.variable}
+                      ${goldman.variable}
+                      ${inter.variable}
+                      ${syne.variable}
+                      ${spaceGrotesk.variable}
+                      ${k2d.variable}
+                      ${geistMono.variable} 
+                      ${tacOne.variable} 
+                      antialiased
+                      relative
+                      `}>
           {children}
           <Toaster position="top-center" />
         </body>

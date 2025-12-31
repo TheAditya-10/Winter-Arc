@@ -16,6 +16,7 @@ import { redirect } from "next/navigation"
 import { isRegistered } from "@/utils/auth"
 import { genrateSignature } from "@/utils/cloud-storage"
 import { withServerActionInstrumentation } from "@sentry/nextjs"
+import {createVerifcationState} from "@/utils/share-on-linkedin"
 
 const clerk = await clerkClient()
 
@@ -129,7 +130,7 @@ export async function evaluateSubmission(formData, task, submissionId) {
 
                 // TODO: update milestone info in database.
                 // newUserInfo.points += bonusPoints
-                console.log(bonusPoints, messages, userMilestoneInfo)
+                // console.log(bonusPoints, messages, userMilestoneInfo)
 
                 // update submission in posts table
                 const taskSubmission = {
@@ -145,7 +146,7 @@ export async function evaluateSubmission(formData, task, submissionId) {
                 const { error: updateUserPointsError } = await updateUserById(userId, newUserInfo)
                 if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
-                if(newUserInfo.streak_count) messages.streak.push({ text: "Your streak is updated successfully.", highlight: `+${streak.count} DAY STREAK` })
+                if(newUserInfo.streak_count) messages.streak.push({ text: "Your streak is updated successfully.", highlight: `+${newUserInfo.streak_count.count} DAY STREAK` })
                 messages.task.push({ text: "Submit successfully!!", highlight: `+${finalState.score} XP` })
                 
                 return { messages, score: finalState.score, feedback: finalState.feedback }
@@ -166,15 +167,15 @@ export async function createSubmission(formData, task) {
 
             try {
 
-                // try {
-                //     const { success } = await submissionLimit.limit(userId)
+                try {
+                    const { success } = await submissionLimit.limit(userId)
 
-                //     if (!success) {
-                //         return { message: "You can't submit more than 3 time in a day!!", error: true }
-                //     }
-                // } catch (error) {
-                //     console.warn("Rate Limit Skipped:\n", error)
-                // }
+                    if (!success) {
+                        return { message: "You can't submit more than 3 time in a day!!", error: true }
+                    }
+                } catch (error) {
+                    console.warn("Rate Limit Skipped:\n", error)
+                }
 
                 // verify form data
                 const { success: formVerified, error: formError } = submitFormSchema.safeParse(formData)
@@ -307,15 +308,15 @@ export async function checkStreak() {
 
                 const newUserInfo = updateStreak(userInfo, false)
 
-                let response = { message: "Continue Your streak to be in the top of the leaderboard." }
+                let response = { }
 
                 if (newUserInfo.streak_freeze_count !== undefined) {
-                    response = { message: "Streak freeze is used to save your streak!!" }
+                    response = { state: "freeze" }
                 }
 
                 if (newUserInfo.streak_status == "reset") {
                     newUserInfo.points = userInfo.points - 50;
-                    response = { message: "You have lost your streak and 50 XP point", reset: true }
+                    response = { state: "reset" }
                 }
 
                 const { error } = await updateUserById(userId, newUserInfo)
@@ -324,7 +325,8 @@ export async function checkStreak() {
                 const clientUserInfo = {
                     longestStreak: newUserInfo.longest_streak || userInfo.longestStreak,
                     points: newUserInfo.points || userInfo.points,
-                    streakCount: newUserInfo.streak_count || userInfo.streakCount
+                    streakCount: newUserInfo.streak_count || userInfo.streakCount,
+                    streakFreezeCount: newUserInfo.streak_freeze_count || userInfo.streakFreezeCount 
                 }
 
                 return { error: false, userStats: clientUserInfo, ...response }
@@ -335,3 +337,14 @@ export async function checkStreak() {
         }
     )
 }
+
+export async function initiateConnectWithLinkedin() {
+        const { status, redirectToRegister, userId } = await isRegistered()
+        if (!status) return redirectToRegister()
+
+        const state = await createVerifcationState(userId)
+
+        const url = `https://www.linkedin.com/oauth/v2/authorization?enable_extended_login=true&response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.LINKEDIN_CALLBACK_URL}&state=${state}&scope=profile%20email%20w_member_social%20openid`
+
+        return redirect(url)
+    }

@@ -42,12 +42,12 @@ export default async function Page() {
                     <div className="h-full bg-[#3FD7FA] rounded-full" style={{ width: `${(progressState > 0? progressState : 0) * 100}%` }} />
                 </div>
                 {weeklyTaskState.map((state, i) => (
-                    <div key={i} className={`${state == "active" ? "text-[#2DB4E0]" : "text-white"} flex items-center justify-center mb-4`}>
+                    <div key={i} className={`${state == "active" ? "text-[#2DB4E0]" : "text-white"} flex items-center justify-center mb-4 font-tacone`}>
                         <div
                             className="size-12 sm:size-16 text-center relative flex items-center justify-center cursor-pointer">
                             <Image src={`/challenge-detail/${state == "active" ? "white" : (state == "completed" ? "blue" : "gray")}-snow-ball.svg`} alt="weekly-task" fill className="absolute top-0 bottom-0" />
-                            <span className="absolute z-1000 font-semibold text-xs sm:top-2 top-1">week</span>
-                            <p className={`z-10 relative text-xl font-bold `}>{i + 1}</p>
+                            <span className="absolute z-1000 font-semibold text-xs sm:top-2 top-1 font-poppins">week</span>
+                            <p className={`z-10 relative text-2xl font-bold `}>{i + 1}</p>
                         </div>
                     </div>
                 ))}

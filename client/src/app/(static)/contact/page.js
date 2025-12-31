@@ -2,8 +2,8 @@
 const ContactUs = () => {
     return (
         <>
-            <div className='mt-25 w-[80%] mx-auto max-md:w-[80%]'>
-                <p className='text-left text-5xl font-bold text-[#8ACADE] max-md:text-3xl'>How Can We Help You ? </p>
+            <div className='mt-25 w-[80%] mx-auto max-md:w-[80%] font-syne'>
+                <p className='text-left text-5xl font-bold text-[#8ACADE] max-md:text-3xl font-poppins'>How Can We Help You ? </p>
 
                 <div className="flex items-center justify-between mx-auto max-md:flex-col">
 

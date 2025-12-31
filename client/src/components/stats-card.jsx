@@ -1,12 +1,12 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card";
-import { IconBolt, IconFlame, IconCrown, IconCheck } from "@tabler/icons-react";
 import useCheckStreak from "../hooks/check-streak";
+import { FeedbackOverlay } from "./feedback-overlay";
 
 export default function StatsCards({ userStats, isMe }) {
 
-  const { stats } = useCheckStreak(userStats, isMe)
+  const { stats, streakState, setStreakState } = useCheckStreak(userStats, isMe)
 
   const items = [
     {
@@ -32,7 +32,7 @@ export default function StatsCards({ userStats, isMe }) {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 items-center p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 items-center p-4 font-inter">
       {items.map((item) => (
         <Card
           key={item.label}
@@ -49,6 +49,13 @@ export default function StatsCards({ userStats, isMe }) {
           </CardContent>
         </Card>
       ))}
+      <FeedbackOverlay
+      isOpen={!!streakState}
+      setIsOpen={setStreakState}
+      title={streakState.title}
+      imgUrl={streakState.url}
+      messages={streakState.messages}
+      />
     </div>
   );
 }

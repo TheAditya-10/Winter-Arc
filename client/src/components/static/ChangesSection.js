@@ -2,7 +2,7 @@ import React from 'react'
 
 const ChangesSection = () => {
     return (
-        <div>
+        <div className='font-syne'>
 
             <p className='text-[60px] text-center max-md:text-2xl '>“What changes in me if I complete this?”</p>
 

@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Separator } from "./ui/separator"
 import Link from "next/link"
+import { ConnectWithLinkedin } from "./connect-with-linkedin"
 
 const data = {
   navMain: [
@@ -160,9 +161,10 @@ export function AppSidebar({
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <Separator/>
+      <Separator />
       <SidebarContent>
         <NavMain items={data.navMain} />
+        {!user.isLinkedinConnected && <ConnectWithLinkedin />}
         {/* <NavDocuments items={data.documents} /> */}
         {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
