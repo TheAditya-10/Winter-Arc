@@ -84,6 +84,7 @@ export default function RootLayout({ children }) {
                       ${geistMono.variable} 
                       ${tacOne.variable} 
                       antialiased
+                      relative
                       `}>
           {children}
           <Toaster position="top-center" />

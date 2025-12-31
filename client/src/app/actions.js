@@ -129,7 +129,7 @@ export async function evaluateSubmission(formData, task, submissionId) {
 
                 // TODO: update milestone info in database.
                 // newUserInfo.points += bonusPoints
-                console.log(bonusPoints, messages, userMilestoneInfo)
+                // console.log(bonusPoints, messages, userMilestoneInfo)
 
                 // update submission in posts table
                 const taskSubmission = {
@@ -166,15 +166,15 @@ export async function createSubmission(formData, task) {
 
             try {
 
-                // try {
-                //     const { success } = await submissionLimit.limit(userId)
+                try {
+                    const { success } = await submissionLimit.limit(userId)
 
-                //     if (!success) {
-                //         return { message: "You can't submit more than 3 time in a day!!", error: true }
-                //     }
-                // } catch (error) {
-                //     console.warn("Rate Limit Skipped:\n", error)
-                // }
+                    if (!success) {
+                        return { message: "You can't submit more than 3 time in a day!!", error: true }
+                    }
+                } catch (error) {
+                    console.warn("Rate Limit Skipped:\n", error)
+                }
 
                 // verify form data
                 const { success: formVerified, error: formError } = submitFormSchema.safeParse(formData)
@@ -307,15 +307,15 @@ export async function checkStreak() {
 
                 const newUserInfo = updateStreak(userInfo, false)
 
-                let response = { message: "Continue Your streak to be in the top of the leaderboard." }
+                let response = { }
 
                 if (newUserInfo.streak_freeze_count !== undefined) {
-                    response = { message: "Streak freeze is used to save your streak!!" }
+                    response = { state: "freeze" }
                 }
 
                 if (newUserInfo.streak_status == "reset") {
                     newUserInfo.points = userInfo.points - 50;
-                    response = { message: "You have lost your streak and 50 XP point", reset: true }
+                    response = { state: "reset" }
                 }
 
                 const { error } = await updateUserById(userId, newUserInfo)
@@ -324,7 +324,8 @@ export async function checkStreak() {
                 const clientUserInfo = {
                     longestStreak: newUserInfo.longest_streak || userInfo.longestStreak,
                     points: newUserInfo.points || userInfo.points,
-                    streakCount: newUserInfo.streak_count || userInfo.streakCount
+                    streakCount: newUserInfo.streak_count || userInfo.streakCount,
+                    streakFreezeCount: newUserInfo.streak_freeze_count || userInfo.streakFreezeCount 
                 }
 
                 return { error: false, userStats: clientUserInfo, ...response }
