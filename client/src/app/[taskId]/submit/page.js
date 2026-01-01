@@ -5,12 +5,13 @@ import { getTaskInfoCacheById } from "@/lib/dal/cache"
 import { isRegistered } from "@/utils/auth"
 import { notFound } from "next/navigation"
 
-export default async function Page({ params }) {
+export default async function Page({ params, searchParams }) {
 
     const {status, redirectToRegister} = await isRegistered()
     if(!status) return redirectToRegister()
 
     const { taskId } = await params
+    const { isTech } = await searchParams;
 
     const { data: task, error: taskError } = await getTaskInfoCacheById(taskId)
     if (taskError) {
@@ -20,6 +21,6 @@ export default async function Page({ params }) {
     }
 
     return (
-        <TaskManager task={task} />
+        <TaskManager task={task} isTech={isTech}/>
     )
 }

@@ -18,7 +18,7 @@ const ChallengeCard = ({ challenge, isRegistred }) => {
             {/* <Image src={"/dashboard/snow-flake.svg"} width={120} height={120} alt="snow flake" className="absolute -top-16 -right-12 blur-sm"/>
             <Image src={"/dashboard/snow-flake.svg"} width={120} height={120} alt="snow flake" className="absolute -bottom-16 -left-12 blur-sm"/> */}
             <CardContent className="py-4 px-4">
-                <Badge variant="secondary">Technology</Badge>
+                <Badge variant="secondary">{challenge.isTech ? "Technology" : "Personal Growth"}</Badge>
                 {isRegistred && <Badge variant="secondary" className={"ml-2"}>Active</Badge>}
 
                 <h3 className="mt-4 text-xl font-medium tracking-tight h-16 overflow-ellipsis line-clamp-2">

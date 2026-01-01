@@ -32,7 +32,7 @@ import Image from "next/image"
 import { FeedbackOverlay } from "./feedback-overlay"
 
 
-function TaskManager({ task }) {
+function TaskManager({ task, isTech }) {
     const [isLoading, setIsLoading] = useState(false)
     const [showDialog, setShowDialog] = useState(false)
     const [rejected, setRejected] = useState("")
@@ -171,7 +171,7 @@ function TaskManager({ task }) {
                 messages={submissionInfo.messages}
                 aiFeedback={submissionInfo.feedback}
                 rejected={rejected}
-                redirectUrl={`/share/${submissionInfo.id}`} />
+                redirectUrl={isTech == "true" ? `/share/${submissionInfo.id}`: "/dashboard/me"} />
         </div>
     )
 }

@@ -150,14 +150,14 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
           </div>
         </div>
       </section>
-      {taskDetail.id && <TaskDetailCard task={taskDetail} isRegistred={registred} close={() => setTaskDetail({})} />}
+      {taskDetail.id && <TaskDetailCard task={taskDetail} isRegistred={registred} close={() => setTaskDetail({})} isTech={challenge.isTech} />}
     </>
   );
 };
 
 export { ChallengeDetail };
 
-const TaskDetailCard = ({ task, close, isRegistred }) => {
+const TaskDetailCard = ({ task, close, isRegistred, isTech }) => {
   return (<div className="font-poppins w-dvw h-dvh fixed bg-muted/80 backdrop-blur-md flex items-center justify-center z-100 top-0 left-0" onClick={() => close()}>
     <div className="">
       <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">Day-{task.dayNumber}</h2>
@@ -178,7 +178,7 @@ const TaskDetailCard = ({ task, close, isRegistred }) => {
         </div>
         {(isRegistred) && <>{!!task.score
           ? <Button variant={"outline"}>{task.score} XP Earned</Button>
-          : <>{task.isCurrentTask && <Link href={`/${task.id}/submit`} className={"self-center"}><Button>Submit</Button></Link>}</>
+          : <>{task.isCurrentTask && <Link href={`/${task.id}/submit?isTech=${isTech}`} className={"self-center"}><Button>Submit</Button></Link>}</>
         }</>}
       </div>
     </div>
