@@ -93,7 +93,7 @@ export const getActiveChallengeInfoByUserId = async (userId) => {
 
     const { data, error } = await supabase
         .from("challenge_registrations")
-        .select("challenges(id, title)")
+        .select("challenges(id, title, isTech:Tech)")
         .eq("user_id", String(userId))
 
     return { data: data?.map(e => e.challenges), error }

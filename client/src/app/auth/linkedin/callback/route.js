@@ -31,7 +31,7 @@ export async function GET(request) {
             code: code,
             client_id: process.env.LINKEDIN_CLIENT_ID,
             client_secret: process.env.LINKEDIN_CLIENT_SECRET,
-            redirect_uri: process.env.LINKEDIN_CALLBACK_URL,
+            redirect_uri: process.env.NEXT_PUBLIC_API_BASE_URL + "/auth/linkedin/callback",
         }
         const { expires_in, access_token, id_token } = await fetcher('https://www.linkedin.com/oauth/v2/accessToken', 'post', body, { headers: { "Content-Type": "application/x-www-form-urlencoded" } })
         const { sub: linkedin_id } = JSON.parse(Buffer.from(id_token.split(".")[1], "base64").toString())
@@ -45,9 +45,9 @@ export async function GET(request) {
         if (error) {
             throw new Error(error.message)
         }
-        return NextResponse.redirect('http://www.matrixjec.co.in/dashboard/me?type=success&message=Your+LinkedIn+account+is+successfully+connected%21%21')
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_API_BASE_URL}/dashboard/me?linkedin=connected`)
     } catch (error) {
         console.error(error.message || error)
-        return NextResponse.redirect('http://www.matrixjec.co.in/dashboard/me?type=error&message=Failed+to+connect+with+your+linkedIn+account%21%21')
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_API_BASE_URL}/dashboard/me?linkedin=failed`)
         }
 }

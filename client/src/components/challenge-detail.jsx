@@ -11,6 +11,7 @@ import Image from "next/image"
 const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [taskDetail, setTaskDetail] = useState({})
+  const [registred, setRegistred] = useState(isRegistred)
   const [showChallengeInfo, setShowChallengeInfo] = useState(false)
   const currentDayNumber = taskCompleted.size
 
@@ -22,6 +23,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
       if (error) {
         toast.error(message)
       } else {
+        setRegistred(true)
         toast.success(message)
       }
     } catch (error) {
@@ -54,7 +56,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
 
         <div className="font-inter">
           {
-            (showChallengeInfo || !isRegistred) && (
+            (showChallengeInfo || !registred) && (
               <div className="mb-10 mx-auto w-76 @sm/main:w-96 @lg/main:w-[32rem] @2xl/main:w-[40rem] rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                 <h3 className="font-semibold text-center text-lg mb-1">Challenge Details</h3>
                 <div className="flex gap-2">
@@ -91,8 +93,8 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
                   </ul>
                 </div>
                 <div className="flex items-center w-full justify-around mt-4">
-                  {!isRegistred
-                    ? <Button onClick={onStartNowClick} className={"w-fit"}>Start Now</Button>
+                  {!registred
+                    ? <Button onClick={onStartNowClick} disabled={isLoading} className={"w-fit"}>Start Now</Button>
                     : <Button variant={"secondary"} onClick={() => setShowChallengeInfo(false)} className={"w-fit"}>Progress</Button>
                   }
                   <Link href={`/roadmap/${challenge.id}.pdf`}><Button variant={"secondary"}>Roadmap</Button></Link>
@@ -101,7 +103,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
             )
           }
           {
-            (!showChallengeInfo && isRegistred) && (
+            (!showChallengeInfo && registred) && (
               <div className="mb-10 mx-auto w-76 @sm/main:w-96 @lg/main:w-[32rem] @2xl/main:w-[40rem] rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                 <h3 className="font-semibold text-center text-lg mb-1">Challenge Progress</h3>
                 <div className="mb-4 @sm/main:px-4">
@@ -154,14 +156,14 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
           </div>
         </div>
       </section>
-      {taskDetail.id && <TaskDetailCard task={taskDetail} isRegistred={isRegistred} close={() => setTaskDetail({})} />}
+      {taskDetail.id && <TaskDetailCard task={taskDetail} isRegistred={registred} close={() => setTaskDetail({})} isTech={challenge.isTech} />}
     </>
   );
 };
 
 export { ChallengeDetail };
 
-const TaskDetailCard = ({ task, close, isRegistred }) => {
+const TaskDetailCard = ({ task, close, isRegistred, isTech }) => {
   return (<div className="font-poppins w-dvw h-dvh fixed bg-muted/80 backdrop-blur-md flex items-center justify-center z-100 top-0 left-0" onClick={() => close()}>
     <div className="">
       <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">Task-{task.dayNumber}</h2>
@@ -182,7 +184,7 @@ const TaskDetailCard = ({ task, close, isRegistred }) => {
         </div>
         {(isRegistred) && <>{!!task.score
           ? <Button variant={"outline"}>{task.score} XP Earned</Button>
-          : <>{task.isCurrentTask && <Link href={`/${task.id}/submit`} className={"self-center"}><Button>Submit</Button></Link>}</>
+          : <>{task.isCurrentTask && <Link href={`/${task.id}/submit?isTech=${isTech}`} className={"self-center"}><Button>Submit</Button></Link>}</>
         }</>}
       </div>
     </div>

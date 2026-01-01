@@ -289,7 +289,7 @@ export async function shareOnLinkedIn(formData) {
                 await uploadBinaryFile(imageUrl, uploadUrl, userCreds.accessToken);
                 await publishLinkedinPostWithImage(userCreds.accessToken, userCreds.linkedinId, imageAsset, textContent, "imageDescription", "imageTitle")
 
-                return { message: "Draft of Linkedin Post is created!!" }
+                return { message: "Linkedin Post is created!!" }
             } catch (error) {
                 console.error(error);
                 // TODO: return error response.

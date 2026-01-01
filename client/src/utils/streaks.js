@@ -143,7 +143,7 @@ function updateStreak(userInfo, increment = true) {
 
 function checkForBonus({streakCount, dailyTaskCompletedCount, streakMilestoneLevel, taskMilestoneLevel}){
     const streakMilestone = {target: [7, 14, 21, 28], reward: [100, 200, 300, 400]}
-    const taskMilestone = {target: [1, 20, 30, 40], reward: [50, 100, 150, 200]}
+    const taskMilestone = {target: [10, 20, 30, 40], reward: [50, 100, 150, 200]}
 
     let messages = { task: [], streak: []}
     let bonusPoints = 0

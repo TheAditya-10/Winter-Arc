@@ -1,0 +1,6 @@
+version: "1"
+rules:
+  - base: testing
+    upstream: TheAditya-10:testing # change wei to the owner of upstream repo
+    mergeMethod: hardreset
+    mergeUnstable: true
