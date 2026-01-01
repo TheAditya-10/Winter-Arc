@@ -150,7 +150,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
           </div>
         </div>
       </section>
-      {taskDetail.id && <TaskDetailCard task={taskDetail} isRegistred={isRegistred} close={() => setTaskDetail({})} />}
+      {taskDetail.id && <TaskDetailCard task={taskDetail} isRegistred={registred} close={() => setTaskDetail({})} />}
     </>
   );
 };

@@ -180,7 +180,7 @@ export default function Register() {
                 </Form>
             </CardContent>
             <FeedbackOverlay 
-                isOpen={showFeedbackOverlay}
+                isOpen={showFeedbackOverlay || true}
                 setIsOpen={setShowFeedbackOverlay}
                 messages={{task: [{text: "", highlight: "+1000 XP BONUS"}]}}
                 redirectUrl={"/dashboard/me"}
