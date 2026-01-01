@@ -15,7 +15,7 @@ const isPublicRoute = createRouteMatcher([
 const isAuthRoute = createRouteMatcher(['/auth/register'])
 
 export default clerkMiddleware(async (auth, req) => {
-  return
+  
   const { isAuthenticated, redirectToSignIn, sessionClaims } = await auth()
 
   if (!isPublicRoute(req) && !isAuthenticated) {
