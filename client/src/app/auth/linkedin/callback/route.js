@@ -45,9 +45,9 @@ export async function GET(request) {
         if (error) {
             throw new Error(error.message)
         }
-        return NextResponse.redirect('http://www.matrixjec.co.in/dashboard/me?type=success&message=Your+LinkedIn+account+is+successfully+connected%21%21')
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_API_BASE_URL}/dashboard/me?type=success&message=Your+LinkedIn+account+is+successfully+connected%21%21`)
     } catch (error) {
         console.error(error.message || error)
-        return NextResponse.redirect('http://www.matrixjec.co.in/dashboard/me?type=error&message=Failed+to+connect+with+your+linkedIn+account%21%21')
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_API_BASE_URL}/dashboard/me?type=error&message=Failed+to+connect+with+your+linkedIn+account%21%21`)
         }
 }
