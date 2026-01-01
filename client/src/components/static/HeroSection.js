@@ -7,7 +7,7 @@ const HeroSection = () => {
       style={{ backgroundImage: "url('/hero_section_bg_image.png')" }}
     >
       <div className='flex flex-col items-center pt-[19vh]'>
-        <h1 className='lg:text-9xl md:text-6xl text-4xl font-goldman font-bold'>WINTER ARC 2026</h1>
+        <h1 className='lg:text-9xl md:text-6xl text-4xl font-goldman font-bold'>WINTER ARC</h1>
 
         <div className='mt-7 font-goldman'>
           <p className='text-2xl text-center max-md:text-sm'>“One task a day. Thirty days. No excuses.”</p>
