@@ -8,9 +8,10 @@ import { auth } from "@clerk/nextjs/server"
 import { notFound } from "next/navigation"
 
 
-export default async function Page({ params }) {
+export default async function Page({ params, searchParams }) {
 
     let { userId } = await params;
+    const { linkedin } = await searchParams;
 
     if (userId == "me") {
         const { userId: uId } = await auth()
@@ -45,7 +46,7 @@ export default async function Page({ params }) {
             <ProfileHeader user={userProfile} />
             <section id="performance-overview">
                 <h3 className="mb-4 mt-2 text-center text-xl font-semibold">Performance Overview</h3>
-                <StatsCards userStats={userStats} isMe={"me" == (await params).userId}/>
+                <StatsCards userStats={userStats} isMe={"me" == (await params).userId} linkedin={linkedin}/>
             </section>
             <section>
                 <h3 className="mb-4 mt-2 text-center text-xl font-semibold">Active Challenges</h3>
@@ -60,6 +61,7 @@ export default async function Page({ params }) {
                 </div>
             </section>
         </div >
+        
     </>
     )
 }
