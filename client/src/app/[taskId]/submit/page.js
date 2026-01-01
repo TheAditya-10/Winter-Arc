@@ -12,14 +12,9 @@ export default async function Page({ params }) {
 
     const { taskId } = await params
 
-    console.log('Submit page - taskId:', taskId, 'type:', typeof taskId)
-
     const { data: task, error: taskError } = await getTaskInfoCacheById(taskId)
-    
-    console.log('Task fetch result:', { task, taskError })
-    
-    if (taskError || !task) {
-        console.error('Task fetch failed:', taskError)
+    if (taskError) {
+        console.error(taskError)
         notFound()
         return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Some thing went wrong!!</h1></div>)
     }
