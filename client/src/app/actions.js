@@ -168,6 +168,12 @@ export async function createSubmission(formData, task) {
 
             try {
 
+                // Validate task object
+                if (!task || !task.id || !task.challengeId) {
+                    console.error('Invalid task object:', task)
+                    return { message: "Invalid task information!", error: true }
+                }
+
                 try {
                     const { success } = await submissionLimit.limit(userId)
 
@@ -195,9 +201,9 @@ export async function createSubmission(formData, task) {
 
                 // insert submission in posts table
                 const taskSubmission = {
-                    task_id: task.id,
-                    challenge_id: task.challengeId,
-                    user_id: userId,
+                    task_id: String(task.id),
+                    challenge_id: String(task.challengeId),
+                    user_id: String(userId),
                     text: formData.description,
                 }
 
