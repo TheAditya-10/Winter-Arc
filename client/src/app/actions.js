@@ -250,7 +250,7 @@ export async function shareOnLinkedIn(formData) {
             const { status, redirectToRegister, sessionClaims } = await isRegistered()
             if (!status) return redirectToRegister()
 
-            if(sessionClaims.linkedin != "connected"){
+            if(sessionClaims?.publicMetadata?.linkedin != "connected"){
                 return { error: true, message: "Connect your account with Linkedin!!" }
             }
 
