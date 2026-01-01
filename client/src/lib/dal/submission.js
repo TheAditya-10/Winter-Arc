@@ -12,7 +12,7 @@ export const insertSubmission = async (taskSubmission) => {
         .limit(1)
         .single();
 
-    return { data: data.id, error }
+    return { data: data?.id, error }
 }
 
 export const updateSubmissionById = async (submissionId, taskSubmission) => {
