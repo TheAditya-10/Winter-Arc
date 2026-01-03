@@ -10,7 +10,12 @@ export default async function Page() {
 
     const weekId = ["week-one", "week-two", "week-three", "week-four"]
 
-    const weeklyTaskStartTime = ["04", "11", "18", "25"].map((dayNumber) => new TZDate(new Date(Date.UTC(2026, 0, dayNumber, 0, 0, 0)), "Asia/Calcutta").getTime())
+    // const weeklyTaskStartTime = ["04", "11", "18", "25"].map((dayNumber) => new TZDate(new Date(Date.UTC(2026, 0, dayNumber, -5, -30, 0)), "Asia/Calcutta").getTime())
+
+    const weeklyTaskStartTime = ["04", "11", "18", "25"].map((dayNumber) => {
+        // Format: YYYY-MM-DDTHH:mm:ss+Offset
+        return new Date(`2026-01-${dayNumber}T00:00:00+05:30`).getTime();
+    });
 
     const weeklyTaskState = weeklyTaskStartTime.map((startTime) => {
         const now = new TZDate(new Date(), "Asia/Calcutta").getTime();
