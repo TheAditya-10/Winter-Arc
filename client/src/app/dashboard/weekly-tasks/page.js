@@ -1,8 +1,5 @@
 "use server"
 import { TZDate } from "@date-fns/tz"
-import { IconLock, IconActivity, IconCheck } from "@tabler/icons-react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
@@ -102,7 +99,7 @@ export default async function Page() {
                 <div className="font-semibold flex items-center justify-center" style={{ margin: currentWeekInfo.state == "active" ? "0" : "2rem 0" }}>
                     <Timer timestamp={weeklyTaskStartTime[currentWeekInfo?.index] + (currentWeekInfo?.state == "active" ? 24 * 60 * 60 * 1000 : 0)} />
                 </div>
-                {currentWeekInfo?.state == "active" && <p className="m-auto w-fit">"Submissions close automatically"</p>}
+                {currentWeekInfo?.state == "active" && <p className="m-auto w-fit">Submissions close automatically</p>}
             </div>
 
             {/* Judging Criteria */}
