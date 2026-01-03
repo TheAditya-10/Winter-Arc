@@ -11,12 +11,12 @@ import { insertChallengeRegistration } from "@/lib/dal/challenge"
 import { getChallengesInfoCacheById } from "@/lib/dal/cache"
 import { getUserStatsById, insertUser, updateUserById } from "@/lib/dal/user"
 import { getUserCred } from "@/lib/dal/creds"
-import { getSubmissionInfoById, insertSubmission, updateSubmissionById } from "@/lib/dal/submission"
+import { getSubmissionInfoById, insertSubmission, updateSubmissionById, insertWeeklySubmission } from "@/lib/dal/submission"
 import { redirect } from "next/navigation"
 import { isRegistered } from "@/utils/auth"
 import { genrateSignature } from "@/utils/cloud-storage"
 import { withServerActionInstrumentation } from "@sentry/nextjs"
-import {createVerifcationState} from "@/utils/share-on-linkedin"
+import { createVerifcationState } from "@/utils/share-on-linkedin"
 
 const clerk = await clerkClient()
 
@@ -122,7 +122,7 @@ export async function evaluateSubmission(formData, task, submissionId) {
 
                 newUserInfo.daily_task_completed_count = userInfo.dailyTaskCompletedCount + 1;
 
-                const {bonusPoints, messages, userMilestoneInfo} = checkForBonus({
+                const { bonusPoints, messages, userMilestoneInfo } = checkForBonus({
                     streakCount: newUserInfo.streak_count,
                     dailyTaskCompletedCount: userInfo.dailyTaskCompletedCount + 1,
                     streakMilestoneLevel: 0,
@@ -147,9 +147,9 @@ export async function evaluateSubmission(formData, task, submissionId) {
                 const { error: updateUserPointsError } = await updateUserById(userId, newUserInfo)
                 if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
-                if(newUserInfo.streak_count) messages.streak.push({ text: "Your streak is updated successfully.", highlight: `+${newUserInfo.streak_count.count} DAY STREAK` })
+                if (newUserInfo.streak_count) messages.streak.push({ text: "Your streak is updated successfully.", highlight: `+${newUserInfo.streak_count} DAY STREAK` })
                 messages.task.push({ text: "Submit successfully!!", highlight: `+${finalState.score} XP` })
-                
+
                 return { messages, score: finalState.score, feedback: finalState.feedback }
             } catch (error) {
                 console.error("Error:\n", error)
@@ -250,7 +250,7 @@ export async function shareOnLinkedIn(formData) {
             const { status, redirectToRegister, sessionClaims } = await isRegistered()
             if (!status) return redirectToRegister()
 
-            if(sessionClaims.publicMetadata.linkedin != "connected"){
+            if (sessionClaims.publicMetadata.linkedin != "connected") {
                 return { error: true, message: "Connect your account with Linkedin!!" }
             }
 
@@ -283,7 +283,7 @@ export async function shareOnLinkedIn(formData) {
                     throw new Error("Credential get expired!!")
                 }
 
-                const {textContent, imageUrl} = formData
+                const { textContent, imageUrl } = formData
 
                 const { uploadUrl, asset: imageAsset } = await registerUploadInLinkedin(userCreds.linkedinId, userCreds.accessToken)
                 await uploadBinaryFile(imageUrl, uploadUrl, userCreds.accessToken);
@@ -313,7 +313,7 @@ export async function checkStreak() {
 
                 const newUserInfo = updateStreak(userInfo, false)
 
-                let response = { }
+                let response = {}
 
                 if (newUserInfo.streak_freeze_count !== undefined) {
                     response = { state: "freeze" }
@@ -331,7 +331,7 @@ export async function checkStreak() {
                     longestStreak: newUserInfo.longest_streak || userInfo.longestStreak,
                     points: newUserInfo.points || userInfo.points,
                     streakCount: newUserInfo.streak_count || userInfo.streakCount,
-                    streakFreezeCount: newUserInfo.streak_freeze_count || userInfo.streakFreezeCount 
+                    streakFreezeCount: newUserInfo.streak_freeze_count || userInfo.streakFreezeCount
                 }
 
                 return { error: false, userStats: clientUserInfo, ...response }
@@ -344,12 +344,35 @@ export async function checkStreak() {
 }
 
 export async function initiateConnectWithLinkedin() {
-        const { status, redirectToRegister, userId } = await isRegistered()
-        if (!status) return redirectToRegister()
+    const { status, redirectToRegister, userId } = await isRegistered()
+    if (!status) return redirectToRegister()
 
-        const state = await createVerifcationState(userId)
+    const state = await createVerifcationState(userId)
 
-        const url = `https://www.linkedin.com/oauth/v2/authorization?enable_extended_login=true&response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.LINKEDIN_CALLBACK_URL}&state=${state}&scope=profile%20email%20w_member_social%20openid`
+    const url = `https://www.linkedin.com/oauth/v2/authorization?enable_extended_login=true&response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.LINKEDIN_CALLBACK_URL}&state=${state}&scope=profile%20email%20w_member_social%20openid`
 
-        return redirect(url)
+    return redirect(url)
+}
+
+export async function submitWeeklyTask(formData) {
+
+    const { status, redirectToRegister, userId } = await isRegistered()
+    if (!status) return redirectToRegister()
+
+    try {
+        const submissionInfo = {
+            drive_url: formData.driveUrl,
+            description: formData.description,
+            user_id: userId,
+            week_id: formData.weekId
+        }
+        const { error } = await insertWeeklySubmission(submissionInfo)
+
+        if(error) throw new Error(error.message)
+        
+        return {message: "Weekly challenge submitted successfully!!"}
+    } catch (error) {
+        console.error(error)
+        return {error, message: "Failed to save your submission!!"}
     }
+}

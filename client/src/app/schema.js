@@ -13,14 +13,19 @@ const registerFormSchema = z.object({
 const submitFormSchema = z.object({
     description: z.string().min(20, "minimum 20 characters are required.").max(500, "maximum 500 characters are allowed."),
     imageFile: z.union([
-        z.object({ type: z.enum(['image/jpeg', 'image/png'], "Only .png and .jpeg files are accepted."), size: z.number().int().gt(0).lt(1024 * 1024 * 8, "file size should be less than 6MB")}),
+        z.object({ type: z.enum(['image/jpeg', 'image/png'], "Only .png and .jpeg files are accepted."), size: z.number().int().gt(0).lt(1024 * 1024 * 8, "file size should be less than 6MB") }),
         z.file().max(1024 * 1024 * 8, "file size should be less than 6MB").mime(['image/jpeg', 'image/png'], "Only .png and .jpeg files are accepted.")
     ]),
 })
 
 const draftFormSchema = z.object({
     textContent: z.string().min(20, "minimum 20 characters are required."),
-    imageUrl: z.string()
+    imageUrl: z.url()
 })
 
-export { registerFormSchema, submitFormSchema, draftFormSchema }
+const weeklyTaskSubmitFormSchema = z.object({
+    description: z.string().min(50, "minimum 50 characters are required."),
+    driveUrl: z.url("Invalid URL")
+})
+
+export { registerFormSchema, submitFormSchema, draftFormSchema, weeklyTaskSubmitFormSchema }

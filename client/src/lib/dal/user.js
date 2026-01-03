@@ -117,5 +117,18 @@ export const insertUser = async (user) => {
     return { error }
 }
 
+export const getUserWeeklySubmission = async (weekId) => {
+    const { userId } = await auth()
+
+    const { data, error } = await supabase
+        .from("weekly_submissions")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("week_id", weekId)
+        .limit(1)
+        .single()
+
+    return { data: data, error }
+}
 
 
