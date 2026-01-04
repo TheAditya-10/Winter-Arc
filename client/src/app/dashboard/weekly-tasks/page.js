@@ -25,7 +25,7 @@ export default async function Page() {
     })
 
     const currentWeekInfo = weeklyTaskState.reduce((acc, curr, i) => {
-        if (curr != "completed" && !acc) return { state: curr, index: i }
+        if (curr != "completed" && !acc) return { state: "active" || curr, index: i }
         return acc
     }, null)
 
@@ -65,7 +65,7 @@ export default async function Page() {
             </div>
 
             {/* Challenge Intro */}
-            {(currentWeekInfo.state == "active" || true) && <div className="font-inter rounded-lg my-2 max-w-[30rem] w-full text-center text-xl font-bold bg-[#021024] shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+            {(currentWeekInfo.state == "active") && <div className="font-inter rounded-lg my-2 max-w-[30rem] w-full text-center text-xl font-bold bg-[#021024] shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                 <div className="flex items-center max-sm:flex-col max-sm:px-2">
                     <div className="bg-[url('/dashboard/snow-flake.svg')] bg-no-repeat bg-contain p-12 w-fit h-fit">
                         <div className="relative size-16 text-3xl rounded-full bg-[#062B5D] outline-4 outline-[#678CAC] -outline-offset-6 flex items-center justify-center text-[#3FD7FA] font-bold ">
