@@ -13,8 +13,14 @@ const weekMap = {
 }
 
 function getWeekState(dayNumber) {
-    const startTime = new Date(`2026-01-${dayNumber}T00:00:00+05:30`)?.getTime()
-    const now = new Date(new Date().toLocaleString("en-us", {timeZone: "Asia/Kolkata"}))?.getTime();
+    const startTime = new TZDate(
+        2026,
+        0,                // January (0-based)
+        Number(dayNumber),
+        0, 0, 0,          // 00:00:00
+        "Asia/Kolkata"
+    ).getTime();
+    const now = new TZDate(new Date(), "Asia/Kolkata").getTime();
     if (now - startTime < 0) return "upcoming";
     else if (now - startTime < 24 * 60 * 60 * 1000) return "active";
     else return "completed";
@@ -27,7 +33,7 @@ export default async function Page({ params }) {
 
     const weekState = getWeekState(weekMap[weekId])
 
-    if(weekState != "active") return redirect("/dashboard/weekly-tasks")
+    if (weekState != "active") return redirect("/dashboard/weekly-tasks")
 
     return (
         <>

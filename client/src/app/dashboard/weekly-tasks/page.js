@@ -14,24 +14,31 @@ export default async function Page() {
 
     const weeklyTaskStartTime = ["04", "11", "18", "25"].map((dayNumber) => {
         // Format: YYYY-MM-DDTHH:mm:ss+Offset
-        return new Date(`2026-01-${dayNumber}T00:00:00+05:30`).getTime();
+        return new TZDate(
+            2026,
+            0,                // January (0-based)
+            Number(dayNumber),
+            0, 0, 0,          // 00:00:00
+            "Asia/Kolkata"
+        ).getTime();
+
     });
 
     const weeklyTaskState = weeklyTaskStartTime.map((startTime) => {
-        const now = new Date(new Date().toLocaleString("en-us", {timeZone: "Asia/Kolkata"}))?.getTime();
+        const now = new TZDate(new Date(), "Asia/Kolkata").getTime();
         if (now - startTime < 0) return "upcoming";
         else if (now - startTime < 24 * 60 * 60 * 1000) return "active";
         else return "completed";
     })
 
     const currentWeekInfo = weeklyTaskState.reduce((acc, curr, i) => {
-        if (curr != "completed" && !acc) return { state: "active" || curr, index: i }
+        if (curr != "completed" && !acc) return { state: curr, index: i }
         return acc
     }, null)
 
     let submissionId = null
 
-    if (currentWeekInfo.state == "active") {
+    if (currentWeekInfo?.state == "active") {
         const { data, error } = await getUserWeeklySubmission(weekId[currentWeekInfo.index])
         if (error) {
             console.error(error.message)
