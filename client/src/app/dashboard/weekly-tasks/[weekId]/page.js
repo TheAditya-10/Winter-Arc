@@ -6,15 +6,15 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const weekMap = {
-    "week-one": "03",
+    "week-one": "04",
     "week-two": "11",
     "week-three": "18",
     "week-four": "25",
 }
 
 function getWeekState(dayNumber) {
-    const startTime = new TZDate(new Date(`2026-01-${dayNumber}T00:00:00`), "Asia/Calcutta").getTime()
-    const now = new TZDate(new Date(), "Asia/Calcutta").getTime();
+    const startTime = new Date(`2026-01-${dayNumber}T00:00:00+05:30`)?.getTime()
+    const now = new Date(new Date().toLocaleString("en-us", {timeZone: "Asia/Kolkata"}))?.getTime();
     if (now - startTime < 0) return "upcoming";
     else if (now - startTime < 24 * 60 * 60 * 1000) return "active";
     else return "completed";

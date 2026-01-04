@@ -126,7 +126,7 @@ export const getUserWeeklySubmission = async (weekId) => {
         .eq("user_id", userId)
         .eq("week_id", weekId)
         .limit(1)
-        .single()
+        .maybeSingle()
 
     return { data: data, error }
 }

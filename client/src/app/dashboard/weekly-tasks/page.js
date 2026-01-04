@@ -18,7 +18,7 @@ export default async function Page() {
     });
 
     const weeklyTaskState = weeklyTaskStartTime.map((startTime) => {
-        const now = new TZDate(new Date(), "Asia/Calcutta").getTime();
+        const now = new Date(new Date().toLocaleString("en-us", {timeZone: "Asia/Kolkata"}))?.getTime();
         if (now - startTime < 0) return "upcoming";
         else if (now - startTime < 24 * 60 * 60 * 1000) return "active";
         else return "completed";
