@@ -14,11 +14,18 @@ export default async function Page() {
 
     const weeklyTaskStartTime = ["04", "11", "18", "25"].map((dayNumber) => {
         // Format: YYYY-MM-DDTHH:mm:ss+Offset
-        return new Date(`2026-01-${dayNumber}T00:00:00+05:30`).getTime();
+        return new TZDate(
+            2026,
+            0,                // January (0-based)
+            Number(dayNumber),
+            0, 0, 0,          // 00:00:00
+            "Asia/Kolkata"
+        ).getTime();
+
     });
 
     const weeklyTaskState = weeklyTaskStartTime.map((startTime) => {
-        const now = new Date(new Date().toLocaleString("en-us", {timeZone: "Asia/Kolkata"}))?.getTime();
+        const now = new TZDate(new Date(), "Asia/Kolkata").getTime();
         if (now - startTime < 0) return "upcoming";
         else if (now - startTime < 24 * 60 * 60 * 1000) return "active";
         else return "completed";
@@ -31,7 +38,7 @@ export default async function Page() {
 
     let submissionId = null
 
-    if (currentWeekInfo.state == "active") {
+    if (currentWeekInfo?.state == "active") {
         const { data, error } = await getUserWeeklySubmission(weekId[currentWeekInfo.index])
         if (error) {
             console.error(error.message)
@@ -65,7 +72,7 @@ export default async function Page() {
             </div>
 
             {/* Challenge Intro */}
-            {currentWeekInfo.state == "active" && <div className="font-inter rounded-lg my-2 max-w-[30rem] w-full text-center text-xl font-bold bg-[#021024] shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+            {(currentWeekInfo.state == "active") && <div className="font-inter rounded-lg my-2 max-w-[30rem] w-full text-center text-xl font-bold bg-[#021024] shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                 <div className="flex items-center max-sm:flex-col max-sm:px-2">
                     <div className="bg-[url('/dashboard/snow-flake.svg')] bg-no-repeat bg-contain p-12 w-fit h-fit">
                         <div className="relative size-16 text-3xl rounded-full bg-[#062B5D] outline-4 outline-[#678CAC] -outline-offset-6 flex items-center justify-center text-[#3FD7FA] font-bold ">
@@ -91,7 +98,7 @@ export default async function Page() {
                     // ? (<Link href={`/dashboard/weekly-tasks/${weekId[currentWeekInfo.index]}/${submissionId}`}>
                     //     <Button className="my-4 font-medium" variant={"outline"}>Your Submission is under review</Button>
                     // </Link>)
-                    ? <Button className="my-4 font-medium" variant={"outline"}>Your Submission is under review</Button>
+                    ? <Button className="my-4 font-medium" variant={"outline"}>Your submission is under review</Button>
                     : (<Link href={`/dashboard/weekly-tasks/${weekId[currentWeekInfo.index]}`}>
                         <button className="my-4 bg-[url('/weekly-task/btn-bg.svg')] text-xl sm:text-2xl font-black text-[#111C35] font-inter bg-contain bg-no-repeat p-4">START NOW!</button>
                     </Link>)

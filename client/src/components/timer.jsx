@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react';
 import { useTimer } from 'react-timer-hook';
+import { TZDate } from '@date-fns/tz';
 
 function Timer({ timestamp }) {
-
     const {
         seconds,
         minutes,
@@ -15,7 +15,7 @@ function Timer({ timestamp }) {
 
     useEffect(() => { 
         if(!timestamp) return 
-        restart(new Date(timestamp), true)
+        restart(new TZDate(timestamp, "Asia/Kolkata"), true)
      }, [timestamp, restart])
 
     const clock = (days > 0)
