@@ -10,41 +10,26 @@ export default function useCheckStreak(initialStats, isMe) {
 
     useEffect(() => {
         const run = async () => {
-            const { error, message, state, userStats } = await checkStreak()
+            const { error, errorMessage, state, userStats, messages } = await checkStreak()
 
             if (userStats) setStats({ ...initialStats, ...userStats })
-            if(state){
-                if(state == "reset"){
-                    const messages = {streak: [
-                        {text: "You've missed a day", highlight: "-50 XP"},
-                        {text: "Previous Streak", highlight: `${initialStats.streakCount} Day`},
-                        {text: "Current Streak", highlight: `0 Day`},
-                    ]}
+            
+            let title = "MILESTONE BONUCE"
 
-                    const title = "STREAK BROKEN"
-
-                    const url = "/dashboard/streak-broken.svg"
-
-                    setStreakState({messages, title, url})
-                }
-                if(state == "freeze"){
-                    const messages = {streak: [
-                        {text: "Streak Freeze Left:", highlight: `${userStats.streakFreezeCount}`},
-                        {text: "Current Streak", highlight: `${userStats.streakCount} Day`},
-                    ]}
-
-                    const title = "STREAK Freeze Is Used"
-
-                    const url = "/dashboard/streak-freeze.svg"
-
-                    setStreakState({messages, title, url})
-                }
+            if (state == "reset") {
+                title = "STREAK BROKEN"
+            } else if (state == "freeze") {
+                title = "STREAK FREEZED"
             }
+
+            if(messages?.task?.length || messages?.streak?.length) setStreakState({ messages, title, state})
+            console.log(messages)
+
             if (error) {
-                return toast.error(message)
+                return toast.error(errorMessage)
             }
         }
-        if(isMe) run()
+        if (isMe) run()
     }, [])
 
     return { stats, streakState, setStreakState };

@@ -34,13 +34,14 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { registerFormSchema as formSchema } from "@/app/schema"
 import { FeedbackOverlay } from "@/components/feedback-overlay"
+import { useSearchParams } from "next/navigation"
 
 export default function Register() {
 
     const [isLoading, setIsLoading] = useState(false)
 
     const [showFeedbackOverlay, setShowFeedbackOverlay] = useState(false)
-    const router = useRouter()
+    const searchParams = useSearchParams()
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -49,6 +50,7 @@ export default function Register() {
             username: "",
             year: "",
             branch: "",
+            referral: searchParams.get("referral") || null,
         }
     })
 
@@ -175,14 +177,29 @@ export default function Register() {
                                 )}
                             />
                         </div>
+                        {searchParams.has("referral") && (
+                            <FormField
+                                control={form.control}
+                                name="referral"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Referral</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="" value={field.value} readOnly />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
                         <Button type="submit" className="w-full" disabled={isLoading}>Send</Button>
                     </form>
                 </Form>
             </CardContent>
-            <FeedbackOverlay 
+            <FeedbackOverlay
                 isOpen={showFeedbackOverlay}
                 setIsOpen={setShowFeedbackOverlay}
-                messages={{task: [{text: "", highlight: "+1000 XP BONUS"}]}}
+                messages={{ task: [{ text: "", highlight: "+1000 XP BONUS" }] }}
                 redirectUrl={"/dashboard/me"}
                 title={"Welcome Bonus"}
                 imgUrl={"/dashboard/trasher.svg"}

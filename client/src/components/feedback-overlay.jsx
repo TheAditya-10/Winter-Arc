@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { X } from "lucide-react"
 
-export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFeedback, rejected, title, imgUrl }) => {
+export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFeedback, rejected, title, imgUrl, streakState }) => {
     const router = useRouter()
 
     const hasTask = messages?.task?.length > 0
@@ -31,6 +31,14 @@ export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFe
 
     const isTaskStep = step === "task"
     const messagesToShow = isTaskStep ? messages?.task : messages?.streak
+
+    const streakImage = () => {
+        switch(streakState){
+            case "broken": return "streak-broken"
+            case "freeze": return "streak-freeze"
+            default: return "streak"
+        }
+    }
 
     const handleContinue = () => {
         // If task is shown first and streak exists → go to streak
@@ -68,7 +76,7 @@ export const FeedbackOverlay = ({ isOpen, setIsOpen, messages, redirectUrl, aiFe
                     </h1>
 
                     <Image
-                        src={imgUrl || `/dashboard/${isTaskStep ? "snow-flake" : "streak"}.svg`}
+                        src={imgUrl || `/dashboard/${isTaskStep ? "snow-flake" : streakImage()}.svg`}
                         width={100}
                         height={100}
                         alt="image"
