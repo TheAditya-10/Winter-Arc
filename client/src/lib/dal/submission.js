@@ -44,3 +44,12 @@ export const insertWeeklySubmission = async (weeklySubmission) => {
 
     return { error }
 }
+
+export const getAllWeeklySubmissions = async () => {
+    
+    const { data, error } = await supabase
+        .from('weekly_submissions')
+        .select('id, user:users(id, name, username, avatarUrl:avatar_url), weekId:week_id, driveUrl:drive_url')
+    
+    return { data, error }
+}

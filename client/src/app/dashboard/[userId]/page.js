@@ -13,6 +13,7 @@ export default async function Page({ params, searchParams }) {
 
     let { userId } = await params;
     const { linkedin } = await searchParams;
+    // let isMe = ("me" == (await params)?.userId)
 
     if (userId == "me") {
         const { userId: uId } = await auth()
@@ -72,9 +73,9 @@ export default async function Page({ params, searchParams }) {
 }
 
 const MilestoneCards = ({ userInfo }) => {
-    const streakMilestone = { target: [7, 14, 21, 28], reward: [100, 200, 300, 400] }
-    const taskMilestone = { target: [10, 20, 30, 40], reward: [50, 100, 150, 200] }
-    const referralMilestone = { target: [1, 3, 5], reward: [50, 100, 150] }
+    const streakMilestone = { target: [7, 14, 21, 28], reward: [200, 400, 600, 800] }
+    const taskMilestone = { target: [10, 20, 30, 40], reward: [100, 200, 300, 400] }
+    const referralMilestone = { target: [1, 3, 5], reward: [100, 200, 300] }
 
     const milestones = [
         {
@@ -83,7 +84,7 @@ const MilestoneCards = ({ userInfo }) => {
             target: streakMilestone.target[userInfo?.streakMilestoneLevel || 0],
             reward: streakMilestone.reward[userInfo?.streakMilestoneLevel || 0],
             level: userInfo?.streakMilestoneLevel + 1 || 1,
-            current: userInfo?.streakCount,
+            current: userInfo?.streakCount || 0,
         },
         {
             image: "/dashboard/milestone-task.svg",
@@ -91,7 +92,7 @@ const MilestoneCards = ({ userInfo }) => {
             target: taskMilestone.target[userInfo?.taskMilestoneLevel || 0],
             reward: taskMilestone.reward[userInfo?.taskMilestoneLevel || 0],
             level: userInfo?.taskMilestoneLevel + 1 || 1,
-            current: userInfo?.dailyTaskCompletedCount,
+            current: userInfo?.dailyTaskCompletedCount || 0,
         },
         {
             image: "/dashboard/milestone-referral.svg",
@@ -99,7 +100,7 @@ const MilestoneCards = ({ userInfo }) => {
             target: referralMilestone.target[userInfo?.referralMilestoneLevel || 0],
             reward: referralMilestone.reward[userInfo?.referralMilestoneLevel || 0],
             level: userInfo?.referralMilestoneLevel + 1 || 1,
-            current: userInfo?.referralCount,
+            current: userInfo?.referralCount || 0,
         },
     ]
 

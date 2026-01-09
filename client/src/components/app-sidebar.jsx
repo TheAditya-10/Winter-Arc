@@ -58,6 +58,11 @@ const data = {
       url: "/dashboard/leaderboard",
       icon: "/sidebar/leaderboard.svg",
     },
+    {
+      title: "Weekly Leaderboard",
+      url: "/dashboard/weekly-result",
+      icon: "/sidebar/leaderboard.svg",
+    },
   ],
   navClouds: [
     {

@@ -55,7 +55,7 @@ function streakFreeze({ lastStreakUpdate, streakFreezeCount, streakCount, longes
     } else {
         return {
             streak_count: streakCount,
-            last_streak_update_date: now.getTime() - 24*60*60*1000,
+            last_streak_update_date: now.getTime() - 24 * 60 * 60 * 1000,
             streak_status: "started",
             streak_freeze_count: streakFreezeCount - streakGap,
         }
@@ -141,34 +141,34 @@ function updateStreak(userInfo, increment = true) {
     return updatedUserInfo
 }
 
-function checkForBonus({streakCount, dailyTaskCompletedCount, streakMilestoneLevel, taskMilestoneLevel, referralCount, referralMilestoneLevel}){
-    const streakMilestone = {target: [7, 14, 21, 28], reward: [100, 200, 300, 400]}
-    const taskMilestone = {target: [10, 20, 30, 40], reward: [50, 100, 150, 200]}
-    const referralMilestone = {target: [1, 3, 5], reward: [50, 100, 150]}
+function checkForBonus({ streakCount, dailyTaskCompletedCount, streakMilestoneLevel, taskMilestoneLevel, referralCount, referralMilestoneLevel }) {
+    const streakMilestone = { target: [7, 14, 21, 28], reward: [200, 400, 600, 800] }
+    const taskMilestone = { target: [10, 20, 30, 40], reward: [100, 200, 300, 400] }
+    const referralMilestone = { target: [1, 3, 5], reward: [100, 200, 300] }
 
-    let messages = { task: [], streak: []}
+    let messages = { task: [], streak: [] }
     let bonusPoints = 0
     let userMilestoneInfo = {}
 
-    if(streakCount && streakMilestoneLevel < 4 && streakCount >= streakMilestone.target[streakMilestoneLevel]){
-        userMilestoneInfo.streak_milestone_level = streakMilestoneLevel+1;
+    if (streakCount && streakMilestoneLevel < 4 && streakCount >= streakMilestone.target[streakMilestoneLevel]) {
+        userMilestoneInfo.streak_milestone_level = streakMilestoneLevel + 1;
         bonusPoints += streakMilestone.reward[streakMilestoneLevel];
-        messages.streak.push({text: `Milestone: ${streakCount} day streak completed.`, highlight: `+${streakMilestone.reward[streakMilestoneLevel]} XP BONUS`})
+        messages.streak.push({ text: `Milestone: ${streakCount} day streak completed.`, highlight: `+${streakMilestone.reward[streakMilestoneLevel]} XP BONUS` })
     }
 
-    if(dailyTaskCompletedCount && taskMilestoneLevel < 4 && dailyTaskCompletedCount >= taskMilestone.target[taskMilestoneLevel]){
-        userMilestoneInfo.task_milestone_level = taskMilestoneLevel+1;
+    if (dailyTaskCompletedCount && taskMilestoneLevel < 4 && dailyTaskCompletedCount >= taskMilestone.target[taskMilestoneLevel]) {
+        userMilestoneInfo.task_milestone_level = taskMilestoneLevel + 1;
         bonusPoints += taskMilestone.reward[taskMilestoneLevel];
-        messages.task.push({text: `Milestone: ${dailyTaskCompletedCount} daily task completed.`, highlight: `+${taskMilestone.reward[taskMilestoneLevel]} XP BONUS`})
+        messages.task.push({ text: `Milestone: ${dailyTaskCompletedCount} daily task completed.`, highlight: `+${taskMilestone.reward[taskMilestoneLevel]} XP BONUS` })
     }
 
-    if(referralCount && referralMilestoneLevel < 3 && referralCount >= referralMilestone.target[referralMilestoneLevel]){
-        userMilestoneInfo.referral_milestone_level = referralMilestoneLevel+1;
+    if (referralCount && referralMilestoneLevel < 3 && referralCount >= referralMilestone.target[referralMilestoneLevel]) {
+        userMilestoneInfo.referral_milestone_level = referralMilestoneLevel + 1;
         bonusPoints += referralMilestone.reward[referralMilestoneLevel];
-        messages.task.push({text: `Milestone: ${referralCount} users join the arc from your referral link.`, highlight: `+${referralMilestone.reward[referralMilestoneLevel]} XP BONUS`})
+        messages.task.push({ text: `Milestone: ${referralCount} users join the arc from your referral link.`, highlight: `+${referralMilestone.reward[referralMilestoneLevel]} XP BONUS` })
     }
 
-    return {messages, userMilestoneInfo, bonusPoints}
+    return { messages, userMilestoneInfo, bonusPoints }
 
 }
 
