@@ -125,7 +125,7 @@ export function LeaderboardTable(
 
     return (
         <div className="font-poppins relative flex flex-col gap-4 overflow-auto px-4 lg:px-6 @2xl/main:w-[42rem] @2xl/main:self-center pb-2">
-            <div className="flex items-center justify-between py-4 gap-2">
+            <div className="flex items-center justify-center py-4 gap-2">
                 <Input
                     placeholder="Search by username..."
                     value={(table.getColumn("username")?.getFilterValue()) ?? ""}
@@ -134,7 +134,7 @@ export function LeaderboardTable(
                     }
                     className="max-w-sm"
                 />
-                <ButtonGroup>
+                {/* <ButtonGroup>
                     <Button
                         variant={columnVisibility.weeklyPoints == undefined ? "ghost" : "secondary"}
                         onClick={() => {
@@ -148,7 +148,7 @@ export function LeaderboardTable(
                             setColumnVisibility({ username: false, points: false })
                         }}
                     >Weekly</Button>
-                </ButtonGroup>
+                </ButtonGroup> */}
             </div>
             <div className="flex flex-col-reverse gap-4">
                 <div className="rounded-lg h-fit relative overflow-y-auto">

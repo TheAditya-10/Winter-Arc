@@ -9,7 +9,7 @@ import { submissionLimit } from "@/utils/rate-limiter"
 import { uploadBinaryFile, registerUploadInLinkedin, publishLinkedinPostWithImage } from "@/utils/share-on-linkedin"
 import { insertChallengeRegistration } from "@/lib/dal/challenge"
 import { getChallengesInfoCacheById } from "@/lib/dal/cache"
-import { getUserStatsById, insertUser, updateUserById } from "@/lib/dal/user"
+import { getUserStatsById, insertUser, updateUserById, incrementReferralCountByUsername } from "@/lib/dal/user"
 import { getUserCred } from "@/lib/dal/creds"
 import { getSubmissionInfoById, insertSubmission, updateSubmissionById, insertWeeklySubmission } from "@/lib/dal/submission"
 import { redirect } from "next/navigation"
@@ -48,7 +48,12 @@ export async function createUser(formData, userLocalTimeZone) {
 
 
                 const { avatar_url, id } = sessionClaims
-                const user = { ...formData, avatar_url, id, points: 1000 }
+                const { referral, ...userInfo } = formData
+
+                if (referral) {
+                    await incrementReferralCountByUsername(referral)
+                }
+                const user = { ...userInfo, avatar_url, id, points: 1000 }
                 const { error } = await insertUser(user)
                 if (error) {
                     console.error(error)
@@ -123,14 +128,14 @@ export async function evaluateSubmission(formData, task, submissionId) {
                 newUserInfo.daily_task_completed_count = userInfo.dailyTaskCompletedCount + 1;
 
                 const { bonusPoints, messages, userMilestoneInfo } = checkForBonus({
-                    streakCount: newUserInfo.streak_count,
-                    dailyTaskCompletedCount: userInfo.dailyTaskCompletedCount + 1,
-                    streakMilestoneLevel: 0,
-                    taskMilestoneLevel: 0
+                    streakCount: newUserInfo?.streak_count || 0,
+                    dailyTaskCompletedCount: userInfo?.dailyTaskCompletedCount + 1,
+                    streakMilestoneLevel: userInfo?.streakMilestoneLevel || 0,
+                    taskMilestoneLevel: userInfo?.taskMilestoneLevel || 0
                 })
 
                 // TODO: update milestone info in database.
-                // newUserInfo.points += bonusPoints
+                newUserInfo.points += bonusPoints
                 // console.log(bonusPoints, messages, userMilestoneInfo)
 
                 // update submission in posts table
@@ -144,7 +149,7 @@ export async function evaluateSubmission(formData, task, submissionId) {
 
 
                 // update users streaks and points
-                const { error: updateUserPointsError } = await updateUserById(userId, newUserInfo)
+                const { error: updateUserPointsError } = await updateUserById(userId, { ...userMilestoneInfo, ...newUserInfo })
                 if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
                 if (newUserInfo.streak_count) messages.streak.push({ text: "Your streak is updated successfully.", highlight: `+${newUserInfo.streak_count} DAY STREAK` })
@@ -312,19 +317,35 @@ export async function checkStreak() {
                 if (userInfoError) throw new Error(userInfoError.message)
 
                 const newUserInfo = updateStreak(userInfo, false)
+                newUserInfo.points = userInfo.points;
+
+                const { messages, userMilestoneInfo, bonusPoints } = checkForBonus({
+                    referralMilestoneLevel: userInfo?.referralMilestoneLevel || 0,
+                    referralCount: userInfo?.referralCount || 0,
+                })
+                newUserInfo.points += bonusPoints;
 
                 let response = {}
 
                 if (newUserInfo.streak_freeze_count !== undefined) {
                     response = { state: "freeze" }
+                    messages.streak = [
+                        { text: "Streak Freeze Left:", highlight: `${userStats.streakFreezeCount}` },
+                        { text: "Current Streak", highlight: `${userStats.streakCount} Day` },
+                    ]
                 }
 
                 if (newUserInfo.streak_status == "reset") {
-                    newUserInfo.points = userInfo.points - 50;
+                    newUserInfo.points -= 50;
                     response = { state: "reset" }
+                    messages.streak = [
+                        { text: "You've missed a day", highlight: "-50 XP" },
+                        { text: "Previous Streak", highlight: `${initialStats.streakCount} Day` },
+                        { text: "Current Streak", highlight: `0 Day` },
+                    ]
                 }
 
-                const { error } = await updateUserById(userId, newUserInfo)
+                const { error } = await updateUserById(userId, { ...userMilestoneInfo, ...newUserInfo })
                 if (error) throw new Error(error.message)
 
                 const clientUserInfo = {
@@ -334,10 +355,10 @@ export async function checkStreak() {
                     streakFreezeCount: newUserInfo.streak_freeze_count || userInfo.streakFreezeCount
                 }
 
-                return { error: false, userStats: clientUserInfo, ...response }
+                return { error: false, userStats: clientUserInfo, ...response, messages }
             } catch (error) {
                 console.error(error)
-                return { error: true, message: "Fail to update your streak!!" }
+                return { error: true, errorMessage: "Fail to update your streak!!" }
             }
         }
     )
@@ -368,11 +389,11 @@ export async function submitWeeklyTask(formData) {
         }
         const { error } = await insertWeeklySubmission(submissionInfo)
 
-        if(error) throw new Error(error.message)
-        
-        return {message: "Weekly challenge submitted successfully!!"}
+        if (error) throw new Error(error.message)
+
+        return { message: "Weekly challenge submitted successfully!!" }
     } catch (error) {
         console.error(error)
-        return {error, message: "Failed to save your submission!!"}
+        return { error, message: "Failed to save your submission!!" }
     }
 }

@@ -6,6 +6,7 @@ const registerFormSchema = z.object({
         .min(5, "Name must be at least 5 characters")
         .max(20, "Name can be maximum of 20 characters")
         .refine((un) => /^[a-zA-Z0-9]+$/.test(un), { error: 'Only alphabet and digits are allowed.' }),
+    referral: z.string().nullable(),
     year: z.number("required").int().lt(5).gt(0),
     branch: z.enum(["AI", "CSE", "CE", "ECE", "EE", "ME", "MT", "IP", "IT"], "required"),
 })

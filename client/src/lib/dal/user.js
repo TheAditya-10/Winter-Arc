@@ -19,7 +19,7 @@ export const getUserProfileById = async (userId) => {
 
 export const getUserStatsById = async (userId, streakMetadata = false) => {
 
-    const column = `points, streakCount:streak_count, longestStreak:longest_streak, dailyTaskCompletedCount:daily_task_completed_count${streakMetadata ? ", lastStreakUpdate:last_streak_update_date, streakStatus:streak_status, streakFreezeCount:streak_freeze_count" : ""}`
+    const column = `points, streakCount:streak_count, longestStreak:longest_streak, dailyTaskCompletedCount:daily_task_completed_count${streakMetadata ? ", lastStreakUpdate:last_streak_update_date, streakStatus:streak_status, streakFreezeCount:streak_freeze_count, referralCount:referral_count, referralMilestoneLevel:referral_milestone_level, streakMilestoneLevel:streak_milestone_level, taskMilestoneLevel:task_milestone_level" : ""}`
     const { data, error } = await supabase
         .from("users")
         .select(column)
@@ -129,6 +129,24 @@ export const getUserWeeklySubmission = async (weekId) => {
         .maybeSingle()
 
     return { data: data, error }
+}
+
+export const incrementReferralCountByUsername = async (username) => {
+    const { data: user, error: fetchError } = await supabase
+        .from("users")
+        .select("id, referral_count")
+        .eq("username", username)
+        .limit(1)
+        .maybeSingle()
+
+    if (!user || fetchError) return { error: fetchError }
+
+    const { error: updateError } = await supabase
+        .from("users")
+        .update({ referral_count: user?.referral_count + 1 })
+        .eq("id", user?.id)
+
+    return { error: updateError }
 }
 
 
