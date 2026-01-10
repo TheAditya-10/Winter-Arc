@@ -142,7 +142,7 @@ export default async function Page({ params }) {
                                         <li>❄️ Turning chaos into calm</li>
                                     </ul>
                                     <p className="text-sm mt-2 italic text-[#3FD7FA]">
-                                        A glow-up is not about adding more — it's about making it better.
+                                        A glow-up is not about adding more — it&apos;s about making it better.
                                     </p>
                                 </div>
 
