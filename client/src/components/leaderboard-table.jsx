@@ -195,7 +195,7 @@ export function LeaderboardTable(
                                         </div>
                                     )
                                 })}
-                                {youRow
+                                {!youRow
                                     ? (<div
                                         className="sticky bottom-0 z-10 bg-[#205F94] text-white text-center font-medium sm:py-4 max-sm:text-sm py-2 gap-1 px-2 items-center rounded-md mt-1"
                                     >
