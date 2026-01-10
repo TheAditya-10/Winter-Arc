@@ -14,9 +14,9 @@ export default async function Page({ params }) {
     const { weekId } = await params
     const weekInfo = {
         "week-one": { number: 1, title: "Winter Arc: Build in 60", dayNumber: "04" },
-        "week-two": { number: 2, title: "Weekly Challenge 2", dayNumber: "11" },
+        "week-two": { number: 2, title: "Winter Arc: Glow-up Anything", dayNumber: "11" },
         "week-three": { number: 3, title: "Weekly Challenge 3", dayNumber: "18" },
-        "week-four": { number: 4, title: "Weekly Challenge 4", dayNumber: "27" },
+        "week-four": { number: 4, title: "Weekly Challenge 4", dayNumber: "25" },
     }
 
     if (!weekInfo[weekId]) return notFound()
