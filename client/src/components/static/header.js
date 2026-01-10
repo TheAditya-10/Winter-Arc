@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '../ui/button';
 
 const Header = ({ isRegistered }) => {
@@ -32,7 +33,7 @@ const Header = ({ isRegistered }) => {
         <div className='flex justify-around items-center'>
 
           <Link href="/">
-            <img className='h-12' src="/MatrixLogo.svg" />
+            <Image className='h-12' src="/MatrixLogo.svg" alt="Matrix Logo" width={48} height={48} />
           </Link>
 
           <div className='flex justify-between w-[50%]'>
@@ -54,7 +55,7 @@ const Header = ({ isRegistered }) => {
             {/* Logo */}
             <div className="flex-shrink-0">
 
-              <img className='h-8' src="/MatrixLogo.svg" />
+              <Image className='h-8' src="/MatrixLogo.svg" alt="Matrix Logo" width={32} height={32} />
             </div>
 
             {/* Hamburger Button - Visible only on mobile */}

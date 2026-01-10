@@ -31,8 +31,8 @@ export default async function Page() {
             ]
         },
         "week-two": {
-            dayNumber: 9,
-            state: getWeekState(9),
+            dayNumber: 11,
+            state: getWeekState(11),
             winners: []
         },
         "week-three": {

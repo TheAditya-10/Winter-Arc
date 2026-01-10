@@ -34,7 +34,9 @@ export const getAllUserProfile = async () => {
 
     const { data, error } = await supabase
         .from("users")
-        .select(`id, name, username, avatarUrl:avatar_url, points, weeklyPoints:weekly_points`)
+        .select(`id, name, username, avatarUrl:avatar_url, points`)
+        .order("points", {ascending: false})
+        .gt("daily_task_completed_count", 0)
 
     return { data, error }
 }

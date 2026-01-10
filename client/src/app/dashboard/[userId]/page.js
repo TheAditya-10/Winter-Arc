@@ -111,15 +111,15 @@ const MilestoneCards = ({ userInfo }) => {
             <div key={i} className="flex max-w-[32rem] w-full px-2 gap-4">
                 <div className="relative">
                     <Image src={ms.image} width={60} height={0} className="h-auto @max-sm/main:w-12" alt="image" />
-                    <span className="absolute bottom-2 text-white @sm/main:text-xs text-[0.6rem] w-full text-center font-bold">Level {ms.level}</span>
+                    <span className="absolute bottom-2 text-white @sm/main:text-xs text-[0.6rem] w-full text-center font-bold">{!!ms.reward && `Level ${ms.level}`}</span>
                 </div>
                 <div className="flex flex-1 flex-col gap-2 justify-center">
                     <div className="flex justify-between">
                         <h3 className="font-semibold @max-sm/main:text-sm">{ms.title}</h3>
-                        <span className="text-muted-foreground text-sm">{ms.current} / {ms.target}</span>
+                        <span className="text-muted-foreground text-sm">{ms.current} {!!ms.target && `/ ${ms.target}`}</span>
                     </div>
                     <div className="w-full h-2 bg-[#4B4B4B] rounded-full overflow-hidden"><div className="h-full bg-[#FFC800] rounded-full" style={{ width: `${ms.current * 100 / ms.target}%` }} /></div>
-                    <div className="text-[#FFC800] text-sm font-medium text-right">Earn {ms.reward} XP</div>
+                    <div className="text-[#FFC800] text-sm font-medium text-right">{!!ms.reward ? `Earn ${ms.reward} XP` : "completed"}</div>
                 </div>
             </div>
             )

@@ -10,6 +10,29 @@ export default async function Page() {
 
     const weekId = ["week-one", "week-two", "week-three", "week-four"]
 
+    const weekConfig = {
+        "week-one": {
+            title: "Winter Arc: Build in 60",
+            description: "Create anything meaningful in just 60 minutes that improves learning, productivity, creativity, or personal efficiency - based on your own experience or interest.",
+            focusPoint: "This challenge focuses on execution under constraints, not perfection."
+        },
+        "week-two": {
+            title: "Winter Arc: Glow-Up Anything",
+            description: "Take something ordinary, overlooked, or imperfect and transform it into a better, clearer, more effective version.",
+            focusPoint: "Winter is the season of refinement. This is about removing clutter, adding clarity, and sharpening intent."
+        },
+        "week-three": {
+            title: "Weekly Challenge 3",
+            description: "Challenge details coming soon...",
+            focusPoint: "Stay tuned for more exciting challenges!"
+        },
+        "week-four": {
+            title: "Weekly Challenge 4",
+            description: "Challenge details coming soon...",
+            focusPoint: "Stay tuned for more exciting challenges!"
+        }
+    }
+
     // const weeklyTaskStartTime = ["04", "11", "18", "25"].map((dayNumber) => new TZDate(new Date(Date.UTC(2026, 0, dayNumber, -5, -30, 0)), "Asia/Calcutta").getTime())
 
     const weeklyTaskStartTime = ["04", "11", "18", "25"].map((dayNumber) => {
@@ -80,15 +103,15 @@ export default async function Page() {
                         </div>
                     </div>
                     <div className="flex flex-1 flex-col">
-                        <h2 className="text-center text-[#3FD7FA] my-4">Winter Arc: Build in 60</h2>
+                        <h2 className="text-center text-[#3FD7FA] my-4">{weekConfig[weekId[currentWeekInfo.index]].title}</h2>
                         <div className="text-left">
-                            <h3 className="font-medium text-sm mb-1">Challenge Idea</h3>
+                            <h3 className="font-medium text-sm mb-1">✨ Core Concept</h3>
                             <ul className="text-sm list-disc font-normal pl-4">
                                 <li>
-                                    Create anything meaningful in just 60 minutes that improves learning, productivity, creativity, or personal efficiency - based on your own experience or interest.
+                                    {weekConfig[weekId[currentWeekInfo.index]].description}
                                 </li>
                                 <li>
-                                    This challenge focuses on execution under constraints, not perfection.
+                                    {weekConfig[weekId[currentWeekInfo.index]].focusPoint}
                                 </li>
                             </ul>
                         </div>
@@ -134,24 +157,52 @@ export default async function Page() {
 
             {/* Submission Guidline */}
             <div className="">
-                <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">Submission Requirements</h2>
+                <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">📤 Submission Requirements</h2>
                 <div className="w-76 sm:w-96 rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                     <div>
                         <h4 className="font-medium flex items-start gap-2 mb-2 mt-1">
-                            <Image src={"/challenge-detail/question-mark.svg"} width={20} height={20} alt="what to do" />
+                            <Image src="/challenge-detail/question-mark.svg" width={20} height={20} alt="what to do" />
                             <span>Participants must submit all of the following:</span>
                         </h4>
-                        <p className="text-sm font-semibold">Detailed Description</p>
-                        <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
-                            <li>What did you build?</li>
-                            <li>What problem does it solve?</li>
-                            <li>Who is it useful for?</li>
-                            <li>Tools/platforms used</li>
-                            <li>Exact time taken (try to complete in an Hour)</li>
-                            <li>Proof of Work (Media) - Screenshots / photos / screen recording / short demo video</li>
-                        </ul>
-                        <p className="text-sm my-2">Upload all files to Google Drive - and Make them Public</p>
-                        <p className="text-sm mb-2 font-semibold">All the Requierments are mandatory.</p>
+                        {currentWeekInfo?.index === 1 ? (
+                            <>
+                                <p className="text-sm font-semibold mb-2">Each submission must include:</p>
+                                <div className="space-y-2">
+                                    <div>
+                                        <p className="text-sm font-semibold">1️⃣ BEFORE</p>
+                                        <p className="text-xs pl-2">Screenshot / photo / screen recording showing the original state clearly</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold">2️⃣ AFTER</p>
+                                        <p className="text-xs pl-2">Screenshot / photo / screen recording showing the improved version clearly</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold">3️⃣ DETAILED EXPLANATION (Text)</p>
+                                        <ul className="list-disc pl-5 gap-1 text-xs flex flex-col">
+                                            <li>What you chose to glow-up</li>
+                                            <li>What problems existed earlier</li>
+                                            <li>What changes you made</li>
+                                            <li>Why the new version is better</li>
+                                            <li>Tools/platforms used (if any)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <p className="text-sm font-semibold">Detailed Description</p>
+                                <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                    <li>What did you build?</li>
+                                    <li>What problem does it solve?</li>
+                                    <li>Who is it useful for?</li>
+                                    <li>Tools/platforms used</li>
+                                    <li>Exact time taken (try to complete in an Hour)</li>
+                                    <li>Proof of Work (Media) - Screenshots / photos / screen recording / short demo video</li>
+                                </ul>
+                            </>
+                        )}
+                        <p className="text-sm my-2">📎 Upload all media to Google Drive and make them Public</p>
+                        <p className="text-sm mb-2 font-semibold">❗ All requirements are mandatory.</p>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 
 const Footer = () => {
   return (
@@ -53,16 +54,16 @@ const Footer = () => {
           <div className='flex mt-3 justify-center gap-7'>
 
             <a href='https://x.com/MatrixJec'>
-              <img className='h-6' src="/twitter.svg" />
+              <Image className='h-6' src="/twitter.svg" alt="Twitter" width={24} height={24} />
             </a>
             <a href='https://github.com/Matrix-JEC'>
-              <img className='h-6' src="/github.svg" />
+              <Image className='h-6' src="/github.svg" alt="GitHub" width={24} height={24} />
             </a>
             <a href='https://www.linkedin.com/company/matrix-jec/'>
-              <img className='h-6' src="/linkedin.svg" />
+              <Image className='h-6' src="/linkedin.svg" alt="LinkedIn" width={24} height={24} />
             </a>
             <a href='https://www.instagram.com/matrix.jec/'>
-              <img className='h-6' src="/insta.svg" />
+              <Image className='h-6' src="/insta.svg" alt="Instagram" width={24} height={24} />
             </a>
           </div>
 
