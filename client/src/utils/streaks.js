@@ -143,7 +143,7 @@ function updateStreak(userInfo, increment = true) {
 
 function checkForBonus({ streakCount, dailyTaskCompletedCount, streakMilestoneLevel, taskMilestoneLevel, referralCount, referralMilestoneLevel }) {
     const streakMilestone = { target: [7, 14, 21, 28], reward: [200, 400, 600, 800] }
-    const taskMilestone = { target: [10, 20, 30, 40], reward: [100, 200, 300, 400] }
+    const taskMilestone = { target: [10, 20, 30, 50], reward: [100, 200, 300, 400] }
     const referralMilestone = { target: [1, 3, 5], reward: [100, 200, 300] }
 
     let messages = { task: [], streak: [] }
@@ -153,13 +153,13 @@ function checkForBonus({ streakCount, dailyTaskCompletedCount, streakMilestoneLe
     if (streakCount && streakMilestoneLevel < 4 && streakCount >= streakMilestone.target[streakMilestoneLevel]) {
         userMilestoneInfo.streak_milestone_level = streakMilestoneLevel + 1;
         bonusPoints += streakMilestone.reward[streakMilestoneLevel];
-        messages.streak.push({ text: `Milestone: ${streakCount} day streak completed.`, highlight: `+${streakMilestone.reward[streakMilestoneLevel]} XP BONUS` })
+        messages.streak.push({ text: `Milestone: ${streakMilestone.target[streakMilestoneLevel]} day streak completed.`, highlight: `+${streakMilestone.reward[streakMilestoneLevel]} XP BONUS` })
     }
 
     if (dailyTaskCompletedCount && taskMilestoneLevel < 4 && dailyTaskCompletedCount >= taskMilestone.target[taskMilestoneLevel]) {
         userMilestoneInfo.task_milestone_level = taskMilestoneLevel + 1;
         bonusPoints += taskMilestone.reward[taskMilestoneLevel];
-        messages.task.push({ text: `Milestone: ${dailyTaskCompletedCount} daily task completed.`, highlight: `+${taskMilestone.reward[taskMilestoneLevel]} XP BONUS` })
+        messages.task.push({ text: `Milestone: ${taskMilestone.target[taskMilestoneLevel]} daily task completed.`, highlight: `+${taskMilestone.reward[taskMilestoneLevel]} XP BONUS` })
     }
 
     if (referralCount && referralMilestoneLevel < 3 && referralCount >= referralMilestone.target[referralMilestoneLevel]) {

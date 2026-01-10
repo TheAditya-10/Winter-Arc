@@ -128,7 +128,7 @@ export async function evaluateSubmission(formData, task, submissionId) {
                 newUserInfo.daily_task_completed_count = userInfo.dailyTaskCompletedCount + 1;
 
                 const { bonusPoints, messages, userMilestoneInfo } = checkForBonus({
-                    streakCount: newUserInfo?.streak_count || 0,
+                    streakCount: newUserInfo?.streak_count || userInfo.streakCount || 0,
                     dailyTaskCompletedCount: userInfo?.dailyTaskCompletedCount + 1,
                     streakMilestoneLevel: userInfo?.streakMilestoneLevel || 0,
                     taskMilestoneLevel: userInfo?.taskMilestoneLevel || 0
@@ -340,7 +340,7 @@ export async function checkStreak() {
                     response = { state: "reset" }
                     messages.streak = [
                         { text: "You've missed a day", highlight: "-50 XP" },
-                        { text: "Previous Streak", highlight: `${initialStats.streakCount} Day` },
+                        { text: "Previous Streak", highlight: `${userInfo.streakCount} Day` },
                         { text: "Current Streak", highlight: `0 Day` },
                     ]
                 }
