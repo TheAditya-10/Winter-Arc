@@ -74,7 +74,7 @@ export default async function Page({ params, searchParams }) {
 
 const MilestoneCards = ({ userInfo }) => {
     const streakMilestone = { target: [7, 14, 21, 28], reward: [200, 400, 600, 800] }
-    const taskMilestone = { target: [10, 20, 30, 40], reward: [100, 200, 300, 400] }
+    const taskMilestone = { target: [10, 20, 30, 50], reward: [100, 200, 300, 400] }
     const referralMilestone = { target: [1, 3, 5], reward: [100, 200, 300] }
 
     const milestones = [

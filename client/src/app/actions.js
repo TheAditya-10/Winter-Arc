@@ -330,8 +330,8 @@ export async function checkStreak() {
                 if (newUserInfo.streak_freeze_count !== undefined) {
                     response = { state: "freeze" }
                     messages.streak = [
-                        { text: "Streak Freeze Left:", highlight: `${userStats.streakFreezeCount}` },
-                        { text: "Current Streak", highlight: `${userStats.streakCount} Day` },
+                        { text: "Streak Freeze Left:", highlight: `${userInfo.streakFreezeCount}` },
+                        { text: "Current Streak", highlight: `${userInfo.streakCount} Day` },
                     ]
                 }
 
