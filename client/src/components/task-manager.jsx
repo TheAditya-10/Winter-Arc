@@ -48,17 +48,31 @@ function TaskManager({ task, isTech }) {
     })
 
     const uploadFile = async (file, uploadConfig) => {
-        const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`
+        let retries = 0
+        while (retries < 3) {
+            retries++
+            try {
+                const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`
 
-        const formData = new FormData()
-        formData.append("file", file)
-        Object.keys(uploadConfig).map(key => formData.append(key, uploadConfig[key]))
+                const formData = new FormData()
+                formData.append("file", file)
+                Object.keys(uploadConfig).map(key => formData.append(key, uploadConfig[key]))
 
-        const response = await fetch(url, {
-            method: "POST",
-            body: formData
-        });
-        return await response.json();
+                const response = await fetch(url, {
+                    method: "POST",
+                    body: formData
+                });
+                return await response.json();
+            } catch (error) {
+                console.error("Error while uploading image: ", error)
+
+                if (retries == 3) throw new Error("Failed to load image.")
+
+                const loader = toast.loading("This may take time")
+                await new Promise((res) => setTimeout(res, 1000*retries*(2**retries) + Math.round(Math.random()*1000)))
+                toast.dismiss(loader)
+            }
+        }
     }
 
 
@@ -171,7 +185,7 @@ function TaskManager({ task, isTech }) {
                 messages={submissionInfo.messages}
                 aiFeedback={submissionInfo.feedback}
                 rejected={rejected}
-                redirectUrl={isTech == "true" ? `/share/${submissionInfo.id}`: "/dashboard/me"} />
+                redirectUrl={isTech == "true" ? `/share/${submissionInfo.id}` : "/dashboard/me"} />
         </div>
     )
 }
