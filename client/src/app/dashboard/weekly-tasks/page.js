@@ -138,17 +138,17 @@ export default async function Page() {
             </div>
 
             {/* Prizes */}
-            <div className="">
+            <div className="max-w-[30rem] w-full">
                 <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">Prizes</h2>
-                <div className="w-76 sm:w-96 rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+                <div className="rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                     <div>
-                        <ul className=" flex flex-col font-semibold gap-2">
+                        <ul className="w-fit mx-auto flex flex-col font-semibold gap-2">
                             <li className="flex">🥇 Top Submission:
-                                <span className="w-fit text-[#FFC800] pl-4">Earbuds</span>
+                                <span className="w-fit text-[#FFC800] pl-2">Earbuds</span>
                             </li>
                             <li className="flex">
                                 <span className="w-fit">🥈 Runner-ups: </span>
-                                <span className="w-fit text-[#FFC800] pl-4">Relevant Book / <br /> Learning Resources</span>
+                                <span className="w-fit text-[#FFC800] pl-2">Relevant Book / <br /> Learning Resources</span>
                             </li>
                         </ul>
                     </div>
@@ -156,9 +156,9 @@ export default async function Page() {
             </div>
 
             {/* Submission Guidline */}
-            <div className="">
+            <div className="max-w-[30rem] w-full">
                 <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">📤 Submission Requirements</h2>
-                <div className="w-76 sm:w-96 rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+                <div className=" rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                     <div>
                         <h4 className="font-medium flex items-start gap-2 mb-2 mt-1">
                             <Image src="/challenge-detail/question-mark.svg" width={20} height={20} alt="what to do" />
@@ -208,9 +208,9 @@ export default async function Page() {
             </div>
 
             {/* Judging Criteria */}
-            <div className="">
+            <div className="max-w-[30rem] w-full">
                 <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">Judging Criteria</h2>
-                <div className="w-76 sm:w-96 rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+                <div className=" rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                     <div>
                         <h4 className="font-medium flex items-start gap-2 mb-2 mt-1">
                             <Image src={"/challenge-detail/question-mark.svg"} width={20} height={20} alt="what to do" />
@@ -228,9 +228,9 @@ export default async function Page() {
             </div>
 
             {/* Suggestions */}
-            <div className="">
+            <div className="max-w-[30rem] w-full">
                 <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">Suggestions</h2>
-                <div className="w-76 sm:w-96 rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+                <div className=" rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                     <div>
                         <h4 className="font-medium flex items-start gap-2 mb-2 mt-1">
                             <Image src={"/challenge-detail/question-mark.svg"} width={20} height={20} alt="what to do" />
