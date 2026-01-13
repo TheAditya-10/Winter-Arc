@@ -25,9 +25,9 @@ export default async function Page() {
             dayNumber: 4,
             state: getWeekState(4),
             winners: [
-                // "a308a296-8d9e-496c-9c5f-977ea135e02f",
-                // "b181d4dc-c2d6-4e21-aea7-d64427aa4ea1",
-                // "6a17ad75-26df-4b54-8415-b5e373ab3921",
+                "5ef121a2-e8ff-4bfd-9350-e14d4a915877", // 1st
+                "ff368b6b-c327-4756-a32a-62c996ab2640", // 2nd
+                "3134444f-c59e-4220-b7e6-21a95ee34c95", // 3rd
             ]
         },
         "week-two": {
