@@ -12,7 +12,7 @@ const registerFormSchema = z.object({
 })
 
 const submitFormSchema = z.object({
-    description: z.string().min(20, "minimum 20 characters are required.").max(500, "maximum 500 characters are allowed."),
+    description: z.string().min(20, "minimum 20 characters are required.").max(800, "maximum 800 characters are allowed."),
     imageFile: z.union([
         z.object({ type: z.enum(['image/jpeg', 'image/png'], "Only .png and .jpeg files are accepted."), size: z.number().int().gt(0).lt(1024 * 1024 * 8, "file size should be less than 6MB") }),
         z.file().max(1024 * 1024 * 8, "file size should be less than 6MB").mime(['image/jpeg', 'image/png'], "Only .png and .jpeg files are accepted.")

@@ -49,7 +49,7 @@ function TaskManager({ task, isTech }) {
 
     const uploadFile = async (file, uploadConfig) => {
         let retries = 0
-        while (retries < 3) {
+        while (retries < 4) {
             retries++
             try {
                 const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`
@@ -153,7 +153,7 @@ function TaskManager({ task, isTech }) {
                                                 className="min-h-24 resize-none"
                                             />
                                         </FormControl>
-                                        <FormDescription>Share your todays work in detail.</FormDescription>
+                                        <FormDescription className={"flex w-full justify-between"}><span>Share your todays work in detail.</span><span className={field.value.length > 800 && "font-semibold text-destructive"}>{field.value.length}/800</span></FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
