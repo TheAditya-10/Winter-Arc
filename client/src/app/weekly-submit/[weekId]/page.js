@@ -15,7 +15,7 @@ export default async function Page({ params }) {
     const weekInfo = {
         "week-one": { number: 1, title: "Winter Arc: Build in 60", dayNumber: "04" },
         "week-two": { number: 2, title: "Winter Arc: Glow-up Anything", dayNumber: "11" },
-        "week-three": { number: 3, title: "Weekly Challenge 3", dayNumber: "18" },
+        "week-three": { number: 3, title: "Winter Arc: Icebreak - The Unlearn Task", dayNumber: "18" },
         "week-four": { number: 4, title: "Weekly Challenge 4", dayNumber: "25" },
     }
 
