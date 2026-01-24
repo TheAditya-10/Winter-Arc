@@ -112,7 +112,7 @@ export default async function Page({ params }) {
                                             <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
                                                 <li>Fitness myths</li>
                                                 <li>Sleep misconceptions</li>
-                                                <li>Productivity "hacks" that don&apos;t work</li>
+                                                <li>Productivity hacks that don&apos;t work</li>
                                             </ul>
                                         </div>
                                         <div className="pl-3 @sm/main:col-span-2">
