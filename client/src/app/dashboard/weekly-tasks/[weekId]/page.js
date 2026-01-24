@@ -49,6 +49,11 @@ export default async function Page({ params }) {
             title: "🧊 Icebreak - The Unlearn Task",
             subtitle: "Break what no longer serves. Keep what survives the cold.",
             content: "week-three"
+        },
+        "week-four": {
+            title: "🔥 THE WINTER MANIFESTO",
+            subtitle: "When winter ends, you don't go back the same.",
+            content: "week-four"
         }
     }
 
@@ -68,7 +73,151 @@ export default async function Page({ params }) {
                     <div className="mb-10 mx-auto w-76 @sm/main:w-96 @lg/main:w-[32rem] @2xl/main:w-[40rem] rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                         <h3 className="font-semibold text-center text-lg mb-1">❄️ Challenge Details</h3>
                         
-                        {weekId === "week-three" ? (
+                        {weekId === "week-four" ? (
+                            <div>
+                                <div className="text-left mb-3">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">🧠 Core Idea</h3>
+                                    <p className="text-sm mb-2">All previous weeks were about:</p>
+                                    <ul className="list-none pl-3 gap-1 text-sm flex flex-col mb-2">
+                                        <li>❄️ Building</li>
+                                        <li>❄️ Refining</li>
+                                        <li>❄️ Unlearning</li>
+                                    </ul>
+                                    <p className="text-sm mb-2 font-semibold">Now comes ownership.</p>
+                                    <p className="text-sm mb-2">
+                                        In <span className="text-[#3FD7FA] font-semibold">The Winter Manifesto</span>, participants must create one definitive personal declaration that captures:
+                                    </p>
+                                    <ul className="list-disc pl-5 gap-1 text-sm flex flex-col mb-2">
+                                        <li>What they discovered during Winter Arc</li>
+                                        <li>What they are leaving behind</li>
+                                        <li>What they are committing to next</li>
+                                    </ul>
+                                    <p className="text-sm mb-1">This is not motivation.</p>
+                                    <p className="text-sm italic text-[#3FD7FA] font-semibold">This is decision + direction + declaration.</p>
+                                </div>
+
+                                <div className="text-left mb-3">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">❄️ What Is a "Winter Manifesto"?</h3>
+                                    <p className="text-sm mb-2">A clear, structured, personal document or artifact that defines:</p>
+                                    <ul className="list-none pl-3 gap-1 text-sm flex flex-col mb-2">
+                                        <li>❄️ What ends with this winter</li>
+                                        <li>🔥 What begins after it</li>
+                                        <li>🧭 How they will move forward</li>
+                                    </ul>
+                                    <p className="text-sm mb-2 font-semibold">It can be:</p>
+                                    <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                        <li>A written manifesto</li>
+                                        <li>A visual declaration</li>
+                                        <li>A video statement</li>
+                                        <li>A roadmap + ruleset</li>
+                                        <li>A personal contract</li>
+                                    </ul>
+                                </div>
+
+                                <div className="text-left mb-3">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">🧊 What Can Participants Include? (Flexible but Deep)</h3>
+                                    <div className="space-y-3">
+                                        <div className="pl-3">
+                                            <h2 className="font-medium flex items-center mb-2 mt-1 text-[#3FD7FA]">🧠 Reflection</h2>
+                                            <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                                <li>Key lessons from Winter Arc</li>
+                                                <li>One truth they accepted</li>
+                                                <li>One illusion they dropped</li>
+                                            </ul>
+                                        </div>
+                                        <div className="pl-3">
+                                            <h2 className="font-medium flex items-center mb-2 mt-1 text-[#3FD7FA]">🧭 Direction</h2>
+                                            <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                                <li>Focus area for next 3–6 months</li>
+                                                <li>Skills / habits they&apos;ll prioritise</li>
+                                                <li>Distractions they&apos;ll eliminate</li>
+                                            </ul>
+                                        </div>
+                                        <div className="pl-3">
+                                            <h2 className="font-medium flex items-center mb-2 mt-1 text-[#3FD7FA]">🔥 Commitment</h2>
+                                            <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                                <li>Non-negotiables</li>
+                                                <li>Rules they&apos;ll live by</li>
+                                                <li>Standards they set for themselves</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <p className="text-sm mt-3 text-[#3FD7FA] font-medium">👉 This is about identity, not output.</p>
+                                </div>
+
+                                <div className="text-left mb-2">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">📜 Rules (Final Week – Strict)</h3>
+                                    <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                        <li>Submission must be original & personal</li>
+                                        <li>No generic quotes or copied templates</li>
+                                        <li>Must reflect Winter Arc journey</li>
+                                        <li>Can include media, but clarity &gt; aesthetics</li>
+                                        <li>AI tools allowed only for structure, not substance</li>
+                                    </ul>
+                                </div>
+
+                                <div className="text-left mb-2">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">📤 Submission Guidelines (Mandatory)</h3>
+                                    <p className="text-sm mb-2 font-semibold">Each submission must include:</p>
+                                    <div className="space-y-2">
+                                        <div>
+                                            <p className="text-sm font-semibold">1️⃣ THE MANIFESTO</p>
+                                            <p className="text-xs pl-2">Document / visual / video / hybrid</p>
+                                            <p className="text-xs pl-2">Clear sections & structure</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold">2️⃣ EXPLANATION (Text)</p>
+                                            <p className="text-xs pl-2">Why you wrote it this way</p>
+                                            <p className="text-xs pl-2">What changed in you during Winter Arc</p>
+                                            <p className="text-xs pl-2">How this manifesto will guide you next</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold">3️⃣ PROOF / MEDIA</p>
+                                            <p className="text-xs pl-2">Screenshots / document / video</p>
+                                            <p className="text-xs pl-2">Uploaded to Google Drive</p>
+                                            <p className="text-xs pl-2">Drive link pasted in submission</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="text-left mb-2">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">💡 Suggestions (Optional)</h3>
+                                    <p className="text-sm mb-2">Participants may use:</p>
+                                    <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                        <li>ChatGPT / Perplexity to structure thoughts</li>
+                                        <li>Notion / Docs / Canva</li>
+                                        <li>Pen & paper → digital</li>
+                                    </ul>
+                                </div>
+
+                                <div className="text-left mb-2">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">🏆 Judging Criteria (Manual – Finale Level)</h3>
+                                    <p className="text-sm mb-2">Judged by MATRIX authorities on:</p>
+                                    <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                        <li>Depth & honesty</li>
+                                        <li>Clarity of direction</li>
+                                        <li>Internal consistency</li>
+                                        <li>Emotional & intellectual weight</li>
+                                        <li>Overall impact</li>
+                                    </ul>
+                                </div>
+
+                                <div className="text-left mb-2">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">🎁 Grand Finale Rewards</h3>
+                                    <ul className="list-none pl-3 gap-1 text-sm flex flex-col">
+                                        <li>🥇 Best Winter Manifesto → 🎧 Earbuds</li>
+                                        <li>🥈 Runner-ups → 📚 Premium domain-relevant books / resources</li>
+                                        <li>⭐ Special Mentions for authenticity & depth</li>
+                                    </ul>
+                                </div>
+
+                                <div className="text-center mt-4 p-3 bg-[#0a1929] rounded-lg border border-[#3FD7FA]">
+                                    <p className="text-sm italic text-[#3FD7FA] font-semibold">📌 Reminder:</p>
+                                    <p className="text-sm">This is not for applause.</p>
+                                    <p className="text-sm font-semibold">This is for alignment.</p>
+                                </div>
+                            </div>
+                        ) : weekId === "week-three" ? (
                             <div>
                                 <div className="text-left mb-3">
                                     <h3 className="font-medium flex items-center mb-2 mt-1">🧠 Core Idea</h3>
