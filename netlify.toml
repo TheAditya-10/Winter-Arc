@@ -1,0 +1,61 @@
+[build]
+  base = "client"
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+# Next.js plugin for Netlify
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Redirect rules
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Environment variables (add these in Netlify UI)
+# SENTRY_AUTH_TOKEN
+# CLERK_SECRET_KEY
+# NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+# SUPABASE_URL
+# SUPABASE_ANON_KEY
+# UPSTASH_REDIS_REST_URL
+# UPSTASH_REDIS_REST_TOKEN

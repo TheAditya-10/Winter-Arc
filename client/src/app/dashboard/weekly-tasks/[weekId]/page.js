@@ -44,6 +44,11 @@ export default async function Page({ params }) {
             title: "✨ Glow-Up Anything ✨",
             subtitle: "From Cold & Ordinary → Polished & Powerful",
             content: "week-two"
+        },
+        "week-three": {
+            title: "🧊 Icebreak - The Unlearn Task",
+            subtitle: "Break what no longer serves. Keep what survives the cold.",
+            content: "week-three"
         }
     }
 
@@ -62,8 +67,111 @@ export default async function Page({ params }) {
                 <div className="font-inter">
                     <div className="mb-10 mx-auto w-76 @sm/main:w-96 @lg/main:w-[32rem] @2xl/main:w-[40rem] rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                         <h3 className="font-semibold text-center text-lg mb-1">❄️ Challenge Details</h3>
+                        
+                        {weekId === "week-three" ? (
+                            <div>
+                                <div className="text-left mb-3">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">🧠 Core Idea</h3>
+                                    <p className="text-sm mb-2">Winter is not only about building - it is about letting go.</p>
+                                    <p className="text-sm mb-2">
+                                        In <span className="text-[#3FD7FA] font-semibold">Icebreak: The Unlearn Task</span>, participants must identify one belief, habit, method, or system they&apos;ve followed that is inefficient, outdated, or harmful, and replace it with a clearer approach.
+                                    </p>
+                                    <p className="text-sm italic">This challenge rewards awareness, honesty, and correction.</p>
+                                </div>
 
-                        {weekId === "week-two" ? (
+                                <div className="text-left mb-3">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">❄️ What Can You Unlearn?</h3>
+                                    <p className="text-sm mb-2 font-semibold">Anything that touches your life, work, or growth.</p>
+                                    <div className="grid grid-cols-1 gap-4 @sm/main:grid-cols-2">
+                                        <div className="pl-3">
+                                            <h2 className="font-medium flex items-center mb-2 mt-1 text-[#3FD7FA]">📚 Learning & Academics</h2>
+                                            <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                                <li>Ineffective study methods</li>
+                                                <li>Passive note-taking</li>
+                                                <li>Last-minute revision habits</li>
+                                            </ul>
+                                        </div>
+                                        <div className="pl-3">
+                                            <h2 className="font-medium flex items-center mb-2 mt-1 text-[#3FD7FA]">💼 Work & Skills</h2>
+                                            <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                                <li>Wrong coding practice</li>
+                                                <li>Poor project workflow</li>
+                                                <li>Shallow learning routines</li>
+                                            </ul>
+                                        </div>
+                                        <div className="pl-3">
+                                            <h2 className="font-medium flex items-center mb-2 mt-1 text-[#3FD7FA]">🎨 Content & Creativity</h2>
+                                            <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                                <li>Posting without strategy</li>
+                                                <li>Chasing trends blindly</li>
+                                                <li>Inconsistent branding habits</li>
+                                            </ul>
+                                        </div>
+                                        <div className="pl-3">
+                                            <h2 className="font-medium flex items-center mb-2 mt-1 text-[#3FD7FA]">🧠 Habits & Lifestyle</h2>
+                                            <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                                <li>Fitness myths</li>
+                                                <li>Sleep misconceptions</li>
+                                                <li>Productivity "hacks" that don&apos;t work</li>
+                                            </ul>
+                                        </div>
+                                        <div className="pl-3 @sm/main:col-span-2">
+                                            <h2 className="font-medium flex items-center mb-2 mt-1 text-[#3FD7FA]">🧰 Tools & Systems</h2>
+                                            <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                                <li>Misusing Notion / Google Drive</li>
+                                                <li>Overcomplicated trackers</li>
+                                                <li>Broken time-management systems</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <p className="text-sm mt-3 text-[#3FD7FA] font-medium">👉 If something is holding you back, it qualifies.</p>
+                                </div>
+
+                                <div className="text-left mb-2">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">🧊 Winter Arc Philosophy</h3>
+                                    <p className="text-sm mb-2">Ice preserves what is strong. Ice cracks what is weak.</p>
+                                    <p className="text-sm">This task is about breaking false foundations so real progress can begin.</p>
+                                </div>
+
+                                <div className="text-left mb-2">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">📜 Rules (Mandatory)</h3>
+                                    <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                        <li>Choose only ONE belief, habit, method, or system</li>
+                                        <li>It must be something you personally followed</li>
+                                        <li>Clearly explain why it was wrong or inefficient</li>
+                                        <li>Replacement must be practical and realistic</li>
+                                        <li>AI tools are allowed, but thinking must be original</li>
+                                        <li>Generic motivational content will not be evaluated</li>
+                                    </ul>
+                                </div>
+
+                                <div className="text-left mb-2">
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">📤 Submission Guidelines</h3>
+                                    <p className="text-sm mb-2 font-semibold">Each submission must include all four sections:</p>
+                                    <div className="space-y-2">
+                                        <div>
+                                            <p className="text-sm font-semibold">1️⃣ OLD BELIEF / HABIT</p>
+                                            <p className="text-xs pl-2">What were you following earlier? How long had you been doing it?</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold">2️⃣ WHY IT WAS WRONG</p>
+                                            <p className="text-xs pl-2">What problems did it create? What results were missing or negative?</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold">3️⃣ NEW APPROACH</p>
+                                            <p className="text-xs pl-2">What did you change? What is your new method, belief, or system?</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold">4️⃣ PROOF OR EXPLANATION</p>
+                                            <p className="text-xs pl-2">Screenshots, notes, visuals, or a structured explanation that shows the new approach is better</p>
+                                        </div>
+                                    </div>
+                                    <p className="text-sm mt-3">📎 Upload all screenshots / documents / visuals to Google Drive</p>
+                                    <p className="text-sm">Paste the Drive link in your submission description.</p>
+                                    <p className="text-sm mt-2 font-semibold">❗ Submissions without clear comparison will not be evaluated.</p>
+                                </div>
+                            </div>
+                        ) : weekId === "week-two" ? (
                             <div>
                                 <div className="text-left mb-3">
                                     <h3 className="font-medium flex items-center mb-2 mt-1">🧠 Core Idea</h3>

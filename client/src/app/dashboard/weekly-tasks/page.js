@@ -22,9 +22,9 @@ export default async function Page() {
             focusPoint: "Winter is the season of refinement. This is about removing clutter, adding clarity, and sharpening intent."
         },
         "week-three": {
-            title: "Weekly Challenge 3",
-            description: "Challenge details coming soon...",
-            focusPoint: "Stay tuned for more exciting challenges!"
+            title: "Winter Arc: Icebreak - The Unlearn Task",
+            description: "Identify one belief, habit, method, or system you've followed that is inefficient, outdated, or harmful, and replace it with a clearer approach.",
+            focusPoint: "Break what no longer serves. Keep what survives the cold."
         },
         "week-four": {
             title: "Weekly Challenge 4",
@@ -188,6 +188,30 @@ export default async function Page() {
                                     </div>
                                 </div>
                             </>
+                        ) : currentWeekInfo?.index === 2 ? (
+                            <>
+                                <p className="text-sm font-semibold mb-2">Each submission must include all four sections:</p>
+                                <div className="space-y-2">
+                                    <div>
+                                        <p className="text-sm font-semibold">1️⃣ OLD BELIEF / HABIT</p>
+                                        <p className="text-xs pl-2">What you followed earlier and how long you did it</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold">2️⃣ WHY IT WAS WRONG</p>
+                                        <p className="text-xs pl-2">Problems it created or results that were missing</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold">3️⃣ NEW APPROACH</p>
+                                        <p className="text-xs pl-2">Your replacement method, belief, or system</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold">4️⃣ PROOF OR EXPLANATION</p>
+                                        <p className="text-xs pl-2">Screenshots, notes, visuals, or a structured explanation</p>
+                                    </div>
+                                </div>
+                                <p className="text-sm my-2">📎 Upload all media to Google Drive and paste the link in your description</p>
+                                <p className="text-sm mb-2 font-semibold">❗ Submissions without clear comparison will not be evaluated.</p>
+                            </>
                         ) : (
                             <>
                                 <p className="text-sm font-semibold">Detailed Description</p>
@@ -201,8 +225,12 @@ export default async function Page() {
                                 </ul>
                             </>
                         )}
-                        <p className="text-sm my-2">📎 Upload all media to Google Drive and make them Public</p>
-                        <p className="text-sm mb-2 font-semibold">❗ All requirements are mandatory.</p>
+                        {currentWeekInfo?.index !== 2 && (
+                            <>
+                                <p className="text-sm my-2">📎 Upload all media to Google Drive and make them Public</p>
+                                <p className="text-sm mb-2 font-semibold">❗ All requirements are mandatory.</p>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
@@ -216,13 +244,23 @@ export default async function Page() {
                             <Image src={"/challenge-detail/question-mark.svg"} width={20} height={20} alt="what to do" />
                             <span>Judging will be done manually by MATRIX authorities based on:</span>
                         </h4>
-                        <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
-                            <li>Relevance & usefulness.</li>
-                            <li>Clarity of idea.</li>
-                            <li>Ececution quality.</li>
-                            <li>Creativity / originality.</li>
-                            <li>Effort & explanation quality.</li>
-                        </ul>
+                        {currentWeekInfo?.index === 2 ? (
+                            <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                <li>Depth of reflection.</li>
+                                <li>Clarity of reasoning.</li>
+                                <li>Practicality of the new approach.</li>
+                                <li>Relevance to real life.</li>
+                                <li>Effort & authenticity.</li>
+                            </ul>
+                        ) : (
+                            <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
+                                <li>Relevance & usefulness.</li>
+                                <li>Clarity of idea.</li>
+                                <li>Ececution quality.</li>
+                                <li>Creativity / originality.</li>
+                                <li>Effort & explanation quality.</li>
+                            </ul>
+                        )}
                     </div>
                 </div>
             </div>
@@ -249,4 +287,3 @@ export default async function Page() {
         </section>
     );
 }
-
