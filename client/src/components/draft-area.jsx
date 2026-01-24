@@ -70,7 +70,7 @@ function DraftArea({ taskInfo, challengeInfo, submissionInfo }) {
         setIsLoading(true)
         let loadToast = toast.loading("Publishing post on LinkedIn...")
         try {
-            const { error: formError, message: formMessage } = await shareOnLinkedIn(formData)
+            const { error: formError, message: formMessage, postId } = await shareOnLinkedIn(formData)
             if (formError) {
                 Object.entries(formError).map(([field, message]) => {
                     form.setError(field, { message })
@@ -79,7 +79,7 @@ function DraftArea({ taskInfo, challengeInfo, submissionInfo }) {
             }
 
             toast.success(formMessage)
-            window.location.assign("https://www.linkedin.com");
+            window.location.assign(`https://www.linkedin.com/feed/update/${postId}`);
         } catch (error) {
             toast.error(error.message)
             // toast.error("Some think went wrong. Please try again later!!")

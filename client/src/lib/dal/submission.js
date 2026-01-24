@@ -36,11 +36,11 @@ export const getSubmissionInfoById = async (submissionId) => {
 }
 
 
-export const insertWeeklySubmission = async (weeklySubmission) => {
+export const insertWeeklyNFinalSubmission = async (submission, type="weekly") => {
 
     const { error } = await supabase
-        .from('weekly_submissions')
-        .insert(weeklySubmission)
+        .from(`${type}_submissions`)
+        .insert(submission)
 
     return { error }
 }
@@ -50,6 +50,18 @@ export const getAllWeeklySubmissions = async () => {
     const { data, error } = await supabase
         .from('weekly_submissions')
         .select('id, user:users(id, name, username, avatarUrl:avatar_url), weekId:week_id, driveUrl:drive_url')
+    
+    return { data, error }
+}
+
+export const getFinalSubmissionByUserId = async (userId) => {
+    
+    const { data, error } = await supabase
+        .from('final_submissions')
+        .select('id, driveUrl:drive_url, description, score')
+        .eq("user_id", userId)
+        .limit(1)
+        .maybeSingle()
     
     return { data, error }
 }

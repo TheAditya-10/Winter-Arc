@@ -17,6 +17,7 @@ export default async function Page({ params }) {
         "week-two": { number: 2, title: "Winter Arc: Glow-up Anything", dayNumber: "11" },
         "week-three": { number: 3, title: "Winter Arc: Icebreak - The Unlearn Task", dayNumber: "18" },
         "week-four": { number: 4, title: "Weekly Challenge 4", dayNumber: "25" },
+        "final": { number: 5, title: "Final Submission", dayNumber: new Date().dayNumber}
     }
 
     if (!weekInfo[weekId]) return notFound()

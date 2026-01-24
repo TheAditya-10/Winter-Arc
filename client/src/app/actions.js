@@ -11,7 +11,7 @@ import { insertChallengeRegistration } from "@/lib/dal/challenge"
 import { getChallengesInfoCacheById } from "@/lib/dal/cache"
 import { getUserStatsById, insertUser, updateUserById, incrementReferralCountByUsername } from "@/lib/dal/user"
 import { getUserCred } from "@/lib/dal/creds"
-import { getSubmissionInfoById, insertSubmission, updateSubmissionById, insertWeeklySubmission } from "@/lib/dal/submission"
+import { getSubmissionInfoById, insertSubmission, updateSubmissionById, insertWeeklyNFinalSubmission } from "@/lib/dal/submission"
 import { redirect } from "next/navigation"
 import { isRegistered } from "@/utils/auth"
 import { genrateSignature } from "@/utils/cloud-storage"
@@ -292,9 +292,9 @@ export async function shareOnLinkedIn(formData) {
 
                 const { uploadUrl, asset: imageAsset } = await registerUploadInLinkedin(userCreds.linkedinId, userCreds.accessToken)
                 await uploadBinaryFile(imageUrl, uploadUrl, userCreds.accessToken);
-                await publishLinkedinPostWithImage(userCreds.accessToken, userCreds.linkedinId, imageAsset, textContent, "imageDescription", "imageTitle")
+                const postId = await publishLinkedinPostWithImage(userCreds.accessToken, userCreds.linkedinId, imageAsset, textContent, "imageDescription", "imageTitle")
 
-                return { message: "Linkedin Post is created!!" }
+                return { message: "Linkedin Post is created!!", postId }
             } catch (error) {
                 console.error(error);
                 // TODO: return error response.
@@ -385,9 +385,9 @@ export async function submitWeeklyTask(formData) {
             drive_url: formData.driveUrl,
             description: formData.description,
             user_id: userId,
-            week_id: formData.weekId
         }
-        const { error } = await insertWeeklySubmission(submissionInfo)
+        if(formData.weekId != "final") submissionInfo.week_id = formData.weekId
+        const { error } = await insertWeeklyNFinalSubmission(submissionInfo, "final")
 
         if (error) throw new Error(error.message)
 

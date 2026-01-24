@@ -47,7 +47,6 @@ function WeeklyFormSubmit({ weekTitle, weekNumber, weekId }) {
         setIsLoading(true)
         let loadToast = toast.loading("Uploading your weekly submission...")
         try {
-            // TODO: insert form data into database
             formData.weekId = weekId
             const { error, message } = await submitWeeklyTask(formData)
             
@@ -106,7 +105,7 @@ function WeeklyFormSubmit({ weekTitle, weekNumber, weekId }) {
                                         <FormControl>
                                             <Input
                                                 {...field}
-                                                placeholder="example: Learn basic of Javascript."
+                                                placeholder="Drive link must be public."
                                                 type={"url"}
                                             />
                                         </FormControl>

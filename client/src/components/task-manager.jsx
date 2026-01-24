@@ -66,7 +66,7 @@ function TaskManager({ task, isTech }) {
             } catch (error) {
                 console.error("Error while uploading image: ", error)
 
-                if (retries == 3) throw new Error("Failed to load image.")
+                if (retries >= 3) throw new Error("Failed to load image.")
 
                 const loader = toast.loading("This may take time")
                 await new Promise((res) => setTimeout(res, 1000*retries*(2**retries) + Math.round(Math.random()*1000)))
