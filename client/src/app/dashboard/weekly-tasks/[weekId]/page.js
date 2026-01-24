@@ -97,7 +97,7 @@ export default async function Page({ params }) {
                                 </div>
 
                                 <div className="text-left mb-3">
-                                    <h3 className="font-medium flex items-center mb-2 mt-1">❄️ What Is a "Winter Manifesto"?</h3>
+                                    <h3 className="font-medium flex items-center mb-2 mt-1">❄️ What Is a &quot;Winter Manifesto&quot;?</h3>
                                     <p className="text-sm mb-2">A clear, structured, personal document or artifact that defines:</p>
                                     <ul className="list-none pl-3 gap-1 text-sm flex flex-col mb-2">
                                         <li>❄️ What ends with this winter</li>

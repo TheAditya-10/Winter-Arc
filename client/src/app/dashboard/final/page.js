@@ -85,7 +85,7 @@ export default async function Page(params) {
                                             <li>Backend service / API</li>
                                             <li>Major DSA or system-design project</li>
                                         </ul>
-                                        <p className="text-xs italic pl-5">Examples: "Student productivity tracker", "Disease prediction system", "Portfolio website with backend"</p>
+                                        <p className="text-xs italic pl-5">Examples: &quot;Student productivity tracker&quot;, &quot;Disease prediction system&quot;, &quot;Portfolio website with backend&quot;</p>
                                     </div>
 
                                     <div className="pl-3">
@@ -97,7 +97,7 @@ export default async function Page(params) {
                                             <li>Content series + strategy</li>
                                             <li>Visual storytelling project</li>
                                         </ul>
-                                        <p className="text-xs italic pl-5">Examples: "Rebrand of a personal page", "UI case study for a real problem"</p>
+                                        <p className="text-xs italic pl-5">Examples: &quot;Rebrand of a personal page&quot;, &quot;UI case study for a real problem&quot;</p>
                                     </div>
 
                                     <div className="pl-3">
@@ -108,7 +108,7 @@ export default async function Page(params) {
                                             <li>Learning roadmap + resources</li>
                                             <li>Teaching module or notes system</li>
                                         </ul>
-                                        <p className="text-xs italic pl-5">Examples: "Operating Systems revision framework", "AI roadmap with applied projects"</p>
+                                        <p className="text-xs italic pl-5">Examples: &quot;Operating Systems revision framework&quot;, &quot;AI roadmap with applied projects&quot;</p>
                                     </div>
 
                                     <div className="pl-3">
@@ -119,7 +119,7 @@ export default async function Page(params) {
                                             <li>Time management system</li>
                                             <li>Knowledge management setup</li>
                                         </ul>
-                                        <p className="text-xs italic pl-5">Examples: "My 90-day execution system", "Distraction-free study workflow"</p>
+                                        <p className="text-xs italic pl-5">Examples: &quot;My 90-day execution system&quot;, &quot;Distraction-free study workflow&quot;</p>
                                     </div>
 
                                     <div className="pl-3">
@@ -129,7 +129,7 @@ export default async function Page(params) {
                                             <li>Content batch with analytics</li>
                                             <li>Personal brand storytelling project</li>
                                         </ul>
-                                        <p className="text-xs italic pl-5">Examples: "30-day content plan with metrics", "Niche-based creator blueprint"</p>
+                                        <p className="text-xs italic pl-5">Examples: &quot;30-day content plan with metrics&quot;, &quot;Niche-based creator blueprint&quot;</p>
                                     </div>
 
                                     <div className="pl-3">
@@ -139,7 +139,7 @@ export default async function Page(params) {
                                             <li>Workout + diet system</li>
                                             <li>Health tracking framework</li>
                                         </ul>
-                                        <p className="text-xs italic pl-5">Examples: "Beginner fitness blueprint", "Weight-gain or fat-loss system"</p>
+                                        <p className="text-xs italic pl-5">Examples: &quot;Beginner fitness blueprint&quot;, &quot;Weight-gain or fat-loss system&quot;</p>
                                     </div>
                                 </div>
                                 <p className="text-sm mt-3 text-[#3FD7FA] font-medium">👉 Any domain is allowed. If it represents your Winter Arc journey, it qualifies.</p>
