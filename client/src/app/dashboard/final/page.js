@@ -44,7 +44,7 @@ export default async function Page(params) {
                         
                         <div>
                             <div className="text-left mb-3">
-                                <h3 className="font-medium flex items-center mb-2 mt-1">🧠 Core Idea</h3>
+                                <h3 className="font-medium flex items-center mb-2 mt-1"></h3>
                                 <p className="text-sm mb-2">
                                     <span className="text-[#3FD7FA] font-semibold">The Arc Project</span> is the final and most important submission of Winter Arc.
                                 </p>
@@ -220,7 +220,7 @@ export default async function Page(params) {
 
                             <div className="text-left mb-2">
                                 <h3 className="font-medium flex items-center mb-2 mt-1">🏆 Judging Criteria (Grand Finale)</h3>
-                                <p className="text-sm mb-2">Judged manually by MATRIX authorities on:</p>
+                                <p className="text-sm mb-2">Extensive AI Judgement based on:</p>
                                 <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
                                     <li>Depth & effort</li>
                                     <li>Clarity of problem & solution</li>

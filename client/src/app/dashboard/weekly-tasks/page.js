@@ -105,7 +105,7 @@ export default async function Page() {
                     <div className="flex flex-1 flex-col">
                         <h2 className="text-center text-[#3FD7FA] my-4">{weekConfig[weekId[currentWeekInfo.index]].title}</h2>
                         <div className="text-left">
-                            <h3 className="font-medium text-sm mb-1">✨ Core Concept</h3>
+                            <h3 className="font-medium text-sm mb-1"></h3>
                             <ul className="text-sm list-disc font-normal pl-4">
                                 <li>
                                     {weekConfig[weekId[currentWeekInfo.index]].description}
