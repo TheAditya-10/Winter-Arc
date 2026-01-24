@@ -63,6 +63,11 @@ const data = {
       url: "/dashboard/weekly-result",
       icon: "/sidebar/leaderboard.svg",
     },
+    {
+      title: "Final Submission",
+      url: "/dashboard/final",
+      icon: "/sidebar/leaderboard.svg",
+    },
   ],
   navClouds: [
     {

@@ -22,6 +22,10 @@ const evaluateSubmissions = async (state) => {
                 {
                     type: 'text',
                     text: `task: \ntitle:${state.taskTitle}\nDescription:${state.taskDescription}\n\n\n\nchallenge: \ntitle:${state.challengeTitle}\nDescription:${state.challengeDescription}`
+                }, 
+                {
+                    type: 'text',
+                    text: `todays date: ${new Date().toUTCString()} (UTC)\n this date is given for refference to avoid problems from "LLM knowlege cutoff date".`
                 }
             ]
         },

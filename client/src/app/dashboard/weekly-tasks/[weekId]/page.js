@@ -62,7 +62,7 @@ export default async function Page({ params }) {
                 <div className="font-inter">
                     <div className="mb-10 mx-auto w-76 @sm/main:w-96 @lg/main:w-[32rem] @2xl/main:w-[40rem] rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                         <h3 className="font-semibold text-center text-lg mb-1">❄️ Challenge Details</h3>
-                        
+
                         {weekId === "week-two" ? (
                             <div>
                                 <div className="text-left mb-3">
