@@ -33,12 +33,20 @@ export default async function Page() {
         "week-two": {
             dayNumber: 11,
             state: getWeekState(11),
-            winners: []
+            winners: [
+                // "5ef121a2-e8ff-4bfd-9350-e14d4a915877", // 1st
+                // "ff368b6b-c327-4756-a32a-62c996ab2640", // 2nd
+                // "3134444f-c59e-4220-b7e6-21a95ee34c95", // 3rd
+            ]
         },
         "week-three": {
             dayNumber: 18,
             state: getWeekState(18),
-            winners: []
+            winners: [
+                // "5ef121a2-e8ff-4bfd-9350-e14d4a915877", // 1st
+                // "ff368b6b-c327-4756-a32a-62c996ab2640", // 2nd
+                // "3134444f-c59e-4220-b7e6-21a95ee34c95", // 3rd
+            ]
         },
         "week-four": {
             dayNumber: 25,
