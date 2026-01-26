@@ -1,35 +1,35 @@
 import React from 'react'
 import Link from 'next/link'
 
-const Person = ({img, name, position, github, linkedin, info}) => {
-  return (
-    <div className='pt-6 pb-6 px-6 bg-[#FFFFFF] rounded-4xl' >
-        <div className='flex justify-between'>
-        <div>
-            <img className='h-30 rounded-full' src={img}/>
-        </div>
+const Person = ({ img, name, position, github, linkedin, info }) => {
+    return (
+        <div className='pt-6 pb-6 px-6 bg-gradient-to-br from-[#1a1d35] to-[#0f1020] border-2 border-[#7689C9]/50 rounded-4xl shadow-xl' >
+            <div className='flex justify-between'>
+                <div>
+                    <img className='h-30 rounded-full border-2 border-[#7689C9]/30' src={img} />
+                </div>
 
-        <div className='flex flex-col justify-between'>
-            <div className='flex gap-2'>
-                <Link href={linkedin} ><img className='h-6' src="/red_linkedin.svg" /></Link>
-                <Link href={github} ><img className='h-6' src="/red_github.svg" /></Link>
-                
+                <div className='flex flex-col justify-between'>
+                    <div className='flex gap-2 justify-end'>
+                        <Link href={linkedin} ><img className='h-6' src="/red_linkedin.svg" /></Link>
+                        <Link href={github} ><img className='h-6' src="/red_github.svg" /></Link>
+
+                    </div>
+                    <div className='text-right'>
+                        <p className='text-white font-semibold text-lg'>{name}</p>
+                        <p className='text-[#8ACADE] text-sm'>{position}</p>
+                    </div>
+                </div>
+
             </div>
-            <div>
-                <p className='text-black font-semibold'>{name}</p>
-                <p className='text-black'>{position}</p>
-            </div>
+
+            <br />
+
+            <p className='text-gray-300 text-sm leading-relaxed'>{info}</p>
+
+
         </div>
-
-        </div>
-
-        <br/>
-
-        <p className='text-black'>{info}</p>
-
-
-    </div>
-  )
+    )
 }
 
 export default Person

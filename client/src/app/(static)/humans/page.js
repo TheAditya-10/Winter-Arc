@@ -3,125 +3,118 @@ import React from 'react'
 
 const page = () => {
 
-const humans = [
-  {
+  const mentor = {
     img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
+    name: "Mentor Name",
+    position: "Project Mentor",
     github: "https://github.com/TheVivekRajput002",
     linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  },
-  {
-    img: "/pfp.jpg",
-    name: "John Smith",
-    position: "CEO",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-  }
-]
+    info: "Guiding the team with wisdom and technical expertise to bring Winter Arc to life."
+  };
+
+  const committee = [
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Committe Lead",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
+    },
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Coordinator",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
+    },
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Organizer",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
+    }
+  ];
+
+  const tech = [
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Tech Lead",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+    },
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Developer",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+    },
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Developer",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+    }
+  ];
+
+  const studio = [
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Studio Lead",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+    },
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Designer",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+    },
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Editor",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+    }
+  ];
+
+  const management = [
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Manager",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+    },
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Manager",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+    },
+    {
+      img: "/pfp.jpg",
+      name: "John Smith",
+      position: "Manager",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+    }
+  ];
 
   return (
     <div className='max-md:mt-15 mt-35 mb-10 font-poppins'>
 
-{/* hero section  */}
+      {/* hero section  */}
       <div className='flex justify-between w-[80%] mx-auto max-md:flex-col '>
 
         <div className=' md:w-[60%]  pt-10'>
@@ -140,13 +133,84 @@ const humans = [
         </div>
       </div>
 
-      {/* <div className='md:mt-30 max-md:mt-15 max-lg:grid-cols-2 max-sm:grid-cols-1  grid grid-cols-3 gap-7 w-[75%] mx-auto'>
-        {
-          humans.map((humans,index) => (
-            <Person key={index} img={humans.img} name={humans.name} position={humans.position} github={humans.github} linkedin={humans.linkedin} info={humans.info} />
-          ))
-        }
-      </div> */}
+      {/* Mentor Section */}
+      <div className='sm:w-[75%] w-9/10 mx-auto mt-20 flex flex-col items-center'>
+        <h2 className='text-3xl font-bold text-[#8ACADE] mb-10 border-b border-[#7689C9]/30 pb-4 w-full'>Our Mentor</h2>
+        <div className='pt-10 pb-10 px-10 bg-gradient-to-br from-[#1a1d35] to-[#0f1020] border-2 border-[#7689C9]/50 rounded-4xl shadow-2xl max-w-2xl w-full transform hover:scale-105 transition-transform duration-300'>
+          <div className='flex flex-col items-center gap-6'>
+            <div className='relative'>
+              <div className='absolute -inset-2 bg-gradient-to-r from-[#8ACADE] to-[#7689C9] rounded-full blur opacity-30'></div>
+              <img className='h-40 w-40 rounded-full border-4 border-[#8ACADE]/30 object-cover relative z-10' src={mentor.img} alt={mentor.name} />
+            </div>
+
+            <div className='text-center space-y-2'>
+              <h3 className='text-3xl font-bold text-white'>{mentor.name}</h3>
+              <p className='text-[#8ACADE] text-xl font-medium tracking-wide'>{mentor.position}</p>
+            </div>
+
+            <div className='flex gap-4 mt-2'>
+              <a href={mentor.linkedin} target="_blank" rel="noopener noreferrer" className='hover:opacity-80 transition-opacity'>
+                <img className='h-8' src="/red_linkedin.svg" alt="LinkedIn" />
+              </a>
+              <a href={mentor.github} target="_blank" rel="noopener noreferrer" className='hover:opacity-80 transition-opacity'>
+                <img className='h-8' src="/red_github.svg" alt="GitHub" />
+              </a>
+            </div>
+
+            <p className='text-gray-300 text-lg leading-relaxed text-center max-w-lg mt-4 font-light italic'>
+              &quot;{mentor.info}&quot;
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Organizing Committee */}
+      <div className='sm:w-[75%] w-9/10 mx-auto mt-20'>
+        <h2 className='text-3xl font-bold text-[#8ACADE] mb-10 border-b border-[#7689C9]/30 pb-4'>Organizing Committee</h2>
+        <div className='max-lg:grid-cols-2 max-sm:grid-cols-1 grid grid-cols-3 gap-7'>
+          {
+            committee.map((person, index) => (
+              <Person key={index} img={person.img} name={person.name} position={person.position} github={person.github} linkedin={person.linkedin} info={person.info} />
+            ))
+          }
+        </div>
+      </div>
+
+      {/* Tech Team */}
+      <div className='sm:w-[75%] w-9/10 mx-auto mt-20'>
+        <h2 className='text-3xl font-bold text-[#8ACADE] mb-10 border-b border-[#7689C9]/30 pb-4'>Tech</h2>
+        <div className='max-lg:grid-cols-2 max-sm:grid-cols-1 grid grid-cols-3 gap-7'>
+          {
+            tech.map((person, index) => (
+              <Person key={index} img={person.img} name={person.name} position={person.position} github={person.github} linkedin={person.linkedin} />
+            ))
+          }
+        </div>
+      </div>
+
+      {/* Studio Team */}
+      <div className='sm:w-[75%] w-9/10 mx-auto mt-20'>
+        <h2 className='text-3xl font-bold text-[#8ACADE] mb-10 border-b border-[#7689C9]/30 pb-4'>Studio</h2>
+        <div className='max-lg:grid-cols-2 max-sm:grid-cols-1 grid grid-cols-3 gap-7'>
+          {
+            studio.map((person, index) => (
+              <Person key={index} img={person.img} name={person.name} position={person.position} github={person.github} linkedin={person.linkedin} />
+            ))
+          }
+        </div>
+      </div>
+
+      {/* Management Team */}
+      <div className='sm:w-[75%] w-9/10 mx-auto mt-20'>
+        <h2 className='text-3xl font-bold text-[#8ACADE] mb-10 border-b border-[#7689C9]/30 pb-4'>Management</h2>
+        <div className='max-lg:grid-cols-2 max-sm:grid-cols-1 grid grid-cols-3 gap-7'>
+          {
+            management.map((person, index) => (
+              <Person key={index} img={person.img} name={person.name} position={person.position} github={person.github} linkedin={person.linkedin} />
+            ))
+          }
+        </div>
+      </div>
 
 
     </div>
