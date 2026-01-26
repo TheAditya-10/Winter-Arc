@@ -76,7 +76,6 @@ export default async function Page({ params }) {
                         {weekId === "week-four" ? (
                             <div>
                                 <div className="text-left mb-3">
-                                    <h3 className="font-medium flex items-center mb-2 mt-1"></h3>
                                     <p className="text-sm mb-2">All previous weeks were about:</p>
                                     <ul className="list-none pl-3 gap-1 text-sm flex flex-col mb-2">
                                         <li>❄️ Building</li>
@@ -220,7 +219,6 @@ export default async function Page({ params }) {
                         ) : weekId === "week-three" ? (
                             <div>
                                 <div className="text-left mb-3">
-                                    <h3 className="font-medium flex items-center mb-2 mt-1"></h3>
                                     <p className="text-sm mb-2">Winter is not only about building - it is about letting go.</p>
                                     <p className="text-sm mb-2">
                                         In <span className="text-[#3FD7FA] font-semibold">Icebreak: The Unlearn Task</span>, participants must identify one belief, habit, method, or system they&apos;ve followed that is inefficient, outdated, or harmful, and replace it with a clearer approach.
@@ -323,7 +321,6 @@ export default async function Page({ params }) {
                         ) : weekId === "week-two" ? (
                             <div>
                                 <div className="text-left mb-3">
-                                    <h3 className="font-medium flex items-center mb-2 mt-1"></h3>
                                     <p className="text-sm mb-2">Winter is the season of refinement.</p>
                                     <p className="text-sm mb-2">
                                         In <span className="text-[#3FD7FA] font-semibold">Glow-Up Anything</span>, participants must take something ordinary, overlooked, or imperfect and transform it into a better, clearer, more effective version.

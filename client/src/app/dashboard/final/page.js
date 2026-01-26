@@ -44,7 +44,6 @@ export default async function Page(params) {
                         
                         <div>
                             <div className="text-left mb-3">
-                                <h3 className="font-medium flex items-center mb-2 mt-1"></h3>
                                 <p className="text-sm mb-2">
                                     <span className="text-[#3FD7FA] font-semibold">The Arc Project</span> is the final and most important submission of Winter Arc.
                                 </p>
