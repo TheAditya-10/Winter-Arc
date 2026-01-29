@@ -55,7 +55,7 @@ function WeeklyFormSubmit({ weekTitle, weekNumber, weekId }) {
             }
 
             toast.success(message)
-            router.push("/dashboard/weekly-tasks")
+            router.push(weekId == "final"? "/dashboard/final" : "/dashboard/weekly-tasks")
         } catch (error) {
             toast.error(error.message)
             // toast.error("Some think went wrong. Please try again later!!")
@@ -70,7 +70,7 @@ function WeeklyFormSubmit({ weekTitle, weekNumber, weekId }) {
             <Card className="w-full max-w-md max-sm:max-w-sm max-sm:py-4">
                 <CardHeader className={"max-sm:px-4"}>
                     <CardTitle className={"line-clamp-1"}>{weekTitle}</CardTitle>
-                    <CardDescription className="line-clamp-1">Weekly Challenge {weekNumber}</CardDescription>
+                    <CardDescription className="line-clamp-1">{weekNumber && `Weekly Challenge ${weekNumber}`}</CardDescription>
                     <CardAction>
                         <Button variant="link" onClick={() => router.back()}>Back</Button>
                     </CardAction>
