@@ -22,7 +22,7 @@ const page = () => {
       info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
     },
     {
-      img: "/pfp.jpg",
+      img: "/teams/vt.jpeg",
       name: "Vivek Tomar",
       position: "Co-Coordinator",
       github: " ",
@@ -30,55 +30,55 @@ const page = () => {
       info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
     },
     {
-      img: "/pfp.jpg",
+      img: "/teams/rf.jpg",
       name: "Rishika Fulwani",
       position: "Management Head",
       github: " ",
-      linkedin: " ",
+      linkedin: "https://www.linkedin.com/in/rishika-fulwani-11902b327/",
       info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
     },
     {
-      img: "/pfp.jpg",
+      img: "/teams/ss.jpg",
       name: "Sariska Shukla",
       position: "Editorial Head",
-      github: " ",
-      linkedin: " ",
+      github: "https://github.com/Sariska1455",
+      linkedin: "https://www.linkedin.com/in/sariska-shukla/",
       info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
     },
   ];
 
   const tech = [
     {
-      img: "/pfp.jpg",
+      img: "/teams/dg.jpg",
       name: "Deepesh Gupta",
       position: "Website Developer",
-      github: " ",
-      linkedin: " ",
+      github: "https://github.com/200Deepesh",
+      linkedin: "https://www.linkedin.com/in/200deepesh/",
     },
     {
-      img: "/pfp.jpg",
+      img: "/teams/sid.jpg",
       name: "Siddhant Sharma",
       position: "Development Operations",
-      github: " ",
-      linkedin: " ",
+      github: "https://github.com/siddhant385",
+      linkedin: "https://www.linkedin.com/in/sid385/",
     },
     {
-      img: "/pfp.jpg",
+      img: "/teams/vr.jpg",
       name: "Vivek Rajput",
       position: "Frontend Developer",
-      github: " ",
-      linkedin: " ",
+      github: "https://github.com/TheVivekRajput002",
+      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
     }
   ];
 
   const studio = [
     {
-      img: "/pfp.jpg",
+      img: "/team/aaknp.jpg",
       name: "Akansha Patel",
       position: "Studio Lead",
     },
     {
-      img: "/pfp.jpg",
+      img: "/team/addu.jpg",
       name: "Aaditya Patel",
       position: "Designer",
     }
@@ -86,27 +86,27 @@ const page = () => {
 
   const management = [
     {
-      img: "/pfp.jpg",
+      img: "/teams/dk.jpg",
       name: "Dhruv Kolare",
     },
     {
-      img: "/pfp.jpg",
+      img: "/teams/sl.jpg",
       name: "Samueal Lambert",
     },
     {
-      img: "/pfp.jpg",
+      img: "/team/ayank.jpg",
       name: "Ayan Khan",
     },
     {
-      img: "/pfp.jpg",
+      img: "/team/umat.jpg",
       name: "Uma Tiwari",
     },
     {
-      img: "/pfp.jpg",
+      img: "/team/prathma.jpg",
       name: "Prathma Dubey",
     },
     {
-      img: "/pfp.jpg",
+      img: "/team/ananya.jpg",
       name: "Ananya ",
     }
   ];
