@@ -71,13 +71,13 @@ export const leadearboardColumns = [
     {
         accessorKey: "points",
         header: () => <div className="w-full text-center">XP</div>,
-        cell: ({ row }) => (<div className="w-full flex justify-center items-center gap-1">{row.original.points || 0} <Image src="/dashboard/snow-flake.svg" alt="snow flake points" width={20} height={20}/></div>)
+        cell: ({ row }) => (<div className="w-full flex justify-center items-center gap-1">{row.original.points || 0} <Image src="/dashboard/snow-flake.svg" alt="snow flake points" width={20} height={20} /></div>)
     },
-    {
-        accessorKey: "weeklyPoints",
-        header: () => <div className="w-full text-center">WP</div>,
-        cell: ({ row }) => (<div className="w-full flex justify-center items-center gap-1">{row.original.weeklyPoints || 0} <Image src="/dashboard/snow-flake.svg" alt="snow flake points" width={20} height={20}/></div>)
-    },
+    // {
+    //     accessorKey: "weeklyPoints",
+    //     header: () => <div className="w-full text-center">WP</div>,
+    //     cell: ({ row }) => (<div className="w-full flex justify-center items-center gap-1">{row.original.weeklyPoints || 0} <Image src="/dashboard/snow-flake.svg" alt="snow flake points" width={20} height={20}/></div>)
+    // },
 ]
 
 
@@ -93,10 +93,10 @@ export function LeaderboardTable(
 
     const [data, setData] = React.useState(() => initialData)
     const [columnFilters, setColumnFilters] = React.useState([])
-    const [sorting, setSorting] = React.useState([{ id: "points", desc: true }])
+    // const [sorting, setSorting] = React.useState([{ id: "points", desc: true }])
     const [columnVisibility, setColumnVisibility] = React.useState({
         username: false, // hide in table but still accessible
-        weeklyPoints: false,
+        // weeklyPoints: false,
     })
 
     let youRow = null;
@@ -108,16 +108,16 @@ export function LeaderboardTable(
         state: {
             columnFilters,
             columnVisibility,
-            sorting
+            // sorting
         },
         getRowId: (row) => row.id.toString(),
         enableRowSelection: true,
         onColumnFiltersChange: setColumnFilters,
-        onSortingChange: setSorting,
+        // onSortingChange: setSorting,
         onColumnVisibilityChange: setColumnVisibility,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
-        getSortedRowModel: getSortedRowModel(),
+        // getSortedRowModel: getSortedRowModel(),
         getFacetedRowModel: getFacetedRowModel(),
         getFacetedUniqueValues: getFacetedUniqueValues(),
     })
@@ -125,7 +125,7 @@ export function LeaderboardTable(
 
     return (
         <div className="font-poppins relative flex flex-col gap-4 overflow-auto px-4 lg:px-6 @2xl/main:w-[42rem] @2xl/main:self-center pb-2">
-            <div className="flex items-center justify-between py-4 gap-2">
+            <div className="flex items-center justify-center py-4 gap-2">
                 <Input
                     placeholder="Search by username..."
                     value={(table.getColumn("username")?.getFilterValue()) ?? ""}
@@ -134,7 +134,7 @@ export function LeaderboardTable(
                     }
                     className="max-w-sm"
                 />
-                <ButtonGroup>
+                {/* <ButtonGroup>
                     <Button
                         variant={columnVisibility.weeklyPoints == undefined ? "ghost" : "secondary"}
                         onClick={() => {
@@ -148,7 +148,7 @@ export function LeaderboardTable(
                             setColumnVisibility({ username: false, points: false })
                         }}
                     >Weekly</Button>
-                </ButtonGroup>
+                </ButtonGroup> */}
             </div>
             <div className="flex flex-col-reverse gap-4">
                 <div className="rounded-lg h-fit relative overflow-y-auto">
@@ -195,19 +195,26 @@ export function LeaderboardTable(
                                         </div>
                                     )
                                 })}
-                                {youRow && (<div
-                                    className="sticky bottom-0 z-10 bg-[#205F94] text-white grid @sm/main:grid-cols-[80px_1fr_120px] grid-cols-[40px_1fr_80px] gap-1 px-1 py-1 items-center rounded-md mt-1"
-                                >
-                                    {youRow.getVisibleCells().map((cell) => {
-                                        return (
-                                            <div key={cell.id}>
-                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                            </div>
-                                        )
-                                    })}
+                                {!youRow
+                                    ? (<div
+                                        className="sticky bottom-0 z-10 bg-[#205F94] text-white text-center font-medium sm:py-4 max-sm:text-sm py-2 gap-1 px-2 items-center rounded-md mt-1"
+                                    >
+                                        Complete 1 Task To Unlock Leaderboard
+                                    </div>)
+                                    : (
+                                        <div
+                                            className="sticky bottom-0 z-10 bg-[#205F94] text-white grid @sm/main:grid-cols-[80px_1fr_120px] grid-cols-[40px_1fr_80px] gap-1 px-1 py-1 items-center rounded-md mt-1"
+                                        >
+                                            {youRow.getVisibleCells().map((cell) => {
+                                                return (
+                                                    <div key={cell.id}>
+                                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                                    </div>
+                                                )
+                                            })}
 
-                                </div>
-                                )}
+                                        </div>
+                                    )}
                             </>
                         ) : (
                             <div colSpan={columns.length} className="h-24 text-center">
@@ -227,7 +234,7 @@ export function LeaderboardTable(
                                 <AvatarFallback className="text-2xl"><UserRound size={60} /></AvatarFallback>
                             </Avatar>
                             <div className="text-sm line-clamp-1 text-ellipsis break-all px-2 font-medium">{topThree[1].original.name}</div>
-                            <div className="text-sm line-clamp-1 text-ellipsis break-all px-2 font-medium text-[#009BD6]">{columnVisibility.weeklyPoints == undefined ? (topThree[1].original.weeklyPoints || 0) : (topThree[1].original.points || 0)}</div>
+                            <div className="text-sm line-clamp-1 text-ellipsis break-all px-2 font-medium text-[#009BD6]">{/*columnVisibility.weeklyPoints == undefined ? (topThree[1].original.weeklyPoints || 0) :*/(topThree[1].original.points || 0)}</div>
                             <div className="text-xs text-muted-foreground flex gap-0.5 items-center px-2"><AtSign className="size-3" /><p className="line-clamp-1 text-ellipsis break-all max-w-16">{topThree[1].original.username}</p></div>
                         </div>
                         <div
@@ -240,7 +247,7 @@ export function LeaderboardTable(
                                 <AvatarFallback className="text-2xl"><UserRound size={60} /></AvatarFallback>
                             </Avatar>
                             <div className="text-sm line-clamp-1 text-ellipsis break-all px-2 font-medium">{topThree[0].original.name}</div>
-                            <div className="text-sm line-clamp-1 text-ellipsis break-all px-2 font-medium text-[#FFAA00]">{columnVisibility.weeklyPoints == undefined ? (topThree[0].original.weeklyPoints || 0) : (topThree[0].original.points || 0)}</div>
+                            <div className="text-sm line-clamp-1 text-ellipsis break-all px-2 font-medium text-[#FFAA00]">{/*columnVisibility.weeklyPoints == undefined ? (topThree[0].original.weeklyPoints || 0) :*/ (topThree[0].original.points || 0)}</div>
                             <div className="text-xs text-muted-foreground flex gap-0.5 items-center px-2"><AtSign className="size-3" /><p className="line-clamp-1 text-ellipsis break-all max-w-16">{topThree[0].original.username}</p></div>
                         </div>
                         <div
@@ -252,7 +259,7 @@ export function LeaderboardTable(
                                 <AvatarFallback className="text-2xl"><UserRound size={60} /></AvatarFallback>
                             </Avatar>
                             <div className="text-sm line-clamp-1 text-ellipsis break-all px-2 font-medium">{topThree[2].original.name}</div>
-                            <div className="text-sm line-clamp-1 text-ellipsis break-all px-2 font-medium text-[#00D95F]">{columnVisibility.weeklyPoints == undefined ? (topThree[2].original.weeklyPoints || 0) : (topThree[2].original.points || 0)}</div>
+                            <div className="text-sm line-clamp-1 text-ellipsis break-all px-2 font-medium text-[#00D95F]">{/*columnVisibility.weeklyPoints == undefined ? (topThree[2].original.weeklyPoints || 0) :*/ (topThree[2].original.points || 0)}</div>
                             <div className="text-xs text-muted-foreground flex gap-0.5 items-center px-2"><AtSign className="size-3" /><p className="line-clamp-1 text-ellipsis break-all max-w-16">{topThree[2].original.username}</p></div>
                         </div>
                     </div>

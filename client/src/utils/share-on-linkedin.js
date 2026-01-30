@@ -77,7 +77,7 @@ async function publishLinkedinPostWithImage(accessToken, linkedinId, imageAsset,
 
     const response = await fetcher(url, 'post', body, { headers });
 
-    return response.id;
+    return response?.id;
 }
 
 async function createVerifcationState(userId) {

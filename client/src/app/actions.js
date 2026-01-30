@@ -9,14 +9,14 @@ import { submissionLimit } from "@/utils/rate-limiter"
 import { uploadBinaryFile, registerUploadInLinkedin, publishLinkedinPostWithImage } from "@/utils/share-on-linkedin"
 import { insertChallengeRegistration } from "@/lib/dal/challenge"
 import { getChallengesInfoCacheById } from "@/lib/dal/cache"
-import { getUserStatsById, insertUser, updateUserById } from "@/lib/dal/user"
+import { getUserStatsById, insertUser, updateUserById, incrementReferralCountByUsername } from "@/lib/dal/user"
 import { getUserCred } from "@/lib/dal/creds"
-import { getSubmissionInfoById, insertSubmission, updateSubmissionById } from "@/lib/dal/submission"
+import { getFinalSubmissionById, insertSubmission, updateSubmissionById, insertWeeklyNFinalSubmission } from "@/lib/dal/submission"
 import { redirect } from "next/navigation"
 import { isRegistered } from "@/utils/auth"
 import { genrateSignature } from "@/utils/cloud-storage"
 import { withServerActionInstrumentation } from "@sentry/nextjs"
-import {createVerifcationState} from "@/utils/share-on-linkedin"
+import { createVerifcationState } from "@/utils/share-on-linkedin"
 
 const clerk = await clerkClient()
 
@@ -48,7 +48,12 @@ export async function createUser(formData, userLocalTimeZone) {
 
 
                 const { avatar_url, id } = sessionClaims
-                const user = { ...formData, avatar_url, id, points: 1000 }
+                const { referral, ...userInfo } = formData
+
+                if (referral) {
+                    await incrementReferralCountByUsername(referral)
+                }
+                const user = { ...userInfo, avatar_url, id, points: 1000 }
                 const { error } = await insertUser(user)
                 if (error) {
                     console.error(error)
@@ -122,15 +127,15 @@ export async function evaluateSubmission(formData, task, submissionId) {
 
                 newUserInfo.daily_task_completed_count = userInfo.dailyTaskCompletedCount + 1;
 
-                const {bonusPoints, messages, userMilestoneInfo} = checkForBonus({
-                    streakCount: newUserInfo.streak_count,
-                    dailyTaskCompletedCount: userInfo.dailyTaskCompletedCount + 1,
-                    streakMilestoneLevel: 0,
-                    taskMilestoneLevel: 0
+                const { bonusPoints, messages, userMilestoneInfo } = checkForBonus({
+                    streakCount: newUserInfo?.streak_count || userInfo.streakCount || 0,
+                    dailyTaskCompletedCount: userInfo?.dailyTaskCompletedCount + 1,
+                    streakMilestoneLevel: userInfo?.streakMilestoneLevel || 0,
+                    taskMilestoneLevel: userInfo?.taskMilestoneLevel || 0
                 })
 
                 // TODO: update milestone info in database.
-                // newUserInfo.points += bonusPoints
+                newUserInfo.points += bonusPoints
                 // console.log(bonusPoints, messages, userMilestoneInfo)
 
                 // update submission in posts table
@@ -144,12 +149,12 @@ export async function evaluateSubmission(formData, task, submissionId) {
 
 
                 // update users streaks and points
-                const { error: updateUserPointsError } = await updateUserById(userId, newUserInfo)
+                const { error: updateUserPointsError } = await updateUserById(userId, { ...userMilestoneInfo, ...newUserInfo })
                 if (updateUserPointsError) throw new Error(updateUserPointsError.message);
 
-                if(newUserInfo.streak_count) messages.streak.push({ text: "Your streak is updated successfully.", highlight: `+${newUserInfo.streak_count.count} DAY STREAK` })
+                if (newUserInfo.streak_count) messages.streak.push({ text: "Your streak is updated successfully.", highlight: `+${newUserInfo.streak_count} DAY STREAK` })
                 messages.task.push({ text: "Submit successfully!!", highlight: `+${finalState.score} XP` })
-                
+
                 return { messages, score: finalState.score, feedback: finalState.feedback }
             } catch (error) {
                 console.error("Error:\n", error)
@@ -165,6 +170,17 @@ export async function createSubmission(formData, task) {
         async () => {
             const { userId, status, redirectToRegister } = await isRegistered()
             if (!status) return redirectToRegister()
+
+            // Check if submission deadline has passed (Jan 30, 2026 11:59 PM IST)
+            const deadline = new Date('2026-01-30T23:59:59+05:30').getTime()
+            const currentTime = new Date().getTime()
+            
+            if (currentTime > deadline) {
+                return { 
+                    message: "Submission deadline has passed. No more submissions are allowed after January 30th, 2026 11:59 PM IST.", 
+                    error: true 
+                }
+            }
 
             try {
 
@@ -283,13 +299,13 @@ export async function shareOnLinkedIn(formData) {
                     throw new Error("Credential get expired!!")
                 }
 
-                const {textContent, imageUrl} = formData
+                const { textContent, imageUrl } = formData
 
                 const { uploadUrl, asset: imageAsset } = await registerUploadInLinkedin(userCreds.linkedinId, userCreds.accessToken)
                 await uploadBinaryFile(imageUrl, uploadUrl, userCreds.accessToken);
-                await publishLinkedinPostWithImage(userCreds.accessToken, userCreds.linkedinId, imageAsset, textContent, "imageDescription", "imageTitle")
+                const postId = await publishLinkedinPostWithImage(userCreds.accessToken, userCreds.linkedinId, imageAsset, textContent, "imageDescription", "imageTitle")
 
-                return { message: "Draft of Linkedin Post is created!!" }
+                return { message: "Linkedin Post is created!!", postId }
             } catch (error) {
                 console.error(error);
                 // TODO: return error response.
@@ -312,44 +328,111 @@ export async function checkStreak() {
                 if (userInfoError) throw new Error(userInfoError.message)
 
                 const newUserInfo = updateStreak(userInfo, false)
+                newUserInfo.points = userInfo.points;
 
-                let response = { }
+                const { messages, userMilestoneInfo, bonusPoints } = checkForBonus({
+                    referralMilestoneLevel: userInfo?.referralMilestoneLevel || 0,
+                    referralCount: userInfo?.referralCount || 0,
+                })
+                newUserInfo.points += bonusPoints;
+
+                let response = {}
 
                 if (newUserInfo.streak_freeze_count !== undefined) {
                     response = { state: "freeze" }
+                    messages.streak = [
+                        { text: "Streak Freeze Left:", highlight: `${userInfo.streakFreezeCount}` },
+                        { text: "Current Streak", highlight: `${userInfo.streakCount} Day` },
+                    ]
                 }
 
                 if (newUserInfo.streak_status == "reset") {
-                    newUserInfo.points = userInfo.points - 50;
+                    newUserInfo.points -= 50;
                     response = { state: "reset" }
+                    messages.streak = [
+                        { text: "You've missed a day", highlight: "-50 XP" },
+                        { text: "Previous Streak", highlight: `${userInfo.streakCount} Day` },
+                        { text: "Current Streak", highlight: `0 Day` },
+                    ]
                 }
 
-                const { error } = await updateUserById(userId, newUserInfo)
+                const { error } = await updateUserById(userId, { ...userMilestoneInfo, ...newUserInfo })
                 if (error) throw new Error(error.message)
 
                 const clientUserInfo = {
                     longestStreak: newUserInfo.longest_streak || userInfo.longestStreak,
                     points: newUserInfo.points || userInfo.points,
                     streakCount: newUserInfo.streak_count || userInfo.streakCount,
-                    streakFreezeCount: newUserInfo.streak_freeze_count || userInfo.streakFreezeCount 
+                    streakFreezeCount: newUserInfo.streak_freeze_count || userInfo.streakFreezeCount
                 }
 
-                return { error: false, userStats: clientUserInfo, ...response }
+                return { error: false, userStats: clientUserInfo, ...response, messages }
             } catch (error) {
                 console.error(error)
-                return { error: true, message: "Fail to update your streak!!" }
+                return { error: true, errorMessage: "Fail to update your streak!!" }
             }
         }
     )
 }
 
 export async function initiateConnectWithLinkedin() {
-        const { status, redirectToRegister, userId } = await isRegistered()
-        if (!status) return redirectToRegister()
+    const { status, redirectToRegister, userId } = await isRegistered()
+    if (!status) return redirectToRegister()
 
-        const state = await createVerifcationState(userId)
+    const state = await createVerifcationState(userId)
 
-        const url = `https://www.linkedin.com/oauth/v2/authorization?enable_extended_login=true&response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.LINKEDIN_CALLBACK_URL}&state=${state}&scope=profile%20email%20w_member_social%20openid`
+    const url = `https://www.linkedin.com/oauth/v2/authorization?enable_extended_login=true&response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.LINKEDIN_CALLBACK_URL}&state=${state}&scope=profile%20email%20w_member_social%20openid`
 
-        return redirect(url)
+    return redirect(url)
+}
+
+export async function submitWeeklyTask(formData) {
+
+    const { status, redirectToRegister, userId } = await isRegistered()
+    if (!status) return redirectToRegister()
+
+    // Check if submission deadline has passed (Jan 30, 2026 11:59 PM IST)
+    const deadline = new Date('2026-01-30T23:59:59+05:30').getTime()
+    const currentTime = new Date().getTime()
+    
+    if (currentTime > deadline) {
+        return { 
+            error: true,
+            message: "Submission deadline has passed. No more submissions are allowed after January 30th, 2026 11:59 PM IST." 
+        }
     }
+
+    try {
+        const submissionInfo = {
+            drive_url: formData.driveUrl,
+            description: formData.description,
+            user_id: userId,
+        }
+        if (formData.weekId != "final") submissionInfo.week_id = formData.weekId
+        const { error } = await insertWeeklyNFinalSubmission(submissionInfo, "final")
+
+        if (error) throw new Error(error.message)
+
+        return { message: "Weekly challenge submitted successfully!!" }
+    } catch (error) {
+        console.error(error)
+        return { error, message: "Failed to save your submission!!" }
+    }
+}
+
+export async function getFinalSubmission(submissionId) {
+    const { status, redirectToRegister, userId } = await isRegistered()
+    if (!status) return redirectToRegister()
+
+    try {
+        const { data, error } = await getFinalSubmissionById(submissionId);
+
+        if (error) throw new Error(error.message)
+
+        return { data }
+    } catch (error) {
+        console.error(error)
+        return { data: {description: "Failed to load this submission!!", driveUrl: "#"} }
+    }
+
+}

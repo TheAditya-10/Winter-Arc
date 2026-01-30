@@ -1,12 +1,18 @@
 "use client"
 
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import useCheckStreak from "../hooks/check-streak";
 import { FeedbackOverlay } from "./feedback-overlay";
 
-export default function StatsCards({ userStats, isMe }) {
+export default function StatsCards({ userStats, isMe, linkedin }) {
 
   const { stats, streakState, setStreakState } = useCheckStreak(userStats, isMe)
+  const [showFeedbackOverlay, setShowFeedbackOverlay] = useState(false)
+
+  useEffect(() => {
+    setShowFeedbackOverlay(linkedin == "connected" || linkedin == "failed")
+  }, [linkedin])
 
   const items = [
     {
@@ -50,11 +56,19 @@ export default function StatsCards({ userStats, isMe }) {
         </Card>
       ))}
       <FeedbackOverlay
-      isOpen={!!streakState}
-      setIsOpen={setStreakState}
-      title={streakState.title}
-      imgUrl={streakState.url}
-      messages={streakState.messages}
+        isOpen={!!streakState}
+        setIsOpen={setStreakState}
+        title={streakState.title}
+        streakState={streakState.state}
+        messages={streakState.messages}
+      />
+      <FeedbackOverlay
+        isOpen={showFeedbackOverlay}
+        setIsOpen={setShowFeedbackOverlay}
+        messages={{ task: [{ text: "", highlight: "" }] }}
+        redirectUrl={"/dashboard/me"}
+        title={linkedin == "connected" ? "LinkedIn Connected" : "LinkedIn Connection Failed"}
+        imgUrl={"/linkedin-logo.svg"}
       />
     </div>
   );

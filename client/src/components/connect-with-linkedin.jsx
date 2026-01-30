@@ -7,6 +7,7 @@ const ConnectWithLinkedin = () => {
 
     return (<>
         <Button
+            // className = "hidden"
             onClick={async () => {
                 await initiateConnectWithLinkedin()
             }}

@@ -1,0 +1,46 @@
+"use server"
+
+import { WeeklyFormSubmit } from "@/components/weekly-submit-form"
+import { notFound } from "next/navigation"
+import { isRegistered } from "@/utils/auth"
+import { redirect } from "next/navigation"
+import { TZDate } from "@date-fns/tz"
+
+export default async function Page({ params }) {
+
+    const { status, redirectToRegister } = await isRegistered()
+    if (!status) return redirectToRegister()
+
+    const { weekId } = await params
+    const weekInfo = {
+        "week-one": { number: 1, title: "Winter Arc: Build in 60", dayNumber: "04" },
+        "week-two": { number: 2, title: "Winter Arc: Glow-up Anything", dayNumber: "11" },
+        "week-three": { number: 3, title: "Winter Arc: Icebreak - The Unlearn Task", dayNumber: "18" },
+        "week-four": { number: 4, title: "Weekly Challenge 4", dayNumber: "25" },
+        "final": { title: "Final Submission", dayNumber: new Date().dayNumber}
+    }
+
+    if (!weekInfo[weekId]) return notFound()
+
+    // Check if submission deadline has passed (Jan 30, 2026 11:59 PM IST)
+    const finalDeadline = new TZDate(2026, 0, 30, 23, 59, 59, "Asia/Kolkata").getTime()
+    const currentTime = new TZDate(new Date(), "Asia/Kolkata").getTime()
+    
+    if (weekId == "final" && currentTime > finalDeadline) {
+        return redirect("/dashboard/final")
+    }
+
+    const startTime = new TZDate(
+        2026,
+        0,                // January (0-based)
+        Number(weekInfo[weekId].dayNumber),
+        0, 0, 0,          // 00:00:00
+        "Asia/Kolkata"
+    ).getTime();
+
+    if (currentTime < startTime || currentTime > startTime + 24 * 60 * 60 * 1000) {
+        return redirect("/dashboard/weekly-tasks")
+    }
+
+    return <WeeklyFormSubmit weekId={weekId} weekNumber={weekInfo[weekId].number} weekTitle={weekInfo[weekId].title} />
+}

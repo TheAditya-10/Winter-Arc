@@ -36,17 +36,41 @@ function DraftArea({ taskInfo, challengeInfo, submissionInfo }) {
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            textContent: `📅 Day ${taskInfo.dayNumber} / 30 – ${challengeInfo.title}\n\nToday’s focus was on **${taskInfo.title}**.\n\n✅ What I completed today:\n- {{TASK_POINT_1}}\n- {{TASK_POINT_2}}\n- {{TASK_POINT_3}}\n\n📚 Key learnings:\n- {{LEARNING_1}}\n- {{LEARNING_2}}\n\nThis challenge is helping me build consistency, improve problem-solving, and stay accountable through daily progress.\n\nLooking forward to continuing the journey tomorrow 🚀\n\n#30DayChallenge #DailyProgress #LearningInPublic #Consistency #ProfessionalGrowth #BuildInPublic #CareerGrowth`,
+            textContent: `📅 Winter Arc | Task ${taskInfo.dayNumber}/30\n` +
+`🎯 Challenge: ${challengeInfo.title}\n\n` +
+
+`Today’s focus: **${taskInfo.title}**\n\n` +
+
+`✅ What I worked on today:\n` +
+`(You can personalize these points)\n` +
+`- {{TASK_POINT_1}}\n` +
+`- {{TASK_POINT_2}}\n` +
+`- {{TASK_POINT_3}}\n\n` +
+
+`📚 Key takeaways from today:\n` +
+`- {{LEARNING_1}}\n` +
+`- {{LEARNING_2}}\n\n` +
+
+`This journey with Matrix – Winter Arc is helping me stay consistent, sharpen my skills, and take ownership of my daily progress.\n` +
+`Small efforts every day are compounding into real growth.\n\n` +
+
+`Staying locked in. On to the next task ❄️🔥\n\n` +
+
+`@MATRIX JEC\n\n` +
+
+`#MatrixWinterArc #BuildWithMatrix #WinterArc\n` +
+`#30DayChallenge #DailyProgress #MatrixJEC`
+,
             imageUrl: submissionInfo?.imageUrl,
         }
     })
 
-    
+
     const handleSubmit = async (formData) => {
         setIsLoading(true)
-        let loadToast = toast.loading("Creating draft of linedin post...")
+        let loadToast = toast.loading("Publishing post on LinkedIn...")
         try {
-            const { error: formError, message: formMessage } = await shareOnLinkedIn(formData)
+            const { error: formError, message: formMessage, postId } = await shareOnLinkedIn(formData)
             if (formError) {
                 Object.entries(formError).map(([field, message]) => {
                     form.setError(field, { message })
@@ -55,7 +79,7 @@ function DraftArea({ taskInfo, challengeInfo, submissionInfo }) {
             }
 
             toast.success(formMessage)
-            window.location.assign("https://www.linkedin.com");
+            window.location.assign(`https://www.linkedin.com/feed/update/${postId}`);
         } catch (error) {
             toast.error(error.message)
             // toast.error("Some think went wrong. Please try again later!!")

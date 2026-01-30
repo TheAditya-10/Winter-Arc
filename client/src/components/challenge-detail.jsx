@@ -11,6 +11,7 @@ import Image from "next/image"
 const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [taskDetail, setTaskDetail] = useState({})
+  const [registred, setRegistred] = useState(isRegistred)
   const [showChallengeInfo, setShowChallengeInfo] = useState(false)
   const currentDayNumber = taskCompleted.size
 
@@ -22,6 +23,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
       if (error) {
         toast.error(message)
       } else {
+        setRegistred(true)
         toast.success(message)
       }
     } catch (error) {
@@ -40,7 +42,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
       "Most people are hibernating. This is where you pull ahead.",
       "Motivation gets you started; the Arc keeps you going.",
       "It's easier to keep the fire going than to restart it from the ash.",
-      "Form basic sentences, greet people"
+      "This isn't a streak anymore. This is who you've become."
     ]
   }
 
@@ -54,7 +56,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
 
         <div className="font-inter">
           {
-            (showChallengeInfo || !isRegistred) && (
+            (showChallengeInfo || !registred) && (
               <div className="mb-10 mx-auto w-76 @sm/main:w-96 @lg/main:w-[32rem] @2xl/main:w-[40rem] rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                 <h3 className="font-semibold text-center text-lg mb-1">Challenge Details</h3>
                 <div className="flex gap-2">
@@ -68,7 +70,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
                 <div>
                   <h4 className="font-medium flex items-center gap-2 mb-2 mt-1">
                     <Image src={"/challenge-detail/question-mark.svg"} width={20} height={20} alt="what to do" />
-                    <span>What You Gain</span>
+                    <span>About the Challenge</span>
                   </h4>
                   <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
                     {challenge.description.split("\n\n").map((text, i) => <li key={i}>{text}</li>)}
@@ -77,16 +79,22 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
                 <div>
                   <h4 className="font-medium flex items-center gap-2 mb-2 mt-1">
                     <Image src={"/challenge-detail/question-mark.svg"} width={20} height={20} alt="what to do" />
-                    <span>Requirements</span>
+                    <span>Must Read</span>
                   </h4>
                   <ul className="list-disc pl-5 gap-1 text-sm flex flex-col">
-                    <li>No programming experence needed.</li>
-                    <li>A laptop with access to the internet</li>
+                    <li>Please make sure your LinkedIn account is connected using the sidebar button.</li>
+                    <li>If you face any issues with direct LinkedIn posting, you can post manually without any problem.</li>
+                    <li>If you are enrolled in multiple tech challenges, please create a separate LinkedIn post for each challenge.</li>
+                    <li>LinkedIn posts are not required for non-tech challenges.</li>
+                    <li>This challenge includes a total of 30 tasks, but they are not restricted to one task per day.</li>
+                    <li>You can earn up to a maximum of 50 XP for each task.</li>
+                    <li>For proof submission, ensure you upload valid and relevant evidence. Avoid using stock footage, downloaded images, or unrelated content.</li>
+                    <li>You may complete up to 3 tasks per day across all the challenges you are enrolled in.</li>
                   </ul>
                 </div>
                 <div className="flex items-center w-full justify-around mt-4">
-                  {!isRegistred
-                    ? <Button onClick={onStartNowClick} className={"w-fit"}>Start Now</Button>
+                  {!registred
+                    ? <Button onClick={onStartNowClick} disabled={isLoading} className={"w-fit"}>Start Now</Button>
                     : <Button variant={"secondary"} onClick={() => setShowChallengeInfo(false)} className={"w-fit"}>Progress</Button>
                   }
                   <Link href={`/roadmap/${challenge.id}.pdf`}><Button variant={"secondary"}>Roadmap</Button></Link>
@@ -95,7 +103,7 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
             )
           }
           {
-            (!showChallengeInfo && isRegistred) && (
+            (!showChallengeInfo && registred) && (
               <div className="mb-10 mx-auto w-76 @sm/main:w-96 @lg/main:w-[32rem] @2xl/main:w-[40rem] rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                 <h3 className="font-semibold text-center text-lg mb-1">Challenge Progress</h3>
                 <div className="mb-4 @sm/main:px-4">
@@ -148,17 +156,17 @@ const ChallengeDetail = ({ tasks, challenge, isRegistred, taskCompleted }) => {
           </div>
         </div>
       </section>
-      {taskDetail.id && <TaskDetailCard task={taskDetail} isRegistred={isRegistred} close={() => setTaskDetail({})} />}
+      {taskDetail.id && <TaskDetailCard task={taskDetail} isRegistred={registred} close={() => setTaskDetail({})} isTech={challenge.isTech} />}
     </>
   );
 };
 
 export { ChallengeDetail };
 
-const TaskDetailCard = ({ task, close, isRegistred }) => {
+const TaskDetailCard = ({ task, close, isRegistred, isTech }) => {
   return (<div className="font-poppins w-dvw h-dvh fixed bg-muted/80 backdrop-blur-md flex items-center justify-center z-100 top-0 left-0" onClick={() => close()}>
     <div className="">
-      <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">Day-{task.dayNumber}</h2>
+      <h2 className="font-semibold bg-[#0A0F1F] shadow-[0_0_20px_#5689C1] border-2 border-[#5689C1] rounded-md px-4 w-fit text-lg mx-auto">Task-{task.dayNumber}</h2>
       <div className="w-76 sm:w-96 rounded-lg p-4 bg-[#021024] flex flex-col gap-2 shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
         <h3 className="font-semibold text-center text-lg mb-1">{task.title}</h3>
         <div className="flex gap-2">
@@ -176,7 +184,7 @@ const TaskDetailCard = ({ task, close, isRegistred }) => {
         </div>
         {(isRegistred) && <>{!!task.score
           ? <Button variant={"outline"}>{task.score} XP Earned</Button>
-          : <>{task.isCurrentTask && <Link href={`/${task.id}/submit`} className={"self-center"}><Button>Submit</Button></Link>}</>
+          : <>{task.isCurrentTask && <Link href={`/${task.id}/submit?isTech=${isTech}`} className={"self-center"}><Button>Submit</Button></Link>}</>
         }</>}
       </div>
     </div>

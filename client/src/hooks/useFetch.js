@@ -21,7 +21,7 @@ export default function useFetch(queryFn) {
                 }
             }
         )()
-    }, [])
+    }, [queryFn])
 
     return {data, error, isLoading}
 }

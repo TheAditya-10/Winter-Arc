@@ -9,3 +9,4 @@ export async function register() {
 }
 // Capture errors from Server Components, middleware, and proxies
 export const onRequestError = Sentry.captureRequestError;
+// Testing

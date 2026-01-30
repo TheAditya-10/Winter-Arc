@@ -7,7 +7,7 @@ const supabase = await createClient()
 export const getChallengesInfoById = async (challengeId) => {
     const { data, error } = await supabase
         .from("challenges")
-        .select("id, title, description")
+        .select("id, title, description, isTech:Tech")
         .eq("id", String(challengeId))
         .limit(1)
         .single()
@@ -18,7 +18,7 @@ export const getChallengesInfoById = async (challengeId) => {
 export const getAllChallenges = async () => {
     const { data, error } = await supabase
         .from("challenges")
-        .select("id, title, description")
+        .select("id, title, description, isTech:Tech")
 
     return { data, error }
 }

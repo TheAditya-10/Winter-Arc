@@ -32,7 +32,7 @@ import Image from "next/image"
 import { FeedbackOverlay } from "./feedback-overlay"
 
 
-function TaskManager({ task }) {
+function TaskManager({ task, isTech }) {
     const [isLoading, setIsLoading] = useState(false)
     const [showDialog, setShowDialog] = useState(false)
     const [rejected, setRejected] = useState("")
@@ -48,17 +48,31 @@ function TaskManager({ task }) {
     })
 
     const uploadFile = async (file, uploadConfig) => {
-        const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`
+        let retries = 0
+        while (retries < 4) {
+            retries++
+            try {
+                const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`
 
-        const formData = new FormData()
-        formData.append("file", file)
-        Object.keys(uploadConfig).map(key => formData.append(key, uploadConfig[key]))
+                const formData = new FormData()
+                formData.append("file", file)
+                Object.keys(uploadConfig).map(key => formData.append(key, uploadConfig[key]))
 
-        const response = await fetch(url, {
-            method: "POST",
-            body: formData
-        });
-        return await response.json();
+                const response = await fetch(url, {
+                    method: "POST",
+                    body: formData
+                });
+                return await response.json();
+            } catch (error) {
+                console.error("Error while uploading image: ", error)
+
+                if (retries >= 3) throw new Error("Failed to load image.")
+
+                const loader = toast.loading("This may take time")
+                await new Promise((res) => setTimeout(res, 1000*retries*(2**retries) + Math.round(Math.random()*1000)))
+                toast.dismiss(loader)
+            }
+        }
     }
 
 
@@ -139,7 +153,7 @@ function TaskManager({ task }) {
                                                 className="min-h-24 resize-none"
                                             />
                                         </FormControl>
-                                        <FormDescription>Share your todays work in detail.</FormDescription>
+                                        <FormDescription className={"flex w-full justify-between"}><span>Share your todays work in detail.</span><span className={field.value.length > 800 && "font-semibold text-destructive"}>{field.value.length}/800</span></FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -171,7 +185,7 @@ function TaskManager({ task }) {
                 messages={submissionInfo.messages}
                 aiFeedback={submissionInfo.feedback}
                 rejected={rejected}
-                redirectUrl={`/share/${submissionInfo.id}`} />
+                redirectUrl={isTech == "true" ? `/share/${submissionInfo.id}` : "/dashboard/me"} />
         </div>
     )
 }
