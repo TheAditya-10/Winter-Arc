@@ -94,19 +94,19 @@ const page = () => {
       name: "Samueal Lambert",
     },
     {
-      img: "/team/ayank.jpg",
+      img: "/teams/ayank.jpg",
       name: "Ayan Khan",
     },
     {
-      img: "/team/umat.jpeg",
+      img: "/teams/umat.jpeg",
       name: "Uma Tiwari",
     },
     {
-      img: "/team/prathma.jpeg",
+      img: "/teams/prathma.jpeg",
       name: "Prathma Dubey",
     },
     {
-      img: "/team/ananya.jpeg",
+      img: "/teams/ananya.jpeg",
       name: "Ananya ",
     }
   ];
