@@ -14,8 +14,8 @@ const page = () => {
 
   const committee = [
     {
-      img: "/pfp.jpg",
-      name: "Aditya P S Tomar",
+      img: "/teams/apst.jpg",
+      name: "",
       position: "Event Coordinator",
       github: "https://github.com/TheAditya-10",
       linkedin: "https://www.linkedin.com/in/aditya-pratap-singh-tomar-693444204/",
@@ -30,15 +30,15 @@ const page = () => {
       info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
     },
     {
-      img: "/teams/rf.jpg",
+      img: "/teams/rf.jpeg",
       name: "Rishika Fulwani",
       position: "Management Head",
-      github: " ",
+      github: "https://github.com/Rishikafulwani177",
       linkedin: "https://www.linkedin.com/in/rishika-fulwani-11902b327/",
       info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
     },
     {
-      img: "/teams/ss.jpg",
+      img: "/teams/ss.jpeg",
       name: "Sariska Shukla",
       position: "Editorial Head",
       github: "https://github.com/Sariska1455",
@@ -49,21 +49,21 @@ const page = () => {
 
   const tech = [
     {
-      img: "/teams/dg.jpg",
+      img: "/teams/dg.jpeg",
       name: "Deepesh Gupta",
       position: "Website Developer",
       github: "https://github.com/200Deepesh",
       linkedin: "https://www.linkedin.com/in/200deepesh/",
     },
     {
-      img: "/teams/sid.jpg",
+      img: "/teams/sid.jpeg",
       name: "Siddhant Sharma",
       position: "Development Operations",
       github: "https://github.com/siddhant385",
       linkedin: "https://www.linkedin.com/in/sid385/",
     },
     {
-      img: "/teams/vr.jpg",
+      img: "/teams/vr.jpeg",
       name: "Vivek Rajput",
       position: "Frontend Developer",
       github: "https://github.com/TheVivekRajput002",
@@ -73,12 +73,12 @@ const page = () => {
 
   const studio = [
     {
-      img: "/team/aaknp.jpg",
+      img: "/team/aaknp.jpeg",
       name: "Akansha Patel",
       position: "Studio Lead",
     },
     {
-      img: "/team/addu.jpg",
+      img: "/team/addu.jpeg",
       name: "Aaditya Patel",
       position: "Designer",
     }
@@ -86,11 +86,11 @@ const page = () => {
 
   const management = [
     {
-      img: "/teams/dk.jpg",
+      img: "/teams/dk.jpeg",
       name: "Dhruv Kolare",
     },
     {
-      img: "/teams/sl.jpg",
+      img: "/teams/sl.jpeg",
       name: "Samueal Lambert",
     },
     {
