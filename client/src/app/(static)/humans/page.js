@@ -15,7 +15,7 @@ const page = () => {
   const committee = [
     {
       img: "/teams/apst.jpg",
-      name: "",
+      name: "ADITYA PRATAP SINGH TOMAR",
       position: "Event Coordinator",
       github: "https://github.com/TheAditya-10",
       linkedin: "https://www.linkedin.com/in/aditya-pratap-singh-tomar-693444204/",
