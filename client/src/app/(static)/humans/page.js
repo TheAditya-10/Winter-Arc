@@ -14,20 +14,20 @@ const page = () => {
 
   const committee = [
     {
-      img: "/teams/apst.jpg",
+      img: "/teams/apst.png",
       name: "ADITYA PRATAP SINGH TOMAR",
       position: "Event Coordinator",
       github: "https://github.com/TheAditya-10",
       linkedin: "https://www.linkedin.com/in/aditya-pratap-singh-tomar-693444204/",
-      info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-    },
+      info: "Vision in mind, execution on point—if it is happening smoothly, the plan is on."
+    },  
     {
       img: "/teams/vt.jpeg",
       name: "Vivek Tomar",
       position: "Co-Coordinator",
-      github: " ",
-      linkedin: " ",
-      info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
+      github: "https://github.com/Vivektomar3108",
+      linkedin: "https://www.linkedin.com/in/vivek-tomar-a1a655293/",
+      info: "Staying consistent, keeping things aligned, and making sure nothing falls through the cracks."
     },
     {
       img: "/teams/rf.jpeg",
@@ -35,7 +35,7 @@ const page = () => {
       position: "Management Head",
       github: "https://github.com/Rishikafulwani177",
       linkedin: "https://www.linkedin.com/in/rishika-fulwani-11902b327/",
-      info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
+      info: "Turning chaos into clarity—planning smart so the team can move fast."
     },
     {
       img: "/teams/ss.jpeg",
@@ -43,7 +43,7 @@ const page = () => {
       position: "Editorial Head",
       github: "https://github.com/Sariska1455",
       linkedin: "https://www.linkedin.com/in/sariska-shukla/",
-      info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
+      info: "Shaping ideas into words that hit right and leave an impact."
     },
   ];
 
@@ -73,14 +73,14 @@ const page = () => {
 
   const studio = [
     {
-      img: "/team/aaknp.jpeg",
+      img: "/teams/aaknp.jpeg",
       name: "Akansha Patel",
-      position: "Studio Lead",
+      position: "Designer",
     },
     {
-      img: "/team/addu.jpeg",
+      img: "/teams/addu.jpeg",
       name: "Aaditya Patel",
-      position: "Designer",
+      position: "Studio Lead",
     }
   ];
 
@@ -98,15 +98,15 @@ const page = () => {
       name: "Ayan Khan",
     },
     {
-      img: "/team/umat.jpg",
+      img: "/team/umat.jpeg",
       name: "Uma Tiwari",
     },
     {
-      img: "/team/prathma.jpg",
+      img: "/team/prathma.jpeg",
       name: "Prathma Dubey",
     },
     {
-      img: "/team/ananya.jpg",
+      img: "/team/ananya.jpeg",
       name: "Ananya ",
     }
   ];
