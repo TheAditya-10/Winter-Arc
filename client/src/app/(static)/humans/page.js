@@ -15,7 +15,7 @@ const page = () => {
   const committee = [
     {
       img: "/pfp.jpg",
-      name: "Aditya Pratap Singh Tomar",
+      name: "Aditya P S Tomar",
       position: "Event Coordinator",
       github: "https://github.com/TheAditya-10",
       linkedin: "https://www.linkedin.com/in/aditya-pratap-singh-tomar-693444204/",
@@ -26,7 +26,7 @@ const page = () => {
       name: "Vivek Tomar",
       position: "Co-Coordinator",
       github: " ",
-      linkedin: "",
+      linkedin: " ",
       info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
     },
     {
@@ -167,7 +167,7 @@ const page = () => {
       {/* Organizing Committee */}
       <div className='sm:w-[75%] w-9/10 mx-auto mt-20'>
         <h2 className='text-3xl font-bold text-[#8ACADE] mb-10 border-b border-[#7689C9]/30 pb-4'>Organizing Committee</h2>
-        <div className='max-lg:grid-cols-2 max-sm:grid-cols-1 grid grid-cols-3 gap-7'>
+        <div className='max-2xl:grid-cols-2 max-sm:grid-cols-1 grid grid-cols-4 gap-7'>
           {
             committee.map((person, index) => (
               <Person key={index} img={person.img} name={person.name} position={person.position} github={person.github} linkedin={person.linkedin} info={person.info} />
