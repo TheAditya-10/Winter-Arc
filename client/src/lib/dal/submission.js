@@ -54,12 +54,33 @@ export const getAllWeeklySubmissions = async () => {
     return { data, error }
 }
 
+export const getAllFinalSubmissions = async () => {
+    
+    const { data, error } = await supabase
+        .from('final_submissions')
+        .select('id, user:users(id, name, username, avatarUrl:avatar_url), driveUrl:drive_url')
+    
+    return { data, error }
+}
+
 export const getFinalSubmissionByUserId = async (userId) => {
     
     const { data, error } = await supabase
         .from('final_submissions')
         .select('id, driveUrl:drive_url, description, score')
         .eq("user_id", userId)
+        .limit(1)
+        .maybeSingle()
+    
+    return { data, error }
+}
+
+export const getFinalSubmissionById = async (id) => {
+    
+    const { data, error } = await supabase
+        .from('final_submissions')
+        .select('id, driveUrl:drive_url, description, score')
+        .eq("id", id)
         .limit(1)
         .maybeSingle()
     

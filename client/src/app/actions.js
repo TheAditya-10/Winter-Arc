@@ -11,7 +11,7 @@ import { insertChallengeRegistration } from "@/lib/dal/challenge"
 import { getChallengesInfoCacheById } from "@/lib/dal/cache"
 import { getUserStatsById, insertUser, updateUserById, incrementReferralCountByUsername } from "@/lib/dal/user"
 import { getUserCred } from "@/lib/dal/creds"
-import { getSubmissionInfoById, insertSubmission, updateSubmissionById, insertWeeklyNFinalSubmission } from "@/lib/dal/submission"
+import { getFinalSubmissionById, insertSubmission, updateSubmissionById, insertWeeklyNFinalSubmission } from "@/lib/dal/submission"
 import { redirect } from "next/navigation"
 import { isRegistered } from "@/utils/auth"
 import { genrateSignature } from "@/utils/cloud-storage"
@@ -386,7 +386,7 @@ export async function submitWeeklyTask(formData) {
             description: formData.description,
             user_id: userId,
         }
-        if(formData.weekId != "final") submissionInfo.week_id = formData.weekId
+        if (formData.weekId != "final") submissionInfo.week_id = formData.weekId
         const { error } = await insertWeeklyNFinalSubmission(submissionInfo, "final")
 
         if (error) throw new Error(error.message)
@@ -396,4 +396,21 @@ export async function submitWeeklyTask(formData) {
         console.error(error)
         return { error, message: "Failed to save your submission!!" }
     }
+}
+
+export async function getFinalSubmission(submissionId) {
+    const { status, redirectToRegister, userId } = await isRegistered()
+    if (!status) return redirectToRegister()
+
+    try {
+        const { data, error } = await getFinalSubmissionById(submissionId);
+
+        if (error) throw new Error(error.message)
+
+        return { data }
+    } catch (error) {
+        console.error(error)
+        return { data: {description: "Failed to load this submission!!", driveUrl: "#"} }
+    }
+
 }

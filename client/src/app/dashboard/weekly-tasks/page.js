@@ -75,7 +75,7 @@ export default async function Page() {
     return (
         <section className="flex flex-col items-center gap-4 px-2">
             <div className="rounded-lg p-4 max-xm:px-2 max-w-[30rem] w-full my-4 text-center text-xl font-bold bg-[#021024] shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
-                {currentWeekInfo.state == "active" ? "WEEKLY CHALLENGE IS LIVE !!" : "JOIN US ON SUNDAY!!"}
+                {currentWeekInfo?.state == "active" ? "WEEKLY CHALLENGE IS LIVE !!" : "JOIN US ON SUNDAY!!"}
             </div>
 
             <div className="flex w-full max-w-[36rem] gap-4 items-center justify-between relative">
@@ -95,7 +95,7 @@ export default async function Page() {
             </div>
 
             {/* Challenge Intro */}
-            {(currentWeekInfo.state == "active") && <div className="font-inter rounded-lg my-2 max-w-[30rem] w-full text-center text-xl font-bold bg-[#021024] shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
+            {(currentWeekInfo?.state == "active") && <div className="font-inter rounded-lg my-2 max-w-[30rem] w-full text-center text-xl font-bold bg-[#021024] shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
                 <div className="flex items-center max-sm:flex-col max-sm:px-2">
                     <div className="bg-[url('/dashboard/snow-flake.svg')] bg-no-repeat bg-contain p-12 w-fit h-fit">
                         <div className="relative size-16 text-3xl rounded-full bg-[#062B5D] outline-4 outline-[#678CAC] -outline-offset-6 flex items-center justify-center text-[#3FD7FA] font-bold ">
@@ -129,8 +129,8 @@ export default async function Page() {
 
             {/* Timer */}
             <div className="rounded-lg p-4 my-2 max-w-[30rem] w-full bg-[#021024] shadow-[0_0_20px_#5689C1] border-2 border-[#616E95] overflow-hidden bg-[url('/challenge-detail/card-background.svg')]">
-                <h3 className="font-bold text-xl">{currentWeekInfo.state == "active" ? "END" : "START"}S IN:</h3>
-                <div className="font-semibold flex items-center justify-center" style={{ margin: currentWeekInfo.state == "active" ? "0" : "2rem 0" }}>
+                <h3 className="font-bold text-xl">{currentWeekInfo?.state == "active" ? "END" : "START"}S IN:</h3>
+                <div className="font-semibold flex items-center justify-center" style={{ margin: currentWeekInfo?.state == "active" ? "0" : "2rem 0" }}>
                     <Timer timestamp={weeklyTaskStartTime[currentWeekInfo?.index] + (currentWeekInfo?.state == "active" ? 24 * 60 * 60 * 1000 : 0)} />
                 </div>
                 {currentWeekInfo?.state == "active" && <p className="m-auto w-fit">Submissions close automatically</p>}
