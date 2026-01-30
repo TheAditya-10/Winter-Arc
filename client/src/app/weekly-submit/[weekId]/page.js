@@ -22,6 +22,14 @@ export default async function Page({ params }) {
 
     if (!weekInfo[weekId]) return notFound()
 
+    // Check if submission deadline has passed (Jan 30, 2026 11:59 PM IST)
+    const deadline = new TZDate(2026, 0, 30, 23, 59, 59, "Asia/Kolkata").getTime()
+    const currentTime = new TZDate(new Date(), "Asia/Kolkata").getTime()
+    
+    if (currentTime > deadline) {
+        return redirect("/dashboard/weekly-tasks")
+    }
+
     const startTime = new TZDate(
         2026,
         0,                // January (0-based)
@@ -29,7 +37,6 @@ export default async function Page({ params }) {
         0, 0, 0,          // 00:00:00
         "Asia/Kolkata"
     ).getTime();
-    const currentTime = new TZDate(new Date(), "Asia/Kolkata").getTime();
 
     if (currentTime < startTime || currentTime > startTime + 24 * 60 * 60 * 1000) {
         return redirect("/dashboard/weekly-tasks")

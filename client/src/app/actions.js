@@ -171,6 +171,17 @@ export async function createSubmission(formData, task) {
             const { userId, status, redirectToRegister } = await isRegistered()
             if (!status) return redirectToRegister()
 
+            // Check if submission deadline has passed (Jan 30, 2026 11:59 PM IST)
+            const deadline = new Date('2026-01-30T23:59:59+05:30').getTime()
+            const currentTime = new Date().getTime()
+            
+            if (currentTime > deadline) {
+                return { 
+                    message: "Submission deadline has passed. No more submissions are allowed after January 30th, 2026 11:59 PM IST.", 
+                    error: true 
+                }
+            }
+
             try {
 
                 try {
@@ -379,6 +390,17 @@ export async function submitWeeklyTask(formData) {
 
     const { status, redirectToRegister, userId } = await isRegistered()
     if (!status) return redirectToRegister()
+
+    // Check if submission deadline has passed (Jan 30, 2026 11:59 PM IST)
+    const deadline = new Date('2026-01-30T23:59:59+05:30').getTime()
+    const currentTime = new Date().getTime()
+    
+    if (currentTime > deadline) {
+        return { 
+            error: true,
+            message: "Submission deadline has passed. No more submissions are allowed after January 30th, 2026 11:59 PM IST." 
+        }
+    }
 
     try {
         const submissionInfo = {
