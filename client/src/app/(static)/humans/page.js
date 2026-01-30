@@ -3,111 +3,111 @@ import React from 'react'
 
 const page = () => {
 
-  const mentor = {
-    img: "/pfp.jpg",
-    name: "Mentor Name",
-    position: "Project Mentor",
-    github: "https://github.com/TheVivekRajput002",
-    linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    info: "Guiding the team with wisdom and technical expertise to bring Winter Arc to life."
-  };
+  // const mentor = {
+  //   img: "/pfp.jpg",
+  //   name: "Mentor Name",
+  //   position: "Project Mentor",
+  //   github: " ",
+  //   linkedin: " .",
+  //   info: "Guiding the team with wisdom and technical expertise to bring Winter Arc to life."
+  // };
 
   const committee = [
     {
       img: "/pfp.jpg",
-      name: "John Smith",
-      position: "Committe Lead",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      name: "Aditya Pratap Singh Tomar",
+      position: "Event Coordinator",
+      github: "https://github.com/TheAditya-10",
+      linkedin: "https://www.linkedin.com/in/aditya-pratap-singh-tomar-693444204/",
       info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
     },
     {
       img: "/pfp.jpg",
-      name: "John Smith",
-      position: "Coordinator",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      name: "Vivek Tomar",
+      position: "Co-Coordinator",
+      github: " ",
+      linkedin: "",
       info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
     },
     {
       img: "/pfp.jpg",
-      name: "John Smith",
-      position: "Organizer",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      name: "Rishika Fulwani",
+      position: "Management Head",
+      github: " ",
+      linkedin: " ",
       info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
-    }
+    },
+    {
+      img: "/pfp.jpg",
+      name: "Sariska Shukla",
+      position: "Editorial Head",
+      github: " ",
+      linkedin: " ",
+      info: "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy"
+    },
   ];
 
   const tech = [
     {
       img: "/pfp.jpg",
-      name: "John Smith",
-      position: "Tech Lead",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      name: "Deepesh Gupta",
+      position: "Website Developer",
+      github: " ",
+      linkedin: " ",
     },
     {
       img: "/pfp.jpg",
-      name: "John Smith",
-      position: "Developer",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      name: "Siddhant Sharma",
+      position: "Development Operations",
+      github: " ",
+      linkedin: " ",
     },
     {
       img: "/pfp.jpg",
-      name: "John Smith",
-      position: "Developer",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      name: "Vivek Rajput",
+      position: "Frontend Developer",
+      github: " ",
+      linkedin: " ",
     }
   ];
 
   const studio = [
     {
       img: "/pfp.jpg",
-      name: "John Smith",
+      name: "Akansha Patel",
       position: "Studio Lead",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
     },
     {
       img: "/pfp.jpg",
-      name: "John Smith",
+      name: "Aaditya Patel",
       position: "Designer",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
-    },
-    {
-      img: "/pfp.jpg",
-      name: "John Smith",
-      position: "Editor",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
     }
   ];
 
   const management = [
     {
       img: "/pfp.jpg",
-      name: "John Smith",
-      position: "Manager",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      name: "Dhruv Kolare",
     },
     {
       img: "/pfp.jpg",
-      name: "John Smith",
-      position: "Manager",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      name: "Samueal Lambert",
     },
     {
       img: "/pfp.jpg",
-      name: "John Smith",
-      position: "Manager",
-      github: "https://github.com/TheVivekRajput002",
-      linkedin: "https://www.linkedin.com/in/thevivekrajput002/",
+      name: "Ayan Khan",
+    },
+    {
+      img: "/pfp.jpg",
+      name: "Uma Tiwari",
+    },
+    {
+      img: "/pfp.jpg",
+      name: "Prathma Dubey",
+    },
+    {
+      img: "/pfp.jpg",
+      name: "Ananya ",
     }
   ];
 
@@ -123,7 +123,7 @@ const page = () => {
 
           <div className='flex flex-col items-start '>
             <p className='mt-8'>Meet the students, designers, and developers turning ideas into action.</p>
-            <p className=' '>Organizers, mentors, and the extended Matrix family — working together to make WINTER ARC a reality.</p>
+            <p className=' '>Organizers, augmented crew, and the extended Matrix family — working together to make WINTER ARC a reality.</p>
           </div>
         </div>
 
@@ -134,7 +134,7 @@ const page = () => {
       </div>
 
       {/* Mentor Section */}
-      <div className='sm:w-[75%] w-9/10 mx-auto mt-20 flex flex-col items-center'>
+      {/* <div className='sm:w-[75%] w-9/10 mx-auto mt-20 flex flex-col items-center'>
         <h2 className='text-3xl font-bold text-[#8ACADE] mb-10 border-b border-[#7689C9]/30 pb-4 w-full'>Our Mentor</h2>
         <div className='pt-10 pb-10 px-10 bg-gradient-to-br from-[#1a1d35] to-[#0f1020] border-2 border-[#7689C9]/50 rounded-4xl shadow-2xl max-w-2xl w-full transform hover:scale-105 transition-transform duration-300'>
           <div className='flex flex-col items-center gap-6'>
@@ -162,7 +162,7 @@ const page = () => {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Organizing Committee */}
       <div className='sm:w-[75%] w-9/10 mx-auto mt-20'>
@@ -202,7 +202,7 @@ const page = () => {
 
       {/* Management Team */}
       <div className='sm:w-[75%] w-9/10 mx-auto mt-20'>
-        <h2 className='text-3xl font-bold text-[#8ACADE] mb-10 border-b border-[#7689C9]/30 pb-4'>Management</h2>
+        <h2 className='text-3xl font-bold text-[#8ACADE] mb-10 border-b border-[#7689C9]/30 pb-4'>Augmented Crew</h2>
         <div className='max-lg:grid-cols-2 max-sm:grid-cols-1 grid grid-cols-3 gap-7'>
           {
             management.map((person, index) => (
