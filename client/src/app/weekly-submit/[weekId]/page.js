@@ -22,12 +22,12 @@ export default async function Page({ params }) {
 
     if (!weekInfo[weekId]) return notFound()
 
-    // Check if submission deadline has passed (Jan 30, 2026 11:59 PM IST)
-    const finalDeadline = new TZDate(2026, 0, 30, 23, 59, 59, "Asia/Kolkata").getTime()
+    // Check if submission deadline has passed (Jan 31, 2026 11:59 PM IST)
+    const finalDeadline = new TZDate(2026, 0, 31, 23, 59, 59, "Asia/Kolkata").getTime()
     const currentTime = new TZDate(new Date(), "Asia/Kolkata").getTime()
     
     if (weekId == "final" && currentTime > finalDeadline) {
-        return redirect("/dashboard/final")
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Submission Closed!!</h1></div>)
     }
 
     const startTime = new TZDate(

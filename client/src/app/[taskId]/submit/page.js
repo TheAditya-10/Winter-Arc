@@ -15,7 +15,7 @@ export default async function Page({ params, searchParams }) {
     const currentTime = new Date().getTime()
     
     if (currentTime > deadline) {
-        return redirect("/dashboard/weekly-tasks")
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Submission Closed!!</h1></div>)
     }
 
     const { taskId } = await params

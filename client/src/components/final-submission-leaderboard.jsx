@@ -179,7 +179,7 @@ const SubmissionOverlay = ({ submissionInfo, closeOverlay }) => {
                 <div className="max-w-[32rem] text-card-foreground">
                     <h3 className="my-4 leading-none font-semibold text-left">Project Description</h3>
                     <div className="bg-card mb-4 min-h-48 text-card-foreground flex flex-col gap-6 rounded-xl border py-3 px-3 shadow-sm max-h-64 overflow-y-auto font-mono text-sm scrollbar-thin">
-                        {submission?.description}
+                        {submission ? submission?.description : "Loading..."}
                     </div>
                     <a
                         href={submission?.driveUrl}
@@ -197,9 +197,7 @@ const SubmissionOverlay = ({ submissionInfo, closeOverlay }) => {
 export const UserSubmissionCard = ({ submission }) => {
 
     if (!submission) {
-        return <div className='w-full pt-24'>
-            Waiting for your submission.
-        </div>
+        return (<div className="w-full h-full flex items-center justify-center text-lg text-muted-foreground font-semibold"><h1>Wating for your submission.</h1></div>)
     }
 
     return (<Card className="w-full max-sm:py-4 pt-2 gap-0!" onClick={(e) => e.stopPropagation()}>
